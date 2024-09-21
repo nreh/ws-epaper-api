@@ -1,4 +1,4 @@
-#include "epaperlib.h"
+#include "epaperapi.h"
 
 #include <iostream>
 

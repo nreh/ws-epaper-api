@@ -3,9 +3,9 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(
-    epaperlib
+    epaperapi
     VERSION 1.0.0
-    DESCRIPTION "Library for displaying GUI on Waveshare's e-paper display."
+    DESCRIPTION "Library that provides an abstraction layer for displaying GUI on Waveshare's e-paper display."
     LANGUAGES C CXX
 )
 
@@ -19,27 +19,27 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     )
 endif()
 
-if(NOT DEFINED EPAPERLIB_ENABLED_SDL_TEST_MODE)
+if(NOT DEFINED EPAPERAPI_ENABLED_SDL_TEST_MODE)
     message(
-        "TIP! Set EPAPERLIB_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
+        "TIP! Set EPAPERAPI_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
     )
 endif()
 
-if(EPAPERLIB_STATIC)
-    message("EPAPERLIB_STATIC = \"${EPAPERLIB_STATIC}\", Building epaperlib as a STATIC library")
+if(EPAPERAPI_STATIC)
+    message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a STATIC library")
 
-    add_library(epaperlib STATIC lib/epaperlib.cpp)
-    target_include_directories(epaperlib PUBLIC include)
+    add_library(epaperapi STATIC lib/epaperapi.cpp)
+    target_include_directories(epaperapi PRIVATE include)
 
 else()
-    message("EPAPERLIB_STATIC = \"${EPAPERLIB_STATIC}\", Building epaperlib as a SHARED library")
+    message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a SHARED library")
 
-    add_library(epaperlib SHARED lib/epaperlib.cpp)
-    target_include_directories(epaperlib PUBLIC include)
+    add_library(epaperapi SHARED lib/epaperapi.cpp)
+    target_include_directories(epaperapi PRIVATE include)
 endif()
 
-if(EPAPERLIB_ENABLED_SDL_TEST_MODE)
-    message("EPAPERLIB_ENABLED_SDL_TEST_MODE = \"${EPAPERLIB_ENABLED_SDL_TEST_MODE}\",
+if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
+    message("EPAPERAPI_ENABLED_SDL_TEST_MODE = \"${EPAPERAPI_ENABLED_SDL_TEST_MODE}\",
     Building SDL test files")
 
     add_executable(
@@ -47,5 +47,5 @@ if(EPAPERLIB_ENABLED_SDL_TEST_MODE)
         sdl_testing/main.cpp
     )
 
-    target_link_libraries(sdl_test PRIVATE epaperlib)
+    target_link_libraries(sdl_test PRIVATE epaperapi)
 endif()
