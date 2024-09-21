@@ -1,8 +1,6 @@
+#include <epaperapi.h>
 #include <iostream>
-#include <epaperlib.h>
 
 using namespace std;
 
-int main() {
-    hello();
-}
+int main() { hello(); }

@@ -1,5 +1,3 @@
-# This CMakeLists file supports two types of build modes. Either for testing or for just building the library
-
 cmake_minimum_required(VERSION 3.14)
 
 project(
@@ -25,22 +23,26 @@ if(NOT DEFINED EPAPERAPI_ENABLED_SDL_TEST_MODE)
     )
 endif()
 
+add_subdirectory(external/bcm2835)
+add_subdirectory(external/waveshare/epaper)
+
 if(EPAPERAPI_STATIC)
     message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a STATIC library")
 
     add_library(epaperapi STATIC lib/epaperapi.cpp)
-    target_include_directories(epaperapi PRIVATE include)
+    target_include_directories(epaperapi PUBLIC include)
 
 else()
     message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a SHARED library")
 
     add_library(epaperapi SHARED lib/epaperapi.cpp)
-    target_include_directories(epaperapi PRIVATE include)
+    target_include_directories(epaperapi PUBLIC include)
 endif()
 
+target_link_libraries(epaperapi PRIVATE bcm2835)
+
 if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
-    message("EPAPERAPI_ENABLED_SDL_TEST_MODE = \"${EPAPERAPI_ENABLED_SDL_TEST_MODE}\",
-    Building SDL test files")
+    message("EPAPERAPI_ENABLED_SDL_TEST_MODE = \"${EPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
 
     add_executable(
         sdl_test
