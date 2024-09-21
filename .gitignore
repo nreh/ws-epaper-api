@@ -1,0 +1,4 @@
+CMakeCache.txt
+build**
+CMakeFiles/
+CMakeFiles/**
