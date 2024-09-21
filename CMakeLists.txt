@@ -1,4 +1,13 @@
-# This CMakeLists file supports two types of build modes. Either for testing or for building the library
+# This CMakeLists file supports two types of build modes. Either for testing or for just building the library
+
+cmake_minimum_required(VERSION 3.14)
+
+project(
+    epaperlib
+    VERSION 1.0.0
+    DESCRIPTION "Library for displaying GUI on Waveshare's e-paper display."
+    LANGUAGES C CXX
+)
 
 if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     message(FATAL_ERROR
@@ -10,17 +19,33 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     )
 endif()
 
-if(NOT DEFINED EPAPERLIB_MODE)
+if(NOT DEFINED EPAPERLIB_ENABLED_SDL_TEST_MODE)
     message(
-        FATAL_ERROR
-        "EPAPERLIB_MODE is not defined. Please set to one of the following:\n • LIBRARY\n • SDL_TESTING\n"
-        "See README for explanations on what these options mean."
+        "TIP! Set EPAPERLIB_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
     )
 endif()
 
-if(EPAPERLIB_MODE STREQUAL "LIBRARY")
-    message("EPAPERLIB_MODE = \"${EPAPERLIB_MODE}\", Building epaperlib as a STATIC library")
+if(EPAPERLIB_STATIC)
+    message("EPAPERLIB_STATIC = \"${EPAPERLIB_STATIC}\", Building epaperlib as a STATIC library")
 
-elseif(EPAPERLIB_MODE STREQUAL "SDL_TESTING")
-    message("EPAPERLIB_MODE = \"${EPAPERLIB_MODE}\", Building epaperlib in testing mode with the SDL library.")
+    add_library(epaperlib STATIC lib/epaperlib.cpp)
+    target_include_directories(epaperlib PUBLIC include)
+
+else()
+    message("EPAPERLIB_STATIC = \"${EPAPERLIB_STATIC}\", Building epaperlib as a SHARED library")
+
+    add_library(epaperlib SHARED lib/epaperlib.cpp)
+    target_include_directories(epaperlib PUBLIC include)
+endif()
+
+if(EPAPERLIB_ENABLED_SDL_TEST_MODE)
+    message("EPAPERLIB_ENABLED_SDL_TEST_MODE = \"${EPAPERLIB_ENABLED_SDL_TEST_MODE}\",
+    Building SDL test files")
+
+    add_executable(
+        sdl_test
+        sdl_testing/main.cpp
+    )
+
+    target_link_libraries(sdl_test PRIVATE epaperlib)
 endif()
