@@ -26,23 +26,45 @@ endif()
 add_subdirectory(external/bcm2835)
 add_subdirectory(external/waveshare/epaper)
 
+set(
+    EPAPER_LIB_FILES
+    lib/epaperapi.cpp
+    lib/elements.cpp
+    lib/buffers.cpp
+)
+
 if(EPAPERAPI_STATIC)
     message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a STATIC library")
 
-    add_library(epaperapi STATIC lib/epaperapi.cpp)
+    add_library(epaperapi STATIC ${EPAPER_LIB_FILES})
     target_include_directories(epaperapi PUBLIC include)
 
 else()
     message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a SHARED library")
 
-    add_library(epaperapi SHARED lib/epaperapi.cpp)
+    add_library(epaperapi SHARED ${EPAPER_LIB_FILES})
     target_include_directories(epaperapi PUBLIC include)
 endif()
 
-target_link_libraries(epaperapi PRIVATE bcm2835)
+target_compile_features(
+    epaperapi PRIVATE cxx_std_17
+)
+
+target_include_directories(epaperapi PUBLIC external/bcm2835/src)
+target_link_libraries(epaperapi PUBLIC bcm2835)
 
 if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
     message("EPAPERAPI_ENABLED_SDL_TEST_MODE = \"${EPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
+
+    find_package(SDL2)
+
+    if(SDL2_FOUND)
+        message("Found SDL library")
+    else()
+        message(FATAL_ERROR "SDL2 library not found! Please install SDL2 to build in SDL test mode."
+            "\nOtherwise set EPAPERAPI_ENABLED_SDL_TEST_MODE to false."
+        )
+    endif()
 
     add_executable(
         sdl_test
@@ -50,4 +72,5 @@ if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
     )
 
     target_link_libraries(sdl_test PRIVATE epaperapi)
+    target_link_libraries(sdl_test PRIVATE SDL2)
 endif()
