@@ -136,7 +136,10 @@ void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
 }
 
 GrayscaleBuffer::GrayscaleBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
-    blackChannel = new uint8_t[width * height]();
+    blackChannel = new uint8_t[width * height];
+    for (int i = 0; i < width * height; i++) {
+        blackChannel[i] = 255;
+    }
 }
 
 GrayscaleBuffer::~GrayscaleBuffer() { delete[] blackChannel; }
@@ -159,12 +162,12 @@ void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint
 }
 
 void GrayscaleBuffer::CopyBufferFrom(const AbstractBuffer& source) {
-    if (source.type() != BUFFERTYPE::RedBlackBuffer) {
+    if (source.type() != BUFFERTYPE::GrayscaleBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
     } else if (source.width != this->width || source.height != this->height) {
         throw MisshapenBufferCopy(source, *this);
     }
-    const RedBlackBuffer* rgb = dynamic_cast<const RedBlackBuffer*>(&source);
+    const GrayscaleBuffer* rgb = dynamic_cast<const GrayscaleBuffer*>(&source);
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
 }
 

@@ -45,8 +45,6 @@ void InitializeSDL() {
     SDL_RenderClear(renderer);
 }
 
-void DrawSinglePixel(uint16_t xpos, uint16_t ypos, epaperapi::ElementStyle value) {}
-
 /// @brief Converts Buffer to an SDL texture and renders it to the SDL window
 void DrawPixels(epaperapi::AbstractBuffer& buffer, uint16_t width, uint16_t height) {
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, width, height);
@@ -69,11 +67,23 @@ void DrawPixels(epaperapi::AbstractBuffer& buffer, uint16_t width, uint16_t heig
     case epaperapi::BUFFERTYPE::RedBlackBuffer: {
         const epaperapi::RedBlackBuffer* rblk = dynamic_cast<const epaperapi::RedBlackBuffer*>(&buffer);
 
+        for (int i = 0; i < width * height; i++) {
+            data[3 * i] = rblk->redChannel[i];
+            data[3 * i + 1] = rblk->blackChannel[i];
+            data[3 * i + 2] = rblk->blackChannel[i];
+        }
+
         break;
     }
 
     case epaperapi::BUFFERTYPE::GrayscaleBuffer: {
-        const epaperapi::GrayscaleBuffer* rblk = dynamic_cast<const epaperapi::GrayscaleBuffer*>(&buffer);
+        const epaperapi::GrayscaleBuffer* blk = dynamic_cast<const epaperapi::GrayscaleBuffer*>(&buffer);
+
+        for (int i = 0; i < width * height; i++) {
+            data[3 * i] = blk->blackChannel[i];
+            data[3 * i + 1] = blk->blackChannel[i];
+            data[3 * i + 2] = blk->blackChannel[i];
+        }
 
         break;
     }

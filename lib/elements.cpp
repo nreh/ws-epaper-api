@@ -54,13 +54,12 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
     }
 
     case BUFFERTYPE::GrayscaleBuffer: {
-        const GrayscaleBuffer* rblk = dynamic_cast<const GrayscaleBuffer*>(&target);
+        const GrayscaleBuffer* blk = dynamic_cast<const GrayscaleBuffer*>(&target);
 
-        uint8_t black = style.GetMultipliedBlack();
-
-        for (int j = ypos; j < height; j++) {
-            for (int i = xpos; i < width; i++) {
-                rblk->blackChannel[width * j + i] = black;
+        for (int j = ypos; j < ypos + height && j < target.height; j++) {
+            for (int i = xpos; i < xpos + width && i < target.width; i++) {
+                unsigned char val = blk->blackChannel[target.width * j + i];
+                blk->blackChannel[target.width * j + i] = BlendPixel(style.blackChannel, val, style.alpha);
             }
         }
 
