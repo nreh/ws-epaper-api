@@ -1,6 +1,6 @@
 #include "buffers.h"
+#include "utils.h"
 
-#include <algorithm>
 #include <cstring>
 #include <string>
 #include <type_traits>
@@ -45,27 +45,32 @@ void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t y
         throw IncompatibleBufferWrite(this->type(), newValues.type());
     }
 
-    const RGBBuffer* source = dynamic_cast<const RGBBuffer*>(&newValues);
+    const RGBBuffer* rgb = dynamic_cast<const RGBBuffer*>(&newValues);
 
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->redChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            redChannel[(width * j) + i] = newval;
+    unsigned int n = 0;
+    for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
+        for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
+            unsigned char val = rgb->redChannel[width * j + i];
+            rgb->redChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            n++;
         }
     }
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->greenChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            greenChannel[(width * j) + i] = newval;
+
+    n = 0;
+    for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
+        for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
+            unsigned char val = rgb->greenChannel[width * j + i];
+            rgb->greenChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            n++;
         }
     }
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->blueChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            blueChannel[(width * j) + i] = newval;
+
+    n = 0;
+    for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
+        for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
+            unsigned char val = rgb->blueChannel[width * j + i];
+            rgb->blueChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            n++;
         }
     }
 }
@@ -100,18 +105,21 @@ void RedBlackBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint1
 
     const RedBlackBuffer* source = dynamic_cast<const RedBlackBuffer*>(&newValues);
 
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->redChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            redChannel[(width * j) + i] = newval;
+    unsigned int n = 0;
+    for (int j = ypos; j < ypos + source->height && j < height; j++) {
+        for (int i = xpos; i < xpos + source->width && i < width; i++) {
+            unsigned char val = source->redChannel[width * j + i];
+            source->redChannel[width * j + i] = BlendPixel(source->redChannel[n], val, source->alphaChannel[n]);
+            n++;
         }
     }
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->blackChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            blackChannel[(width * j) + i] = newval;
+
+    n = 0;
+    for (int j = ypos; j < ypos + source->height && j < height; j++) {
+        for (int i = xpos; i < xpos + source->width && i < width; i++) {
+            unsigned char val = source->blackChannel[width * j + i];
+            source->blackChannel[width * j + i] = BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
+            n++;
         }
     }
 }
@@ -140,11 +148,12 @@ void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint
 
     const GrayscaleBuffer* source = dynamic_cast<const GrayscaleBuffer*>(&newValues);
 
-    for (int j = ypos; j < height; j++) {
-        for (int i = xpos; i < width; i++) {
-            auto newval =
-                std::clamp<uint16_t>(source->blackChannel[(width * j) + i] * source->alphaChannel[(width * j) + i], 0, 255);
-            blackChannel[(width * j) + i] = newval;
+    unsigned int n = 0;
+    for (int j = ypos; j < ypos + source->height && j < height; j++) {
+        for (int i = xpos; i < xpos + source->width && i < width; i++) {
+            unsigned char val = source->blackChannel[width * j + i];
+            source->blackChannel[width * j + i] = BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
+            n++;
         }
     }
 }
