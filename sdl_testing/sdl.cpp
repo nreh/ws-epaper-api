@@ -8,8 +8,8 @@
 SDL_Renderer* renderer;
 SDL_Window* window;
 
-const int SDL_WINDOW_WIDTH = 800;
-const int SDL_WINDOW_HEIGHT = 600;
+const int SDL_WINDOW_WIDTH = 700;
+const int SDL_WINDOW_HEIGHT = 350;
 
 SDL_Texture* texture;
 

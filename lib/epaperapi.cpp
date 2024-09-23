@@ -14,13 +14,9 @@ void Renderer::RegenerateBuffer() {
 }
 void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
 
-    cout << "Genreating buffer..." << endl << std::flush;
-
     if (regenerateBuffer) {
         RegenerateBuffer();
     }
-
-    cout << "Regenerated buffer..." << endl << std::flush;
 
     switch (mode) {
 

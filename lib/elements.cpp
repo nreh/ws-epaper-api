@@ -1,8 +1,7 @@
 #include "elements.h"
 #include "buffers.h"
 #include "epaperapi.h"
-
-#include <algorithm>
+#include "utils.h"
 
 namespace epaperapi {
 FilledRectangleElement::FilledRectangleElement(uint16_t _width, uint16_t _height) : width(_width), height(_height) {}
@@ -12,23 +11,22 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
     case BUFFERTYPE::RGBBuffer: {
         const RGBBuffer* rgb = dynamic_cast<const RGBBuffer*>(&target);
 
-        uint8_t red = style.GetMultipliedRed();
-        uint8_t green = style.GetMultipliedGreen();
-        uint8_t blue = style.GetMultipliedBlue();
-
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
-                rgb->redChannel[target.width * j + i] = red;
+                unsigned char val = rgb->redChannel[target.width * j + i];
+                rgb->redChannel[target.width * j + i] = BlendPixel(style.redChannel, val, style.alpha);
             }
         }
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
-                rgb->greenChannel[target.width * j + i] = green;
+                unsigned char val = rgb->greenChannel[target.width * j + i];
+                rgb->greenChannel[target.width * j + i] = BlendPixel(style.greenChannel, val, style.alpha);
             }
         }
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
-                rgb->blueChannel[target.width * j + i] = blue;
+                unsigned char val = rgb->blueChannel[target.width * j + i];
+                rgb->blueChannel[target.width * j + i] = BlendPixel(style.blueChannel, val, style.alpha);
             }
         }
 
