@@ -1,36 +1,34 @@
 #include <iostream>
+#include <vector>
 
-#include "sdl.cpp"
+#include "sdlsetup.h"
 
 using namespace std;
 
 int main() {
-    epaperapi::FilledRectangleElement rectangle1(50, 50);
-    rectangle1.xpos = 50;
-    rectangle1.ypos = 50;
-    rectangle1.style = epaperapi::ElementStyle(255, 0, 0);
-    rectangle1.style.alpha = 0.5f;
+    vector<epaperapi::FilledRectangleElement> rectangles;
 
-    epaperapi::FilledRectangleElement rectangle2(50, 50);
-    rectangle2.xpos = 60;
-    rectangle2.ypos = 60;
-    rectangle2.style = epaperapi::ElementStyle(0);
-    rectangle2.style.alpha = 0.5f;
+    for (int x = 0; x <= 35; x++) {
+        rectangles.push_back(epaperapi::FilledRectangleElement(50, 50));
+        rectangles[x].xpos = x * 5;
+        rectangles[x].ypos = x * 5;
+        rectangles[x].style = epaperapi::ElementStyle(0);
+        rectangles[x].style.alpha = x / 35.0f;
+    }
 
-    // // epaperapi::FilledRectangleElement rectangle3(50, 50);
-    // // rectangle3.xpos = 70;
-    // // rectangle3.ypos = 70;
-    // // rectangle3.style = epaperapi::ElementStyle(0, 0, 255, 0.7f);
+    InitializeSDL(); // this also initializes sdlrenderer
 
-    InitializeSDL();
-
-    SDLDrawTarget sdlTarget(renderer, 250, 250, SDLDrawTarget::COLORMODE::grayscale);
+    SDLDrawTarget sdlTarget(sdlrenderer, 250, 250, SDLDrawTarget::COLORMODE::grayscale);
+    sdlTarget.GrayScaleSteps = 3;
     epaperapi::Renderer epaperRenderer(sdlTarget);
 
-    epaperRenderer.elements.push_back(&rectangle1);
-    epaperRenderer.elements.push_back(&rectangle2);
-    // // epaperRenderer.elements.push_back(&rectangle3);
+    for (auto& r : rectangles) {
+        epaperRenderer.elements.push_back(&r);
+    }
+
     epaperRenderer.Refresh();
 
-    DisplaySDLWindow();
+    DisplaySDLWindow(); // this will poll until the window is closed
+
+    SDL_Quit(); // causes a segmentation fault on WSL2 :/
 }

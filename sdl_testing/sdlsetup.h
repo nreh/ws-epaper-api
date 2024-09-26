@@ -3,9 +3,9 @@
 #include <memory>
 #include <string>
 
-#include <epaperapi.h>
+#include "epaperapi.h"
 
-SDL_Renderer* renderer;
+SDL_Renderer* sdlrenderer;
 SDL_Window* window;
 
 const int SDL_WINDOW_WIDTH = 700;
@@ -31,82 +31,22 @@ void InitializeSDL() {
     }
 
     // Create a renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
+    sdlrenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!sdlrenderer) {
         SDL_Log("Unable to create renderer: %s", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
         return;
     }
 
-    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+    SDL_SetRenderDrawColor(sdlrenderer, 200, 200, 200, 255);
 
     // Clear the screen with the white color
-    SDL_RenderClear(renderer);
-}
-
-/// @brief Converts Buffer to an SDL texture and renders it to the SDL window
-void DrawPixels(epaperapi::AbstractBuffer& buffer, uint16_t width, uint16_t height) {
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, width, height);
-
-    uint8_t* data = new uint8_t[width * height * 3]; // 3 bytes (RGB) per pixel times total number of pixels
-
-    switch (buffer.type()) {
-    case epaperapi::BUFFERTYPE::RGBBuffer: {
-        const epaperapi::RGBBuffer* rgb = dynamic_cast<const epaperapi::RGBBuffer*>(&buffer);
-
-        for (int i = 0; i < width * height; i++) {
-            data[3 * i] = rgb->redChannel[i];
-            data[3 * i + 1] = rgb->greenChannel[i];
-            data[3 * i + 2] = rgb->blueChannel[i];
-        }
-
-        break;
-    }
-
-    case epaperapi::BUFFERTYPE::RedBlackBuffer: {
-        const epaperapi::RedBlackBuffer* rblk = dynamic_cast<const epaperapi::RedBlackBuffer*>(&buffer);
-
-        for (int i = 0; i < width * height; i++) {
-            data[3 * i] = rblk->redChannel[i];
-            data[3 * i + 1] = rblk->blackChannel[i];
-            data[3 * i + 2] = rblk->blackChannel[i];
-        }
-
-        break;
-    }
-
-    case epaperapi::BUFFERTYPE::GrayscaleBuffer: {
-        const epaperapi::GrayscaleBuffer* blk = dynamic_cast<const epaperapi::GrayscaleBuffer*>(&buffer);
-
-        for (int i = 0; i < width * height; i++) {
-            data[3 * i] = blk->blackChannel[i];
-            data[3 * i + 1] = blk->blackChannel[i];
-            data[3 * i + 2] = blk->blackChannel[i];
-        }
-
-        break;
-    }
-    }
-
-    // Set the draw color to red (RGBA: 255, 0, 0, 255)
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-    SDL_Rect rect;
-    rect.x = SDL_WINDOW_WIDTH / 2 - (width / 2); // Centered on window
-    rect.y = SDL_WINDOW_HEIGHT / 2 - (height / 2);
-    rect.w = width;
-    rect.h = height;
-
-    // Draw the rectangle
-    SDL_RenderFillRect(renderer, &rect);
-
-    SDL_UpdateTexture(texture, NULL, data, width * 3);
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_RenderClear(sdlrenderer);
 }
 
 void DisplaySDLWindow() {
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(sdlrenderer);
 
     // Event loop to keep the window open
     bool running = true;
@@ -120,28 +60,94 @@ void DisplaySDLWindow() {
     }
 
     // Cleanup and exit
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(sdlrenderer);
     SDL_DestroyWindow(window);
-    SDL_Quit();
-    return;
 }
 
-/// @brief Drawing target used for drawing to an SDL window
+/// @brief Rather than a physical display, this draw target draws to an SDL window. It can be useful for easily debugging
+/// rendered images rather having to constantly print to a real display.
 class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
   public:
     /// @brief The target E-Ink may not be able to display in RGB as SDL is, so to test how the image will look on different
     /// capability displays, this setting can be used.
-    enum class COLORMODE { rgb, redblack, grayscale };
+    enum class COLORMODE {
+        rgb,
+        redblack,
+        /// @brief Note: Also see `GrayScaleSteps` of SDLDrawTarget
+        grayscale
+    };
 
   private:
     SDL_Renderer* renderer;
     uint16_t width, height;
     COLORMODE colormode;
 
+    /// @brief Converts Buffer to an SDL texture and renders it to the SDL window
+    void DrawPixels() {
+        texture = SDL_CreateTexture(sdlrenderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, width, height);
+
+        uint8_t* data = new uint8_t[width * height * 3]; // 3 bytes (RGB) per pixel times total number of pixels
+
+        switch (buffer.type()) {
+        case epaperapi::BUFFERTYPE::RGBBuffer: {
+            const epaperapi::RGBBuffer* rgb = dynamic_cast<const epaperapi::RGBBuffer*>(&buffer);
+
+            for (int i = 0; i < width * height; i++) {
+                data[3 * i] = rgb->redChannel[i];
+                data[3 * i + 1] = rgb->greenChannel[i];
+                data[3 * i + 2] = rgb->blueChannel[i];
+            }
+
+            break;
+        }
+
+        case epaperapi::BUFFERTYPE::RedBlackBuffer: {
+            const epaperapi::RedBlackBuffer* rblk = dynamic_cast<const epaperapi::RedBlackBuffer*>(&buffer);
+
+            for (int i = 0; i < width * height; i++) {
+                data[3 * i] = rblk->redChannel[i];
+                data[3 * i + 1] = rblk->blackChannel[i];
+                data[3 * i + 2] = rblk->blackChannel[i];
+            }
+
+            break;
+        }
+
+        case epaperapi::BUFFERTYPE::GrayscaleBuffer: {
+
+            epaperapi::GrayscaleBuffer* blk = dynamic_cast<epaperapi::GrayscaleBuffer*>(&buffer);
+            epaperapi::utils::PosterizeGrayscale(*blk, GrayScaleSteps);
+
+            for (int i = 0; i < width * height; i++) {
+                data[3 * i] = blk->blackChannel[i];
+                data[3 * i + 1] = blk->blackChannel[i];
+                data[3 * i + 2] = blk->blackChannel[i];
+            }
+
+            break;
+        }
+        }
+
+        // Set the draw color to red (RGBA: 255, 0, 0, 255)
+        SDL_SetRenderDrawColor(sdlrenderer, 255, 0, 0, 255);
+
+        SDL_Rect rect;
+        rect.x = SDL_WINDOW_WIDTH / 2 - (width / 2); // Centered on window
+        rect.y = SDL_WINDOW_HEIGHT / 2 - (height / 2);
+        rect.w = width;
+        rect.h = height;
+
+        // Draw the rectangle
+        SDL_RenderFillRect(sdlrenderer, &rect);
+
+        SDL_UpdateTexture(texture, NULL, data, width * 3);
+        SDL_RenderCopy(sdlrenderer, texture, NULL, &rect);
+    }
+
     /// @brief We really need only one render function, there's no concept or need of a "fast" or "partial" render for SDL.
     void RenderToSDL(epaperapi::AbstractBuffer& source) {
         buffer.CopyBufferFrom(source);
-        DrawPixels(buffer, width, height);
+        DrawPixels();
     }
 
     /**
@@ -170,6 +176,16 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     /// where pixels can only be black (0) or white (255), it is 2.
     uint8_t GrayScaleSteps = 255;
 
+    /**
+     * @brief Construct a new SDLDrawTarget with an initialized SDL renderer and configuration
+     *
+     * @param _renderer An instance of `SDL_Renderer`
+     * @param _width The width of the display in pixels
+     * @param _height The height of the display in pixels
+     * @param _mode To deal with the fact that different displays have different display capabilities, this mode can be
+     * changed to change how color is rendered/stored to better emulate the physical display you're testing for. For example,
+     * if `COLORMODE::grayscale` is used, only the blackchannel is drawn. The default is rgb.
+     */
     SDLDrawTarget(SDL_Renderer* _renderer, uint16_t _width, uint16_t _height, COLORMODE _mode = COLORMODE::rgb)
         : width(_width), height(_height),
           epaperapi::AbstractDrawTarget(
@@ -183,10 +199,12 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     /// @brief Refresh the display
     void Refresh(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
 
-    /// @brief Do a fast refresh
+    /// @brief Do a fast refresh. Though this is the same as Refresh() since we have no need for a concept of 'fast'
+    /// refreshes in SDL.
     void RefreshFast(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
 
-    /// @brief Partially refresh the display
+    /// @brief Partially refresh the display Though this is the same as Refresh() since we have no need for a concept of
+    /// 'partial' refreshes in SDL.
     void PartialRefresh(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
 
     /// @brief Clear the display to white
@@ -204,7 +222,16 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         // Clear the screen with the black color
         SDL_RenderClear(renderer);
     }
-
+    /// @brief Initialize the display. Because there's no physical display to initialize in this class, this function does
+    /// nothing.
     void Init() override {}
+
+    /// @brief Put the display to sleep. Because there's no physical display to put to sleep in this class, this function
+    /// does nothing.
     void Sleep() override {}
+
+    ~SDLDrawTarget() {
+        delete &buffer;
+        delete &tempBuffer;
+    }
 };

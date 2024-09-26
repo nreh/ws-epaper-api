@@ -14,19 +14,19 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
                 unsigned char val = rgb->redChannel[target.width * j + i];
-                rgb->redChannel[target.width * j + i] = BlendPixel(style.redChannel, val, style.alpha);
+                rgb->redChannel[target.width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
             }
         }
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
                 unsigned char val = rgb->greenChannel[target.width * j + i];
-                rgb->greenChannel[target.width * j + i] = BlendPixel(style.greenChannel, val, style.alpha);
+                rgb->greenChannel[target.width * j + i] = utils::BlendPixel(style.greenChannel, val, style.alpha);
             }
         }
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
                 unsigned char val = rgb->blueChannel[target.width * j + i];
-                rgb->blueChannel[target.width * j + i] = BlendPixel(style.blueChannel, val, style.alpha);
+                rgb->blueChannel[target.width * j + i] = utils::BlendPixel(style.blueChannel, val, style.alpha);
             }
         }
 
@@ -59,7 +59,7 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
             for (int i = xpos; i < xpos + width && i < target.width; i++) {
                 unsigned char val = blk->blackChannel[target.width * j + i];
-                blk->blackChannel[target.width * j + i] = BlendPixel(style.blackChannel, val, style.alpha);
+                blk->blackChannel[target.width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
             }
         }
 

@@ -51,7 +51,7 @@ void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t y
     for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
         for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
             unsigned char val = rgb->redChannel[width * j + i];
-            rgb->redChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            rgb->redChannel[width * j + i] = utils::BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
             n++;
         }
     }
@@ -60,7 +60,7 @@ void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t y
     for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
         for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
             unsigned char val = rgb->greenChannel[width * j + i];
-            rgb->greenChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            rgb->greenChannel[width * j + i] = utils::BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
             n++;
         }
     }
@@ -69,7 +69,7 @@ void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t y
     for (int j = ypos; j < ypos + rgb->height && j < height; j++) {
         for (int i = xpos; i < xpos + rgb->width && i < width; i++) {
             unsigned char val = rgb->blueChannel[width * j + i];
-            rgb->blueChannel[width * j + i] = BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
+            rgb->blueChannel[width * j + i] = utils::BlendPixel(rgb->redChannel[n], val, rgb->alphaChannel[n]);
             n++;
         }
     }
@@ -109,7 +109,7 @@ void RedBlackBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint1
     for (int j = ypos; j < ypos + source->height && j < height; j++) {
         for (int i = xpos; i < xpos + source->width && i < width; i++) {
             unsigned char val = source->redChannel[width * j + i];
-            source->redChannel[width * j + i] = BlendPixel(source->redChannel[n], val, source->alphaChannel[n]);
+            source->redChannel[width * j + i] = utils::BlendPixel(source->redChannel[n], val, source->alphaChannel[n]);
             n++;
         }
     }
@@ -118,7 +118,7 @@ void RedBlackBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint1
     for (int j = ypos; j < ypos + source->height && j < height; j++) {
         for (int i = xpos; i < xpos + source->width && i < width; i++) {
             unsigned char val = source->blackChannel[width * j + i];
-            source->blackChannel[width * j + i] = BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
+            source->blackChannel[width * j + i] = utils::BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
             n++;
         }
     }
@@ -155,7 +155,7 @@ void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint
     for (int j = ypos; j < ypos + source->height && j < height; j++) {
         for (int i = xpos; i < xpos + source->width && i < width; i++) {
             unsigned char val = source->blackChannel[width * j + i];
-            source->blackChannel[width * j + i] = BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
+            source->blackChannel[width * j + i] = utils::BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
             n++;
         }
     }
