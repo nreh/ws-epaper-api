@@ -22,9 +22,9 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     )
 endif()
 
-if(NOT DEFINED WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
+if(NOT DEFINED WSEPAPERAPI_SDL_TEST_MODE)
     message(
-        "TIP! Set WSEPAPERAPI_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
+        "TIP! Set WSEPAPERAPI_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
     )
 endif()
 
@@ -51,6 +51,8 @@ if(WIN32)
     set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT FALSE)
     message(WARNING
         "Because you're building on Windows, bcm2835 cannot be included. As a result, there will be no crosscompilation support."
+        "\nYou should probably build with WSEPAPERAPI_SDL_TEST_MODE = true or there's really no point to building this library. "
+        "Run cmake with -DWSEPAPERAPI_SDL_TEST_MODE=TRUE"
     )
     add_compile_definitions(WSEPAPERAPI_NO_CROSSCOMPILATION_SUPPORT TRUE)
 else()
@@ -66,8 +68,8 @@ target_compile_features(
     ws-epaper-api PRIVATE cxx_std_17
 )
 
-if(WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
-    message("WSEPAPERAPI_ENABLED_SDL_TEST_MODE = \"${WSEPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
+if(WSEPAPERAPI_SDL_TEST_MODE)
+    message("WSEPAPERAPI_SDL_TEST_MODE = \"${WSEPAPERAPI_SDL_TEST_MODE}\", Building SDL test files")
 
     find_package(SDL2)
 
@@ -75,7 +77,7 @@ if(WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
         message("Found SDL library")
     else()
         message(FATAL_ERROR "SDL2 library not found! Please install SDL2 to build in SDL test mode."
-            "\nOtherwise set WSEPAPERAPI_ENABLED_SDL_TEST_MODE to false."
+            "\nOtherwise set WSEPAPERAPI_SDL_TEST_MODE to false."
         )
     endif()
 

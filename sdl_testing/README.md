@@ -1,1 +1,1 @@
-This directory contains code for SDL testing. It is only built when WSEPAPERAPI_ENABLED_SDL_TEST_MODE = TRUE in CMake.
+This directory contains code for SDL testing. It is only built when WSEPAPERAPI_SDL_TEST_MODE = TRUE in CMake.
