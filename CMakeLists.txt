@@ -7,6 +7,11 @@ project(
     LANGUAGES C CXX
 )
 
+if(WIN32)
+    # This ensures that on Windows were generating a epaperlib.lib
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     message(FATAL_ERROR
         "IN-SOURCE BUILD NOT ALLOWED!\n"
@@ -71,6 +76,18 @@ if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
         sdl_testing/main.cpp
     )
 
+    if(WIN32)
+        add_custom_command(TARGET sdl_test POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:sdl_test> $<TARGET_FILE_DIR:sdl_test>
+            COMMAND_EXPAND_LISTS
+        )
+    endif()
+
     target_link_libraries(sdl_test PRIVATE epaperapi)
-    target_link_libraries(sdl_test PRIVATE SDL2)
+
+    if(TARGET SDL2::SDL2)
+        target_link_libraries(sdl_test PRIVATE SDL2::SDL2)
+    else()
+        target_link_libraries(sdl_test PRIVATE SDL2)
+    endif()
 endif()

@@ -1,4 +1,11 @@
-#include <SDL2/SDL.h>
+#if defined __has_include
+    #if __has_include(<SDL2/SDL.h>)
+        #include <SDL2/SDL.h>
+    #else
+        #include <SDL.h>
+    #endif
+#endif
+
 #include <iostream>
 #include <memory>
 #include <string>
