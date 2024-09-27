@@ -33,7 +33,7 @@ add_subdirectory(external/waveshare/epaper)
 
 set(
     EPAPER_LIB_FILES
-    lib/epaperapi.cpp
+    lib/wsepaperapi.cpp
     lib/elements.cpp
     lib/buffers.cpp
 )
