@@ -28,9 +28,6 @@ if(NOT DEFINED WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
     )
 endif()
 
-add_subdirectory(external/bcm2835)
-add_subdirectory(external/waveshare/epaper)
-
 set(
     EPAPER_LIB_FILES
     lib/wsepaperapi.cpp
@@ -40,27 +37,34 @@ set(
 
 if(WSEPAPERAPI_STATIC)
     message("WSEPAPERAPI_STATIC = \"${WSEPAPERAPI_STATIC}\", Building ws-epaper-api as a STATIC library")
-
     add_library(ws-epaper-api STATIC ${EPAPER_LIB_FILES})
-    target_include_directories(ws-epaper-api PUBLIC include)
-
 else()
     message("WSEPAPERAPI_STATIC = \"${WSEPAPERAPI_STATIC}\", Building ws-epaper-api as a SHARED library")
-
     add_library(ws-epaper-api SHARED ${EPAPER_LIB_FILES})
-    target_include_directories(ws-epaper-api PUBLIC include)
+endif()
+
+target_include_directories(ws-epaper-api PUBLIC include)
+
+if(WIN32)
+    # Certain headerfiles and libraries exist on linux but not windows, without them we can't include the bcm2835 which means
+    # that cross-compilation isn't possible.
+    set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT FALSE)
+    message(WARNING
+        "Because you're building on Windows, bcm2835 cannot be included. As a result, there will be no crosscompilation support."
+    )
+    add_compile_definitions(WSEPAPERAPI_NO_CROSSCOMPILATION_SUPPORT TRUE)
+else()
+    add_subdirectory(external/bcm2835)
+    add_subdirectory(external/waveshare/epaper)
+
+    set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT TRUE)
+    target_include_directories(ws-epaper-api PUBLIC external/bcm2835/src)
+    target_link_libraries(ws-epaper-api PUBLIC bcm2835)
 endif()
 
 target_compile_features(
     ws-epaper-api PRIVATE cxx_std_17
 )
-
-if(WIN32)
-else()
-    set()
-    target_include_directories(ws-epaper-api PUBLIC external/bcm2835/src)
-    target_link_libraries(ws-epaper-api PUBLIC bcm2835)
-endif()
 
 if(WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
     message("WSEPAPERAPI_ENABLED_SDL_TEST_MODE = \"${WSEPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
