@@ -1,4 +1,4 @@
-# Raspberry Pi E-Paper API Library
+# ws-epaper-api
 
 C++ library for displaying GUI on Waveshare's e-paper display using a Raspberry Pi.
 
