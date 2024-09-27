@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(
-    epaperapi
+    ws-epaper-api
     VERSION 1.0.0
     DESCRIPTION "Library that provides an abstraction layer for displaying GUI on Waveshare's e-paper display."
     LANGUAGES C CXX
 )
 
 if(WIN32)
-    # This ensures that on Windows were generating a epaperlib.lib
+    # This ensures that on Windows we're generating a epaperlib.lib
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
 
@@ -22,9 +22,9 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     )
 endif()
 
-if(NOT DEFINED EPAPERAPI_ENABLED_SDL_TEST_MODE)
+if(NOT DEFINED WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
     message(
-        "TIP! Set EPAPERAPI_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
+        "TIP! Set WSEPAPERAPI_ENABLED_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
     )
 endif()
 
@@ -38,28 +38,32 @@ set(
     lib/buffers.cpp
 )
 
-if(EPAPERAPI_STATIC)
-    message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a STATIC library")
+if(WSEPAPERAPI_STATIC)
+    message("WSEPAPERAPI_STATIC = \"${WSEPAPERAPI_STATIC}\", Building ws-epaper-api as a STATIC library")
 
-    add_library(epaperapi STATIC ${EPAPER_LIB_FILES})
-    target_include_directories(epaperapi PUBLIC include)
+    add_library(ws-epaper-api STATIC ${EPAPER_LIB_FILES})
+    target_include_directories(ws-epaper-api PUBLIC include)
 
 else()
-    message("EPAPERAPI_STATIC = \"${EPAPERAPI_STATIC}\", Building EPAPERAPI as a SHARED library")
+    message("WSEPAPERAPI_STATIC = \"${WSEPAPERAPI_STATIC}\", Building ws-epaper-api as a SHARED library")
 
-    add_library(epaperapi SHARED ${EPAPER_LIB_FILES})
-    target_include_directories(epaperapi PUBLIC include)
+    add_library(ws-epaper-api SHARED ${EPAPER_LIB_FILES})
+    target_include_directories(ws-epaper-api PUBLIC include)
 endif()
 
 target_compile_features(
-    epaperapi PRIVATE cxx_std_17
+    ws-epaper-api PRIVATE cxx_std_17
 )
 
-target_include_directories(epaperapi PUBLIC external/bcm2835/src)
-target_link_libraries(epaperapi PUBLIC bcm2835)
+if(WIN32)
+else()
+    set()
+    target_include_directories(ws-epaper-api PUBLIC external/bcm2835/src)
+    target_link_libraries(ws-epaper-api PUBLIC bcm2835)
+endif()
 
-if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
-    message("EPAPERAPI_ENABLED_SDL_TEST_MODE = \"${EPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
+if(WSEPAPERAPI_ENABLED_SDL_TEST_MODE)
+    message("WSEPAPERAPI_ENABLED_SDL_TEST_MODE = \"${WSEPAPERAPI_ENABLED_SDL_TEST_MODE}\", Building SDL test files")
 
     find_package(SDL2)
 
@@ -67,7 +71,7 @@ if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
         message("Found SDL library")
     else()
         message(FATAL_ERROR "SDL2 library not found! Please install SDL2 to build in SDL test mode."
-            "\nOtherwise set EPAPERAPI_ENABLED_SDL_TEST_MODE to false."
+            "\nOtherwise set WSEPAPERAPI_ENABLED_SDL_TEST_MODE to false."
         )
     endif()
 
@@ -83,7 +87,7 @@ if(EPAPERAPI_ENABLED_SDL_TEST_MODE)
         )
     endif()
 
-    target_link_libraries(sdl_test PRIVATE epaperapi)
+    target_link_libraries(sdl_test PRIVATE ws-epaper-api)
 
     if(TARGET SDL2::SDL2)
         target_link_libraries(sdl_test PRIVATE SDL2::SDL2)
