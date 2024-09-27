@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-#include "epaperapi.h"
+#include "wsepaperapi.h"
 
 SDL_Renderer* sdlrenderer;
 SDL_Window* window;

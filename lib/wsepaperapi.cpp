@@ -1,4 +1,4 @@
-#include "epaperapi.h"
+#include "wsepaperapi.h"
 
 #include <iostream>
 

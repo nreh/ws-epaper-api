@@ -1,7 +1,7 @@
 #include "elements.h"
 #include "buffers.h"
-#include "epaperapi.h"
 #include "utils.h"
+#include "wsepaperapi.h"
 
 namespace epaperapi {
 FilledRectangleElement::FilledRectangleElement(uint16_t _width, uint16_t _height) : width(_width), height(_height) {}
