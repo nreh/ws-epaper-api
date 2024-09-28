@@ -55,7 +55,7 @@
 #include <string.h>
 #include <unistd.h>
 
-// epaperapi library is for Raspberry Pi and uses the bcm2835 library
+// wsepaperapi library is for Raspberry Pi and uses the bcm2835 library
 #define RPI
 #define USE_BCM2835_LIB
 
