@@ -75,6 +75,18 @@ void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t y
     }
 }
 
+void RGBBuffer::FillBuffer(uint8_t value) {
+    for (int i = 0; i < width * height; i++) {
+        redChannel[i] = value;
+    }
+    for (int i = 0; i < width * height; i++) {
+        greenChannel[i] = value;
+    }
+    for (int i = 0; i < width * height; i++) {
+        blueChannel[i] = value;
+    }
+}
+
 void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     if (source.type() != BUFFERTYPE::RGBBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
@@ -124,6 +136,15 @@ void RedBlackBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint1
     }
 }
 
+void RedBlackBuffer::FillBuffer(uint8_t value) {
+    for (int i = 0; i < width * height; i++) {
+        blackChannel[i] = value;
+    }
+    for (int i = 0; i < width * height; i++) {
+        redChannel[i] = value;
+    }
+}
+
 void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     if (source.type() != BUFFERTYPE::RedBlackBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
@@ -158,6 +179,12 @@ void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint
             source->blackChannel[width * j + i] = utils::BlendPixel(source->blackChannel[n], val, source->alphaChannel[n]);
             n++;
         }
+    }
+}
+
+void GrayscaleBuffer::FillBuffer(uint8_t value) {
+    for (int i = 0; i < width * height; i++) {
+        blackChannel[i] = value;
     }
 }
 

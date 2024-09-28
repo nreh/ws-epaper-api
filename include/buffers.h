@@ -33,6 +33,9 @@ class AbstractBuffer {
     /// @brief Copy all bytes from source buffer to this buffer
     virtual void CopyBufferFrom(const AbstractBuffer& source) = 0;
 
+    /// @brief Fill entire buffer with value, useful for clearing the buffer.
+    virtual void FillBuffer(uint8_t value) = 0;
+
     // make un-copyable
     AbstractBuffer(const AbstractBuffer&) = delete;
     AbstractBuffer& operator=(const AbstractBuffer&) = delete;
@@ -55,6 +58,9 @@ class RGBBuffer : public AbstractBuffer {
     /// @param ypos
     void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
 
+    /// @brief Fill entire buffer with value, useful for clearing the buffer.
+    void FillBuffer(uint8_t value) override;
+
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
 
@@ -74,6 +80,9 @@ class RedBlackBuffer : public AbstractBuffer {
     /// @param ypos
     void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
 
+    /// @brief Fill entire buffer with value, useful for clearing the buffer.
+    void FillBuffer(uint8_t value) override;
+
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
 
@@ -91,6 +100,9 @@ class GrayscaleBuffer : public AbstractBuffer {
     /// @param xpos
     /// @param ypos
     void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
+
+    /// @brief Fill entire buffer with value, useful for clearing the buffer.
+    void FillBuffer(uint8_t value) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
