@@ -11,10 +11,10 @@ namespace epaperapi {
 
 /// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display.
 class AbstractDrawTarget {
-  private:
+  public:
+    /// @brief Initializes the display and runs logic - if any - that might be necessary before the display can be used.
     virtual void Init() = 0;
 
-  public:
     uint16_t width, height;
 
     /// @brief Contains pixels that have yet to be drawn
@@ -25,14 +25,10 @@ class AbstractDrawTarget {
 
     /// @brief Refresh the display, showing the contents of the buffer.
     virtual void Refresh(AbstractBuffer& _buffer) = 0;
-    /// @brief Do a fast refresh of the display, showing the contents of the buffer
-    virtual void RefreshFast(AbstractBuffer& _buffer) = 0;
-    /// @brief Partially refresh the display. This is faster than a normal refresh.
-    virtual void PartialRefresh(AbstractBuffer& _buffer) = 0;
+
     /// @brief Clear the display to white
     virtual void Clear() = 0;
-    /// @brief Clear the display to black
-    virtual void ClearBlack() = 0;
+
     /// @brief Enter sleep mode
     virtual void Sleep() = 0;
 
