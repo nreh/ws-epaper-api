@@ -54,9 +54,7 @@ void InitializeSDL() {
     SDL_RenderClear(sdlrenderer);
 }
 
-void DisplaySDLWindow() {
-    SDL_RenderPresent(sdlrenderer);
-
+void KeepWindowOpen() {
     // Event loop to keep the window open
     bool running = true;
     SDL_Event event;
@@ -71,6 +69,7 @@ void DisplaySDLWindow() {
     // Cleanup and exit
     SDL_DestroyRenderer(sdlrenderer);
     SDL_DestroyWindow(window);
+    SDL_Quit(); // causes a segmentation fault on WSL2 :/
 }
 
 /// @brief Rather than a physical display, this draw target draws to an SDL window. It can be useful for easily debugging
@@ -137,9 +136,6 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         }
         }
 
-        // Set the draw color to red (RGBA: 255, 0, 0, 255)
-        SDL_SetRenderDrawColor(sdlrenderer, 255, 0, 0, 255);
-
         SDL_Rect rect;
         rect.x = SDL_WINDOW_WIDTH / 2 - (width / 2); // Centered on window
         rect.y = SDL_WINDOW_HEIGHT / 2 - (height / 2);
@@ -155,8 +151,14 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
 
     /// @brief We really need only one render function, there's no concept or need of a "fast" or "partial" render for SDL.
     void RenderToSDL(epaperapi::AbstractBuffer& source) {
+        // Clear screen
+        SDL_SetRenderDrawColor(sdlrenderer, 200, 200, 200, 255);
+        SDL_RenderClear(sdlrenderer);
+
         buffer.CopyBufferFrom(source);
         DrawPixels();
+
+        SDL_RenderPresent(sdlrenderer);
     }
 
     /**
