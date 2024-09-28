@@ -144,48 +144,54 @@ cmake_minimum_required(VERSION 3.14)
 # e-Paper/EPD_7in5b_V2_old.h
 # e-Paper/EPD_7in5bc.c
 # e-Paper/EPD_7in5bc.h
-if(NOT DEFINED EPD_MODEL)
-    message(
-        FATAL_ERROR
-        "You must define an EPD_MODEL that matches the E-Paper display you're using"
-        "\nSee the README for details on each model to help you understand which one to choose."
-    )
-endif()
+set(
+    NAMESPACED_SOURCE_FILES
 
-set(SOURCE_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.c")
-set(HEADER_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.h")
+    DrawTargets/EPD_2in13_V4.cpp
+)
 
-if(EXISTS ${SOURCE_FILE} AND EXISTS ${HEADER_FILE})
-    add_library(
-        epaper SHARED
+# if(NOT DEFINED EPD_MODEL)
+# message(
+# FATAL_ERROR
+# "You must define an EPD_MODEL that matches the E-Paper display you're using"
+# "\nSee the README for details on each model to help you understand which one to choose."
+# )
+# endif()
 
-        Config/DEV_Config.c
-        Config/DEV_Config.h
-        Config/Debug.h
+# set(SOURCE_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.c")
+# set(HEADER_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.h")
+# if(EXISTS ${SOURCE_FILE} AND EXISTS ${HEADER_FILE})
+add_library(
+    epaper SHARED
 
-        ${SOURCE_FILE}
-        ${HEADER_FILE}
+    epaper/Config/DEV_Config.c
+    epaper/Config/DEV_Config.h
+    epaper/Config/Debug.h
 
-        Fonts/font12.c
-        Fonts/font12CN.c
-        Fonts/font16.c
-        Fonts/font20.c
-        Fonts/font24.c
-        Fonts/font24CN.c
-        Fonts/font8.c
-        Fonts/fonts.h
+    ${NAMESPACED_SOURCE_FILES}
 
-        GUI/GUI_BMPfile.c
-        GUI/GUI_BMPfile.h
-        GUI/GUI_Paint.c
-        GUI/GUI_Paint.h
-    )
+    # ${SOURCE_FILE}
+    # ${HEADER_FILE}
+    epaper/Fonts/font12.c
+    epaper/Fonts/font12CN.c
+    epaper/Fonts/font16.c
+    epaper/Fonts/font20.c
+    epaper/Fonts/font24.c
+    epaper/Fonts/font24CN.c
+    epaper/Fonts/font8.c
+    epaper/Fonts/fonts.h
 
-    target_include_directories(epaper PUBLIC ./Config ./epaper ./Fonts ./GUI ../../bcm2835/src)
+    epaper/GUI/GUI_BMPfile.c
+    epaper/GUI/GUI_BMPfile.h
+    epaper/GUI/GUI_Paint.c
+    epaper/GUI/GUI_Paint.h
+)
 
-else()
-    message(FATAL_ERROR
-        "The specified files for the EPD_MODEL '${EPD_MODEL}' do not exist: ${SOURCE_FILE}, ${HEADER_FILE}\n"
-        "This probably means you mispelled or are using an incorrect value for EPD_MODEL. See the README for valid values."
-    )
-endif()
+target_include_directories(epaper PUBLIC ./epaper/Config ./epaper/e-Paper ./epaper/Fonts ./epaper/GUI ../bcm2835/src)
+
+# else()
+# message(FATAL_ERROR
+# "The specified files for the EPD_MODEL '${EPD_MODEL}' do not exist: ${SOURCE_FILE}, ${HEADER_FILE}\n"
+# "This probably means you mispelled or are using an incorrect value for EPD_MODEL. See the README for valid values."
+# )
+# endif()

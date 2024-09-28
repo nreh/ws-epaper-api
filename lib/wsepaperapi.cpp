@@ -21,23 +21,7 @@ void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
         RegenerateBuffer();
     }
 
-    switch (mode) {
-
-    case RefreshMode::Normal:
-        drawTarget.Refresh(tempBuffer);
-        break;
-
-    case RefreshMode::Fast:
-        drawTarget.RefreshFast(tempBuffer);
-        break;
-
-    case RefreshMode::Partial:
-        drawTarget.PartialRefresh(tempBuffer);
-        break;
-
-    default:
-        return;
-    }
+    drawTarget.Refresh(tempBuffer, mode);
 }
 
 } // namespace epaperapi

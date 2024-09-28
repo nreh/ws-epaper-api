@@ -743,7 +743,8 @@
 /*! Base address of the SMI registers */
 #define BCM2835_SMI_BASE                0x600000
 
-#include <stdlib.h>
+// By removing this, we fix some namespace issues
+// // #include <stdlib.h> 
 
 /*! Physical address and size of the peripherals block
   May be overridden on RPi2

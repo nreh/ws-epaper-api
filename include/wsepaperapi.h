@@ -9,6 +9,8 @@
 
 namespace epaperapi {
 
+enum RefreshMode { Normal, Fast, Partial };
+
 /// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display.
 class AbstractDrawTarget {
   public:
@@ -24,7 +26,7 @@ class AbstractDrawTarget {
     AbstractBuffer& buffer;
 
     /// @brief Refresh the display, showing the contents of the buffer.
-    virtual void Refresh(AbstractBuffer& _buffer) = 0;
+    virtual void Refresh(AbstractBuffer& _buffer, RefreshMode mode) = 0;
 
     /// @brief Clear the display to white
     virtual void Clear() = 0;
@@ -42,8 +44,6 @@ class Renderer {
     AbstractBuffer& tempBuffer;
 
   public:
-    enum RefreshMode { Normal, Fast, Partial };
-
     /// @brief List of Elements that are to be drawn
     std::vector<AbstractElement*> elements;
 

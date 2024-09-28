@@ -57,7 +57,7 @@ if(WIN32)
     add_compile_definitions(WSEPAPERAPI_NO_CROSSCOMPILATION_SUPPORT TRUE)
 else()
     add_subdirectory(external/bcm2835)
-    add_subdirectory(external/waveshare/epaper)
+    add_subdirectory(external/waveshare)
 
     set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT TRUE)
     target_include_directories(ws-epaper-api PUBLIC external/bcm2835/src)
