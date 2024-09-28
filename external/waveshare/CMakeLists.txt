@@ -187,7 +187,7 @@ add_library(
     epaper/GUI/GUI_Paint.h
 )
 
-target_include_directories(epaper PUBLIC ./epaper/Config ./epaper/e-Paper ./epaper/Fonts ./epaper/GUI ../bcm2835/src)
+target_include_directories(epaper PUBLIC ./epaper/Config ./epaper/e-Paper ./epaper/Fonts ./epaper/GUI ../bcm2835/src ./DrawTargets/)
 
 # else()
 # message(FATAL_ERROR
