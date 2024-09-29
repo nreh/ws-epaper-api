@@ -200,7 +200,6 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     SDLDrawTarget(SDL_Renderer* _renderer, uint16_t _width, uint16_t _height, COLORMODE _mode = COLORMODE::rgb)
         : width(_width), height(_height),
           epaperapi::AbstractDrawTarget(
-              *(this->CreateBufferBasedOnColorMode(_width, _height, _mode)),
               *(this->CreateBufferBasedOnColorMode(_width, _height, _mode)) // can't believe this works lol
           ) {
         renderer = _renderer;
@@ -208,15 +207,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     }
 
     /// @brief Refresh the display
-    void Refresh(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
-
-    /// @brief Do a fast refresh. Though this is the same as Refresh() since we have no need for a concept of 'fast'
-    /// refreshes in SDL.
-    void RefreshFast(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
-
-    /// @brief Partially refresh the display Though this is the same as Refresh() since we have no need for a concept of
-    /// 'partial' refreshes in SDL.
-    void PartialRefresh(epaperapi::AbstractBuffer& _buffer) override { RenderToSDL(_buffer); }
+    void Refresh(epaperapi::RefreshMode mode) override { RenderToSDL(buffer); }
 
     /// @brief Clear the display to white
     void Clear() { // Set render color to white (RGBA: 255, 255, 255, 255)
@@ -241,8 +232,5 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     /// does nothing.
     void Sleep() override {}
 
-    ~SDLDrawTarget() {
-        delete &buffer;
-        delete &tempBuffer;
-    }
+    ~SDLDrawTarget() { delete &buffer; }
 };
