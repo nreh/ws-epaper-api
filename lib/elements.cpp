@@ -8,7 +8,7 @@ FilledRectangleElement::FilledRectangleElement(uint16_t _width, uint16_t _height
 
 void FilledRectangleElement::Draw(AbstractBuffer& target) {
     switch (target.type()) {
-    case BUFFERTYPE::RGBBuffer: {
+    case BufferType::RGBBuffer: {
         const RGBBuffer* rgb = dynamic_cast<const RGBBuffer*>(&target);
 
         for (int j = ypos; j < ypos + height && j < target.height; j++) {
@@ -33,7 +33,7 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
         break;
     }
 
-    case BUFFERTYPE::RedBlackBuffer: {
+    case BufferType::RedBlackBuffer: {
         const RedBlackBuffer* rblk = dynamic_cast<const RedBlackBuffer*>(&target);
 
         uint8_t red = style.GetMultipliedRed();
@@ -53,7 +53,7 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
         break;
     }
 
-    case BUFFERTYPE::GrayscaleBuffer: {
+    case BufferType::GrayscaleBuffer: {
         const GrayscaleBuffer* blk = dynamic_cast<const GrayscaleBuffer*>(&target);
 
         for (int j = ypos; j < ypos + height && j < target.height; j++) {

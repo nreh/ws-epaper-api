@@ -41,7 +41,7 @@ RGBBuffer::~RGBBuffer() {
 }
 
 void RGBBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) {
-    if (newValues.type() != BUFFERTYPE::RGBBuffer) {
+    if (newValues.type() != BufferType::RGBBuffer) {
         throw IncompatibleBufferWrite(this->type(), newValues.type());
     }
 
@@ -87,8 +87,19 @@ void RGBBuffer::FillBuffer(uint8_t value) {
     }
 }
 
+void RGBBuffer::Transform(
+    void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+) {
+    const RGBBuffer* rgb_destination = dynamic_cast<const RGBBuffer*>(&destination);
+    func(redChannel, rgb_destination->redChannel, width, height);
+    func(greenChannel, rgb_destination->greenChannel, width, height);
+    func(blueChannel, rgb_destination->blueChannel, width, height);
+}
+
+AbstractBuffer* RGBBuffer::CreateBufferOfSameType(uint16_t width, uint16_t height) { return new RGBBuffer(width, height); }
+
 void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
-    if (source.type() != BUFFERTYPE::RGBBuffer) {
+    if (source.type() != BufferType::RGBBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
     } else if (source.width != this->width || source.height != this->height) {
         throw MisshapenBufferCopy(source, *this);
@@ -111,7 +122,7 @@ RedBlackBuffer::~RedBlackBuffer() {
 }
 
 void RedBlackBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) {
-    if (newValues.type() != BUFFERTYPE::RedBlackBuffer) {
+    if (newValues.type() != BufferType::RedBlackBuffer) {
         throw IncompatibleBufferWrite(this->type(), newValues.type());
     }
 
@@ -145,8 +156,20 @@ void RedBlackBuffer::FillBuffer(uint8_t value) {
     }
 }
 
+void RedBlackBuffer::Transform(
+    void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+) {
+    const RedBlackBuffer* rgb_destination = dynamic_cast<const RedBlackBuffer*>(&destination);
+    func(redChannel, rgb_destination->redChannel, width, height);
+    func(blackChannel, rgb_destination->blackChannel, width, height);
+}
+
+AbstractBuffer* RedBlackBuffer::CreateBufferOfSameType(uint16_t width, uint16_t height) {
+    return new RedBlackBuffer(width, height);
+}
+
 void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
-    if (source.type() != BUFFERTYPE::RedBlackBuffer) {
+    if (source.type() != BufferType::RedBlackBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
     } else if (source.width != this->width || source.height != this->height) {
         throw MisshapenBufferCopy(source, *this);
@@ -166,7 +189,7 @@ GrayscaleBuffer::GrayscaleBuffer(uint16_t _width, uint16_t _height) : AbstractBu
 GrayscaleBuffer::~GrayscaleBuffer() { delete[] blackChannel; }
 
 void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) {
-    if (newValues.type() != BUFFERTYPE::GrayscaleBuffer) {
+    if (newValues.type() != BufferType::GrayscaleBuffer) {
         throw IncompatibleBufferWrite(this->type(), newValues.type());
     }
 
@@ -188,8 +211,19 @@ void GrayscaleBuffer::FillBuffer(uint8_t value) {
     }
 }
 
+void GrayscaleBuffer::Transform(
+    void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+) {
+    const GrayscaleBuffer* rgb_destination = dynamic_cast<const GrayscaleBuffer*>(&destination);
+    func(blackChannel, rgb_destination->blackChannel, width, height);
+}
+
+AbstractBuffer* GrayscaleBuffer::CreateBufferOfSameType(uint16_t width, uint16_t height) {
+    return new GrayscaleBuffer(width, height);
+}
+
 void GrayscaleBuffer::CopyBufferFrom(const AbstractBuffer& source) {
-    if (source.type() != BUFFERTYPE::GrayscaleBuffer) {
+    if (source.type() != BufferType::GrayscaleBuffer) {
         throw IncompatibleBufferCopy(this->type(), source.type());
     } else if (source.width != this->width || source.height != this->height) {
         throw MisshapenBufferCopy(source, *this);

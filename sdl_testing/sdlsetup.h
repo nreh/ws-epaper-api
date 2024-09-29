@@ -78,7 +78,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
   public:
     /// @brief The target E-Ink may not be able to display in RGB as SDL is, so to test how the image will look on different
     /// capability displays, this setting can be used.
-    enum class COLORMODE {
+    enum class ColorMode {
         rgb,
         redblack,
         /// @brief Note: Also see `GrayScaleSteps` of SDLDrawTarget
@@ -88,7 +88,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
   private:
     SDL_Renderer* renderer;
     uint16_t width, height;
-    COLORMODE colormode;
+    ColorMode colormode;
 
     /// @brief Converts Buffer to an SDL texture and renders it to the SDL window
     void DrawPixels() {
@@ -97,7 +97,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         uint8_t* data = new uint8_t[width * height * 3]; // 3 bytes (RGB) per pixel times total number of pixels
 
         switch (buffer.type()) {
-        case epaperapi::BUFFERTYPE::RGBBuffer: {
+        case epaperapi::BufferType::RGBBuffer: {
             const epaperapi::RGBBuffer* rgb = dynamic_cast<const epaperapi::RGBBuffer*>(&buffer);
 
             for (int i = 0; i < width * height; i++) {
@@ -109,7 +109,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
             break;
         }
 
-        case epaperapi::BUFFERTYPE::RedBlackBuffer: {
+        case epaperapi::BufferType::RedBlackBuffer: {
             const epaperapi::RedBlackBuffer* rblk = dynamic_cast<const epaperapi::RedBlackBuffer*>(&buffer);
 
             for (int i = 0; i < width * height; i++) {
@@ -121,7 +121,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
             break;
         }
 
-        case epaperapi::BUFFERTYPE::GrayscaleBuffer: {
+        case epaperapi::BufferType::GrayscaleBuffer: {
 
             epaperapi::GrayscaleBuffer* blk = dynamic_cast<epaperapi::GrayscaleBuffer*>(&buffer);
             epaperapi::utils::PosterizeGrayscale(*blk, GrayScaleSteps);
@@ -167,15 +167,15 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
      *
      * This is a problem unique to SDLDrawTarget, so I'm not too worried about an elegant solution...
      */
-    epaperapi::AbstractBuffer* CreateBufferBasedOnColorMode(uint16_t _width, uint16_t _height, COLORMODE _colormode) {
+    epaperapi::AbstractBuffer* CreateBufferBasedOnColorMode(uint16_t _width, uint16_t _height, ColorMode _colormode) {
         switch (_colormode) {
-        case COLORMODE::rgb:
+        case ColorMode::rgb:
             return new epaperapi::RGBBuffer(_width, _height);
 
-        case COLORMODE::redblack:
+        case ColorMode::redblack:
             return new epaperapi::RedBlackBuffer(_width, _height);
 
-        case COLORMODE::grayscale:
+        case ColorMode::grayscale:
             return new epaperapi::GrayscaleBuffer(_width, _height);
         }
 
@@ -195,9 +195,9 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
      * @param _height The height of the display in pixels
      * @param _mode To deal with the fact that different displays have different display capabilities, this mode can be
      * changed to change how color is rendered/stored to better emulate the physical display you're testing for. For example,
-     * if `COLORMODE::grayscale` is used, only the blackchannel is drawn. The default is rgb.
+     * if `ColorMode::grayscale` is used, only the blackchannel is drawn. The default is rgb.
      */
-    SDLDrawTarget(SDL_Renderer* _renderer, uint16_t _width, uint16_t _height, COLORMODE _mode = COLORMODE::rgb)
+    SDLDrawTarget(SDL_Renderer* _renderer, uint16_t _width, uint16_t _height, ColorMode _mode = ColorMode::rgb)
         : width(_width), height(_height),
           epaperapi::AbstractDrawTarget(
               *(this->CreateBufferBasedOnColorMode(_width, _height, _mode)),
