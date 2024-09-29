@@ -61,7 +61,8 @@ else()
 
     set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT TRUE)
     target_include_directories(ws-epaper-api PUBLIC external/bcm2835/src)
-    target_link_libraries(ws-epaper-api PUBLIC bcm2835)
+    target_link_libraries(epaper PUBLIC bcm2835)
+    target_link_libraries(ws-epaper-api PUBLIC epaper)
 endif()
 
 target_compile_features(
