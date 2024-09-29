@@ -19,14 +19,12 @@ class AbstractDrawTarget {
 
     uint16_t width, height;
 
-    /// @brief Contains pixels that have yet to be drawn
-    AbstractBuffer& tempBuffer;
     /// @brief Contains pixels that are currently being displayed. Useful for partial refreshes where we need the old pixel
     /// values.
     AbstractBuffer& buffer;
 
     /// @brief Refresh the display, showing the contents of the buffer.
-    virtual void Refresh(AbstractBuffer& _buffer, RefreshMode mode) = 0;
+    virtual void Refresh(RefreshMode mode) = 0;
 
     /// @brief Clear the display to white
     virtual void Clear() = 0;
@@ -34,7 +32,7 @@ class AbstractDrawTarget {
     /// @brief Enter sleep mode
     virtual void Sleep() = 0;
 
-    AbstractDrawTarget(AbstractBuffer& _buffer, AbstractBuffer& _tempbuffer) : buffer(_buffer), tempBuffer(_tempbuffer) {}
+    AbstractDrawTarget(AbstractBuffer& _buffer) : buffer(_buffer) {}
 };
 
 /// @brief Handles draw calls to the draw target as well as holding a list of all elements to be drawn.
@@ -50,7 +48,7 @@ class Renderer {
     /// @brief Draw target that visible elements will be drawn on
     AbstractDrawTarget& drawTarget;
 
-    Renderer(AbstractDrawTarget& _drawTarget) : drawTarget(_drawTarget), tempBuffer(_drawTarget.tempBuffer) {}
+    Renderer(AbstractDrawTarget& _drawTarget) : drawTarget(_drawTarget), tempBuffer(_drawTarget.buffer) {}
 
     /// @brief Go through all visible Elements and draw them onto the buffer.
     void RegenerateBuffer();

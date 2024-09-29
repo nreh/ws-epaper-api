@@ -21,7 +21,7 @@ void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
         RegenerateBuffer();
     }
 
-    drawTarget.Refresh(tempBuffer, mode);
+    drawTarget.Refresh(mode);
 }
 
 } // namespace epaperapi
