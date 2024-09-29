@@ -33,6 +33,7 @@ set(
     lib/wsepaperapi.cpp
     lib/elements.cpp
     lib/buffers.cpp
+    lib/debug.cpp
 )
 
 if(WSEPAPERAPI_STATIC)

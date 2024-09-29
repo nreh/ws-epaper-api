@@ -2,6 +2,7 @@
 
 #include "buffers.h"
 #include "bufferutils.h"
+#include "debug.h"
 #include "elements.h"
 
 #include <stdint.h>

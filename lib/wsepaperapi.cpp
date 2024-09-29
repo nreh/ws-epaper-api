@@ -20,6 +20,8 @@ void Renderer::RegenerateBuffer() {
         // Because we need to apply a transformation, first Draw each element to the intermediate buffer and then
         // we can apply transformation.
 
+        DEBUG("Drawing elements to intermediate buffer");
+
         intermediateBuffer->FillBuffer(255); // fill with white color
 
         for (AbstractElement* elem : elements) {
@@ -28,12 +30,15 @@ void Renderer::RegenerateBuffer() {
             }
         }
 
+        DEBUG("Applying transformation...");
+
         utils::TransformBuffer(*intermediateBuffer, tempBuffer, transformation);
     }
 }
 void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
 
     if (regenerateBuffer) {
+        DEBUG("Regenerating buffer...");
         RegenerateBuffer();
     }
 
@@ -61,6 +66,7 @@ void Renderer::SetTransformation(BufferTransform _transformation) {
 
 Renderer::~Renderer() {
     if (intermediateBuffer != nullptr) {
+        DEBUG("Deleted intermediate buffer");
         delete intermediateBuffer;
     }
 }
