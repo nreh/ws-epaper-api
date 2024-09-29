@@ -2,6 +2,7 @@
 
 #include "buffers.h"
 #include "bufferutils.h"
+#include "debug.h"
 #include "elements.h"
 
 #include <stdint.h>
@@ -9,7 +10,7 @@
 
 namespace epaperapi {
 
-enum RefreshMode { Normal, Fast, Partial };
+enum class RefreshMode { Normal, Fast, Partial };
 
 /// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display.
 class AbstractDrawTarget {
@@ -41,6 +42,12 @@ class Renderer {
     /// @brief Our elements are drawn onto this buffer before being sent to the draw target.
     AbstractBuffer& tempBuffer;
 
+    /// @brief Sometimes the buffer will need to have some transformation applied to it before sending to the drawtarget.
+    /// Those transformations are first done here and then sent to tempBuffer.
+    AbstractBuffer* intermediateBuffer = nullptr;
+
+    BufferTransform transformation = BufferTransform::None;
+
   public:
     /// @brief List of Elements that are to be drawn
     std::vector<AbstractElement*> elements;
@@ -48,7 +55,12 @@ class Renderer {
     /// @brief Draw target that visible elements will be drawn on
     AbstractDrawTarget& drawTarget;
 
-    Renderer(AbstractDrawTarget& _drawTarget) : drawTarget(_drawTarget), tempBuffer(_drawTarget.buffer) {}
+    /// @brief Create a new renderer which draws to a drawtarget
+    /// @param _drawTarget DrawTarget to draw to, typically a physical E-Paper display
+    /// @param transformation Perform a transformation on the buffer before being sent to the
+    /// DrawTarget. Useful if your display is physically rotated and you want your coordinate system to reflect that.
+    Renderer(AbstractDrawTarget& _drawTarget, BufferTransform transformation = BufferTransform::None)
+        : drawTarget(_drawTarget), tempBuffer(_drawTarget.buffer), transformation(transformation) {}
 
     /// @brief Go through all visible Elements and draw them onto the buffer.
     void RegenerateBuffer();
@@ -58,6 +70,13 @@ class Renderer {
     /// @param regenerateBuffer If true, all visible elements have their Draw() function called and the buffer is
     /// regenerated. You can disble this if you know no changes have been made to the elements.
     void Refresh(RefreshMode mode = RefreshMode::Normal, bool regenerateBuffer = true);
+
+    /// @brief Change what transformation is performed on the buffer before being set to the DrawTarget. Useful if your
+    /// display is physically rotated and you want your coordinate system to reflect that.
+    /// @param _transformation
+    void SetTransformation(BufferTransform _transformation);
+
+    ~Renderer();
 };
 
 } // namespace epaperapi

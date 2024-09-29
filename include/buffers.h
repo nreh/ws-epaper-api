@@ -6,7 +6,7 @@
 
 namespace epaperapi {
 
-enum class BUFFERTYPE { AbstractBuffer, RGBBuffer, RedBlackBuffer, GrayscaleBuffer };
+enum class BufferType { AbstractBuffer, RGBBuffer, RedBlackBuffer, GrayscaleBuffer };
 static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBlackBuffer", "GrayscaleBuffer"};
 
 /**
@@ -28,13 +28,28 @@ class AbstractBuffer {
     AbstractBuffer(uint16_t _width, uint16_t _height);
     ~AbstractBuffer();
     virtual void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) = 0;
-    virtual BUFFERTYPE type() const { return BUFFERTYPE::AbstractBuffer; }
+    virtual BufferType type() const { return BufferType::AbstractBuffer; }
+
+    /// @brief Get Buffer type as a string
+    std::string TypeAsString() const { return std::string(BufferTypeStrings[static_cast<int>(type())]); }
 
     /// @brief Copy all bytes from source buffer to this buffer
     virtual void CopyBufferFrom(const AbstractBuffer& source) = 0;
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     virtual void FillBuffer(uint8_t value) = 0;
+
+    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
+    /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
+    /// @param destination Destination buffer where transformed bytes will be written to
+    virtual void Transform(
+        void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+    ) = 0;
+
+    /// @brief Create a new buffer of the same type. Useful for creating intermediate buffers when applying transformations.
+    /// @param width Width of new buffer pixels
+    /// @param height Height of new buffer in pixels
+    virtual AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) = 0;
 
     // make un-copyable
     AbstractBuffer(const AbstractBuffer&) = delete;
@@ -50,7 +65,7 @@ class RGBBuffer : public AbstractBuffer {
 
     RGBBuffer(uint16_t _width, uint16_t _height);
     ~RGBBuffer();
-    BUFFERTYPE type() const override { return BUFFERTYPE::RGBBuffer; }
+    BufferType type() const override { return BufferType::RGBBuffer; }
 
     /// @brief Write a buffer overtop this one
     /// @param newValues
@@ -60,6 +75,18 @@ class RGBBuffer : public AbstractBuffer {
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
+
+    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
+    /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
+    /// @param destination Destination buffer where transformed bytes will be written to
+    void Transform(
+        void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+    ) override;
+
+    /// @brief Create a new buffer of the same type. Useful for creating intermediate buffers when applying transformations.
+    /// @param width Width of new buffer pixels
+    /// @param height Height of new buffer in pixels
+    AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
@@ -72,7 +99,7 @@ class RedBlackBuffer : public AbstractBuffer {
 
     RedBlackBuffer(uint16_t _width, uint16_t _height);
     ~RedBlackBuffer();
-    BUFFERTYPE type() const override { return BUFFERTYPE::AbstractBuffer; }
+    BufferType type() const override { return BufferType::AbstractBuffer; }
 
     /// @brief Write a buffer overtop this one
     /// @param newValues
@@ -82,6 +109,18 @@ class RedBlackBuffer : public AbstractBuffer {
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
+
+    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
+    /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
+    /// @param destination Destination buffer where transformed bytes will be written to
+    void Transform(
+        void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+    ) override;
+
+    /// @brief Create a new buffer of the same type. Useful for creating intermediate buffers when applying transformations.
+    /// @param width Width of new buffer pixels
+    /// @param height Height of new buffer in pixels
+    AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
@@ -93,7 +132,7 @@ class GrayscaleBuffer : public AbstractBuffer {
 
     GrayscaleBuffer(uint16_t _width, uint16_t _height);
     ~GrayscaleBuffer();
-    BUFFERTYPE type() const override { return BUFFERTYPE::GrayscaleBuffer; }
+    BufferType type() const override { return BufferType::GrayscaleBuffer; }
 
     /// @brief Write a buffer overtop this one
     /// @param newValues
@@ -104,13 +143,25 @@ class GrayscaleBuffer : public AbstractBuffer {
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
 
+    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
+    /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
+    /// @param destination Destination buffer where transformed bytes will be written to
+    void Transform(
+        void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+    ) override;
+
+    /// @brief Create a new buffer of the same type. Useful for creating intermediate buffers when applying transformations.
+    /// @param width Width of new buffer pixels
+    /// @param height Height of new buffer in pixels
+    AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
+
     void CopyBufferFrom(const AbstractBuffer& source) override;
 };
 
 /// @brief Raised when Write(...) is called with an incompatible buffer type
 class IncompatibleBufferWrite : public std::runtime_error {
   public:
-    explicit IncompatibleBufferWrite(const BUFFERTYPE destinationBufferType, const BUFFERTYPE sourceBufferType)
+    explicit IncompatibleBufferWrite(const BufferType destinationBufferType, const BufferType sourceBufferType)
         : std::runtime_error(
               "Incompatible Buffer Write: Unable to write buffer of type " +
               std::string(BufferTypeStrings[static_cast<int>(sourceBufferType)]) + " to " +
@@ -121,7 +172,7 @@ class IncompatibleBufferWrite : public std::runtime_error {
 /// @brief Raised when CopyBufferFrom(...) is called with an incompatible buffer type
 class IncompatibleBufferCopy : public std::runtime_error {
   public:
-    explicit IncompatibleBufferCopy(const BUFFERTYPE destinationBufferType, const BUFFERTYPE sourceBufferType)
+    explicit IncompatibleBufferCopy(const BufferType destinationBufferType, const BufferType sourceBufferType)
         : std::runtime_error(
               "Incompatible Buffer Copy: Unable to copy bytes from buffer of type " +
               std::string(BufferTypeStrings[static_cast<int>(sourceBufferType)]) + " to " +
@@ -137,6 +188,18 @@ class MisshapenBufferCopy : public std::runtime_error {
               "Misshapen Buffer Copy: Unable to copy bytes from buffer of dimensions " + std::to_string(source.width) + "x" +
               std::to_string(source.height) + " to destination buffer of dimensions " + std::to_string(destination.width) +
               "x" + std::to_string(destination.height)
+          ) {}
+};
+
+/// @brief Raised a transformation is attempted on a source buffer and the destination is incompatible
+class IncompatibleBufferTransformDestination : public std::runtime_error {
+  public:
+    explicit IncompatibleBufferTransformDestination(
+        const AbstractBuffer& source, const AbstractBuffer& destination, std::string reason
+    )
+        : std::runtime_error(
+              "Incompatiable destination buffer '" + destination.TypeAsString() + "' being written to from source buffer '" +
+              source.TypeAsString() + "' - " + reason
           ) {}
 };
 
