@@ -162,12 +162,12 @@ set(
 # set(HEADER_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.h")
 # if(EXISTS ${SOURCE_FILE} AND EXISTS ${HEADER_FILE})
 add_library(
-    epaper SHARED
+    epaper STATIC
 
     epaper/Config/DEV_Config.c
-    epaper/Config/DEV_Config.h
-    epaper/Config/Debug.h
 
+    # epaper/Config/DEV_Config.h
+    epaper/Config/Debug.h
     ${NAMESPACED_SOURCE_FILES}
 
     # ${SOURCE_FILE}
@@ -182,12 +182,13 @@ add_library(
     epaper/Fonts/fonts.h
 
     epaper/GUI/GUI_BMPfile.c
-    epaper/GUI/GUI_BMPfile.h
-    epaper/GUI/GUI_Paint.c
-    epaper/GUI/GUI_Paint.h
-)
 
-target_include_directories(epaper PUBLIC ./epaper/Config ./epaper/e-Paper ./epaper/Fonts ./epaper/GUI ../bcm2835/src ./DrawTargets/)
+    # epaper/GUI/GUI_BMPfile.h
+    epaper/GUI/GUI_Paint.c
+
+    # epaper/GUI/GUI_Paint.h
+)
+target_include_directories(epaper PUBLIC ./epaper/Config ./epaper ./epaper/Fonts ./epaper/GUI ../bcm2835/src ./DrawTargets/)
 
 # else()
 # message(FATAL_ERROR
