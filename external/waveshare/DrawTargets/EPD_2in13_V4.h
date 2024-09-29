@@ -3,6 +3,7 @@
 extern "C" {
 #include <DEV_Config.h>
 }
+#include <bufferutils.h>
 #include <memory>
 #include <wsepaperapi.h>
 
@@ -24,12 +25,19 @@ extern "C" {
 /// @brief Width of device in pixels
 const int DEVICE_WIDTH = EPD_2in13_V4_WIDTH;
 
+/// @brief Amount of memory each row of pixels takes. This is roughly 8 times smaller than the device pixel width because we
+/// can store 8 pixels in a single byte. Total bytes sent to the device is DEVICE_MEMORYWIDTH * DEVICE_HEIGHT
+const int DEVICE_MEMORYWIDTH = DEVICE_WIDTH % 8 == 0 ? DEVICE_WIDTH / 8 : DEVICE_WIDTH / 8 + 1;
+
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = EPD_2in13_V4_HEIGHT;
 
 class EPD_2in13_DrawTarget : public AbstractDrawTarget {
   private:
     GrayscaleBuffer _buffer;
+
+    /// @brief Instead of 1 pixel per byte, the E-Paper display expects 8 pixels per byte
+    uint8_t* packedBits = new uint8_t[DEVICE_MEMORYWIDTH * DEVICE_HEIGHT];
 
   public:
     /// @brief Initializes the E-Paper display
@@ -47,15 +55,27 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     void ClearBlack() { controller::EPD_2in13_V4_Clear_Black(); }
 
     /// @brief Draw current buffer onto the display
-    void DisplayBuffer() { controller::EPD_2in13_V4_Display(((GrayscaleBuffer&)buffer).blackChannel); }
+    void DisplayBuffer() {
+        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
+        controller::EPD_2in13_V4_Display(packedBits);
+    }
 
-    void DisplayBufferFast() { controller::EPD_2in13_V4_Display_Fast(((GrayscaleBuffer&)buffer).blackChannel); }
+    void DisplayBufferFast() {
+        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
+        controller::EPD_2in13_V4_Display_Fast(packedBits);
+    }
 
     /// @brief Draw the current buffer onto the display
-    void DisplayBufferBase() { controller::EPD_2in13_V4_Display_Base(((GrayscaleBuffer&)buffer).blackChannel); }
+    void DisplayBufferBase() {
+        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
+        controller::EPD_2in13_V4_Display_Base(packedBits);
+    }
 
     /// @brief Partially refresh the display with a new image
-    void DisplayBufferPartial() { controller::EPD_2in13_V4_Display_Partial(((GrayscaleBuffer&)buffer).blackChannel); }
+    void DisplayBufferPartial() {
+        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
+        controller::EPD_2in13_V4_Display_Partial(packedBits);
+    }
 
     /// @brief Put the device to sleep
     void Sleep() override { controller::EPD_2in13_V4_Sleep(); }
@@ -66,6 +86,8 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     /// @brief Refresh the display with current buffer
     /// @param mode
     void Refresh(RefreshMode mode) override {
+        epaperapi::utils::PosterizeGrayscale(_buffer, 2);
+
         switch (mode) {
         case RefreshMode::Normal:
             DisplayBuffer();
@@ -86,7 +108,7 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
 
     EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), AbstractDrawTarget(_buffer) { buffer.FillBuffer(255); }
 
-    ~EPD_2in13_DrawTarget() {}
+    ~EPD_2in13_DrawTarget() { delete[] packedBits; }
 };
 
 } // namespace EPD_2in13_V4
