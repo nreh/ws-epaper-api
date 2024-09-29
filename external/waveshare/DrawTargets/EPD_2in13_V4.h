@@ -1,5 +1,9 @@
 #pragma once
 
+extern "C" {
+#include <DEV_Config.h>
+}
+#include <memory>
 #include <wsepaperapi.h>
 
 namespace epaperapi {
@@ -12,8 +16,10 @@ namespace EPD_2in13_V4 {
 
 /// @brief Access the underlying EPD class provided by Waveshare. Can be used for more low level control.
 namespace controller {
+extern "C" {
 #include "../epaper/e-Paper/EPD_2in13_V4.h"
 }
+} // namespace controller
 
 /// @brief Width of device in pixels
 const int DEVICE_WIDTH = EPD_2in13_V4_WIDTH;
@@ -22,16 +28,20 @@ const int DEVICE_WIDTH = EPD_2in13_V4_WIDTH;
 const int DEVICE_HEIGHT = EPD_2in13_V4_HEIGHT;
 
 class EPD_2in13_DrawTarget : public AbstractDrawTarget {
+  private:
+    GrayscaleBuffer _buffer;
+
+  public:
     /// @brief Initializes the E-Paper display
     void Init() {
-        controller::DEV_Module_Init(); // initialize pins and SPI protocol
+        DEV_Module_Init(); // initialize pins and SPI protocol
         controller::EPD_2in13_V4_Init();
     }
 
     void FastInit() { controller::EPD_2in13_V4_Init_Fast(); }
 
     /// @brief Clear the screen to white
-    void Clear() { controller::EPD_2in13_V4_Clear(); }
+    void Clear() override { controller::EPD_2in13_V4_Clear(); }
 
     /// @brief Clear the screen to black
     void ClearBlack() { controller::EPD_2in13_V4_Clear_Black(); }
@@ -48,10 +58,35 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     void DisplayBufferPartial() { controller::EPD_2in13_V4_Display_Partial(((GrayscaleBuffer&)buffer).blackChannel); }
 
     /// @brief Put the device to sleep
-    void Sleep() { controller::EPD_2in13_V4_Sleep(); }
+    void Sleep() override { controller::EPD_2in13_V4_Sleep(); }
 
     /// @brief Shuts off power to the device, ends SPI protocol, and deallocates memory
-    void Exit() { controller::DEV_Module_Exit(); }
+    void Exit() { DEV_Module_Exit(); }
+
+    /// @brief Refresh the display with current buffer
+    /// @param mode
+    void Refresh(RefreshMode mode) override {
+        switch (mode) {
+        case RefreshMode::Normal:
+            DisplayBuffer();
+            break;
+
+        case RefreshMode::Fast:
+            DisplayBufferFast();
+            break;
+
+        case RefreshMode::Partial:
+            DisplayBufferPartial();
+            break;
+
+        default:
+            return; // todo: Throw unsupport refreshmode exception...
+        }
+    }
+
+    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), AbstractDrawTarget(_buffer) { buffer.FillBuffer(255); }
+
+    ~EPD_2in13_DrawTarget() {}
 };
 
 } // namespace EPD_2in13_V4
