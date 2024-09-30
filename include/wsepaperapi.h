@@ -60,7 +60,9 @@ class Renderer {
     /// @param transformation Perform a transformation on the buffer before being sent to the
     /// DrawTarget. Useful if your display is physically rotated and you want your coordinate system to reflect that.
     Renderer(AbstractDrawTarget& _drawTarget, BufferTransform transformation = BufferTransform::None)
-        : drawTarget(_drawTarget), tempBuffer(_drawTarget.buffer), transformation(transformation) {}
+        : drawTarget(_drawTarget), tempBuffer(_drawTarget.buffer) {
+        SetTransformation(transformation);
+    }
 
     /// @brief Go through all visible Elements and draw them onto the buffer.
     void RegenerateBuffer();
