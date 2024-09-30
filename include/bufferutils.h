@@ -78,9 +78,9 @@ inline void RotateMatrix90Clockwise(uint8_t* source, uint8_t* destination, uint1
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
+        dest_i = height - 1 - j;
         for (int i = 0; i < width; i++) {
             dest_j = i;
-            dest_i = height - 1 - j;
             destination[height * dest_j + dest_i] = source[width * j + i];
         }
     }
@@ -90,9 +90,9 @@ inline void RotateMatrix90CounterClockwise(uint8_t* source, uint8_t* destination
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
+        dest_i = j;
         for (int i = 0; i < width; i++) {
             dest_j = width - 1 - i;
-            dest_i = j;
             destination[height * dest_j + dest_i] = source[width * j + i];
         }
     }
