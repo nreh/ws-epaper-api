@@ -7,6 +7,8 @@ using namespace std;
 
 namespace epaperapi {
 void Renderer::RegenerateBuffer() {
+    DEBUG("Regnerating buffer");
+
     if (transformation == BufferTransform::None) {
         // clear the old buffer values
         tempBuffer.FillBuffer(255); // fill with white color
@@ -48,6 +50,7 @@ void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
 void Renderer::SetTransformation(BufferTransform _transformation) {
     if (intermediateBuffer != nullptr) {
         delete intermediateBuffer;
+        intermediateBuffer = nullptr;
     }
 
     transformation = _transformation;

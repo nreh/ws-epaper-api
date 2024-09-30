@@ -86,6 +86,30 @@ inline void RotateMatrix90Clockwise(uint8_t* source, uint8_t* destination, uint1
     }
 }
 
+inline void RotateMatrix90CounterClockwise(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) {
+    uint16_t dest_j, dest_i;
+
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            dest_j = width - 1 - i;
+            dest_i = j;
+            destination[height * dest_j + dest_i] = source[width * j + i];
+        }
+    }
+}
+
+inline void RotateMatrix180(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) {
+    uint16_t dest_j, dest_i;
+
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            dest_j = width - 1 - i;
+            dest_i = height - 1 - j;
+            destination[height * dest_j + dest_i] = source[width * j + i];
+        }
+    }
+}
+
 /// @brief Apply a transformation on a buffer and output the result to a destination buffer. Makes sure both buffers are
 /// compatible.
 /// @param source Buffer to perform the transformation on
@@ -102,11 +126,26 @@ inline void TransformBuffer(AbstractBuffer& source, AbstractBuffer& destination,
     if (transformation == BufferTransform::None) {
         return;
     } else if (transformation == BufferTransform::Rotate90Clockwise) {
+        if (destination.width != source.height && destination.height != source.width) {
+            throw IncompatibleBufferTransformDestination(
+                source, destination, "Incompatible destination shape for 90 degree rotation"
+            );
+        }
         func = &RotateMatrix90Clockwise;
     } else if (transformation == BufferTransform::Rotate90CounterClockwise) {
-        // todo: implement 90 counterclockwise transformation
+        if (destination.width != source.height && destination.height != source.width) {
+            throw IncompatibleBufferTransformDestination(
+                source, destination, "Incompatible destination shape for 90 degree rotation"
+            );
+        }
+        func = &RotateMatrix90CounterClockwise;
     } else if (transformation == BufferTransform::Rotate180) {
-        // todo: implement 180 transformation
+        if (destination.height != source.height && destination.width != source.width) {
+            throw IncompatibleBufferTransformDestination(
+                source, destination, "Incompatible destination shape for 180 degree rotation"
+            );
+        }
+        func = &RotateMatrix180;
     }
 
     if (func == nullptr) {
