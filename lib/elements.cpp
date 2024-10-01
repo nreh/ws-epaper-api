@@ -36,17 +36,16 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
     case BufferType::RedBlackBuffer: {
         const RedBlackBuffer* rblk = dynamic_cast<const RedBlackBuffer*>(&target);
 
-        uint8_t red = style.GetMultipliedRed();
-        uint8_t black = style.GetMultipliedBlack();
-
         for (int j = ypos; j < height; j++) {
             for (int i = xpos; i < width; i++) {
-                rblk->redChannel[width * j + i] = red;
+                unsigned char val = rblk->redChannel[target.width * j + i];
+                rblk->redChannel[width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
             }
         }
         for (int j = ypos; j < height; j++) {
             for (int i = xpos; i < width; i++) {
-                rblk->blackChannel[width * j + i] = black;
+                unsigned char val = rblk->redChannel[target.width * j + i];
+                rblk->blackChannel[width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
             }
         }
 
@@ -67,8 +66,4 @@ void FilledRectangleElement::Draw(AbstractBuffer& target) {
     }
     }
 }
-uint8_t ElementStyle::GetMultipliedRed() { return redChannel * alpha; }
-uint8_t ElementStyle::GetMultipliedGreen() { return greenChannel * alpha; }
-uint8_t ElementStyle::GetMultipliedBlue() { return blueChannel * alpha; }
-uint8_t ElementStyle::GetMultipliedBlack() { return blackChannel * alpha; }
 } // namespace epaperapi

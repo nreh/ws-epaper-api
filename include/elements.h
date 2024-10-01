@@ -24,23 +24,42 @@ struct ElementStyle {
     /// @brief Transparency of the element
     float alpha = 1;
 
-    /// @brief Get red channel multiplied with alpha
-    uint8_t GetMultipliedRed();
-
-    /// @brief Get green channel multiplied with alpha
-    uint8_t GetMultipliedGreen();
-
-    /// @brief Get blue channel multiplied with alpha
-    uint8_t GetMultipliedBlue();
-
-    /// @brief Get the black channel multiplied with alpha
-    uint8_t GetMultipliedBlack();
-
     ElementStyle(uint8_t r, uint8_t g, uint8_t b) : redChannel(r), greenChannel(g), blueChannel(b) {}
-    ElementStyle(uint8_t r, uint8_t g, uint8_t b, float a) : redChannel(r), greenChannel(g), blueChannel(b), alpha(a) {}
     ElementStyle(uint8_t r, uint8_t black) : redChannel(r), blackChannel(black) {}
     ElementStyle(uint8_t black) : blackChannel(black) {}
     ElementStyle() {}
+
+    ElementStyle& SetRedChannel(uint8_t red) {
+        redChannel = red;
+        return *this;
+    }
+    ElementStyle& SetGreenChannel(uint8_t green) {
+        greenChannel = green;
+        return *this;
+    }
+    ElementStyle& SetBlueChannel(uint8_t blue) {
+        blueChannel = blue;
+        return *this;
+    }
+    ElementStyle& SetRGBChannels(uint8_t r, uint8_t g, uint8_t b) {
+        redChannel = r;
+        greenChannel = g;
+        blueChannel = b;
+        return *this;
+    }
+    ElementStyle& SetBlackChannel(uint8_t black) {
+        blackChannel = black;
+        return *this;
+    }
+    ElementStyle& SetRedBlackChannels(uint8_t r, uint8_t b) {
+        redChannel = r;
+        blackChannel = b;
+        return *this;
+    }
+    ElementStyle& SetAlpha(float _alpha) {
+        alpha = _alpha;
+        return *this;
+    }
 };
 
 /// @brief Abstract class representing something that can be drawn to
