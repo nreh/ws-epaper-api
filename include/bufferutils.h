@@ -102,10 +102,10 @@ inline void RotateMatrix180(uint8_t* source, uint8_t* destination, uint16_t widt
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
+        dest_j = height - 1 - j;
         for (int i = 0; i < width; i++) {
-            dest_j = width - 1 - i;
-            dest_i = height - 1 - j;
-            destination[height * dest_j + dest_i] = source[width * j + i];
+            dest_i = width - 1 - i;
+            destination[width * dest_j + dest_i] = source[width * j + i];
         }
     }
 }
