@@ -2,4 +2,4 @@ CMakeCache.txt
 build**
 CMakeFiles/
 CMakeFiles/**
-.vscode/c_cpp_properties.json
+.vscode/**
