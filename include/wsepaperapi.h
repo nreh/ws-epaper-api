@@ -1,5 +1,8 @@
 #pragma once
 
+/// @brief The base ws-epaper-api namespace
+namespace epaperapi {}
+
 #include "buffers.h"
 #include "bufferutils.h"
 #include "debug.h"

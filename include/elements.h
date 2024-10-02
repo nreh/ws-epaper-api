@@ -4,6 +4,9 @@
 
 namespace epaperapi {
 
+/// @brief Namespace containing elements that can be drawn
+namespace elements {}
+
 class AbstractBuffer;
 
 /// @brief Contains color information used by buffers for drawing. Certain values are unused depending on the type of buffer.
@@ -62,29 +65,36 @@ struct ElementStyle {
     }
 };
 
-/// @brief Abstract class representing something that can be drawn to
+/// @brief Abstract class representing something that can be drawn on to a Buffer
 class AbstractElement {
   public:
     /// @brief If false, this Element is not drawn
     bool visible = true;
 
-    uint16_t xpos, ypos;
+    /// @brief The x-position of the element in pixels
+    uint16_t xpos = 0;
+
+    /// @brief The y-position of the element in pixels
+    uint16_t ypos = 0;
+
+    /// @brief The style of the element such as color or alpha
     ElementStyle style;
 
     /// @brief Draw this element to a buffer
-    /// @param _buffer
+    /// @param _buffer Buffer that this element will be drawn on to
     virtual void Draw(AbstractBuffer& target) = 0;
+
+  protected:
+    AbstractElement() {}
+    AbstractElement(uint16_t xpos, uint16_t ypos) : xpos(xpos), ypos(ypos) {}
 };
 
-class FilledRectangleElement : public AbstractElement {
-  public:
-    uint16_t width, height;
-    uint16_t xpos = 0, ypos = 0;
-
-    FilledRectangleElement(uint16_t _width, uint16_t _height);
-
-    /// @brief Draw the FilledRectangle to the target buffer
-    /// @param target
-    void Draw(AbstractBuffer& target) override;
-};
 } // namespace epaperapi
+
+#include "utils.h"
+
+/**
+ * Import elements here as a convenience so that they're all imported along with elements.h
+ */
+
+#include "elements/FilledRectangleElement.h"

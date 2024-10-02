@@ -31,7 +31,6 @@ endif()
 set(
     EPAPER_LIB_FILES
     lib/wsepaperapi.cpp
-    lib/elements.cpp
     lib/buffers.cpp
     lib/debug.cpp
 )
