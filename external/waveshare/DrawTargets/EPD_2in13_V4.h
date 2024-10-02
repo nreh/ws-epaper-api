@@ -39,12 +39,19 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     /// @brief Instead of 1 pixel per byte, the E-Paper display expects 8 pixels per byte
     uint8_t* packedBits = new uint8_t[DEVICE_MEMORYWIDTH * DEVICE_HEIGHT];
 
+    /// @brief If true, pins have been deactived and SPI closed. You'll need to call InitializeSPI() again before using the
+    /// display.
+    bool HasClosed = false;
+
   public:
-    /// @brief Initializes the E-Paper display
-    void Init() {
+    /// @brief Initialize pins and SPI protocol. You shouldn't have to run this manually as this is run automatically when
+    /// the DrawTarget is created.
+    void InitializeSPI() {
         DEV_Module_Init(); // initialize pins and SPI protocol
-        controller::EPD_2in13_V4_Init();
     }
+
+    /// @brief Initializes the E-Paper display
+    void Init() { controller::EPD_2in13_V4_Init(); }
 
     void FastInit() { controller::EPD_2in13_V4_Init_Fast(); }
 
@@ -81,7 +88,10 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     void Sleep() override { controller::EPD_2in13_V4_Sleep(); }
 
     /// @brief Shuts off power to the device, ends SPI protocol, and deallocates memory
-    void Exit() { DEV_Module_Exit(); }
+    void Exit() {
+        DEV_Module_Exit();
+        HasClosed = true;
+    }
 
     /// @brief Refresh the display with current buffer
     /// @param mode
@@ -106,9 +116,17 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
         }
     }
 
-    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), AbstractDrawTarget(_buffer) { buffer.FillBuffer(255); }
+    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), AbstractDrawTarget(_buffer) {
+        buffer.FillBuffer(255);
+        InitializeSPI();
+    }
 
-    ~EPD_2in13_DrawTarget() { delete[] packedBits; }
+    ~EPD_2in13_DrawTarget() {
+        delete[] packedBits;
+        if (!HasClosed) {
+            Exit();
+        }
+    }
 };
 
 } // namespace EPD_2in13_V4
