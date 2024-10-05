@@ -97,3 +97,4 @@ class AbstractElement {
  */
 
 #include "elements/FilledRectangleElement.h"
+#include "elements/LineElement.h"

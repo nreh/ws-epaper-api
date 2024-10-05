@@ -134,7 +134,45 @@ void RGBBuffer::DrawFilledRectangle(
     }
 }
 
-void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) {}
+void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) {
+    // deal with the edge case where it's just a vertical line
+    if (xpos_1 == xpos_2) {
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = redChannel[this->width * j + xpos_1];
+            redChannel[this->width * j + xpos_1] = utils::BlendPixel(style.redChannel, val, style.alpha);
+        }
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = greenChannel[this->width * j + xpos_1];
+            greenChannel[this->width * j + xpos_1] = utils::BlendPixel(style.greenChannel, val, style.alpha);
+        }
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = blueChannel[this->width * j + xpos_1];
+            blueChannel[this->width * j + xpos_1] = utils::BlendPixel(style.blueChannel, val, style.alpha);
+        }
+        return;
+    }
+
+    // calculate slope
+    float slope = (ypos_2 - ypos_1) / ((float)(xpos_2 - xpos_1));
+
+    uint16_t j;
+
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = redChannel[this->width * j + i];
+        redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
+    }
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = greenChannel[this->width * j + i];
+        greenChannel[this->width * j + i] = utils::BlendPixel(style.greenChannel, val, style.alpha);
+    }
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = blueChannel[this->width * j + i];
+        blueChannel[this->width * j + i] = utils::BlendPixel(style.blueChannel, val, style.alpha);
+    }
+}
 
 RedBlackBuffer::RedBlackBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
@@ -224,7 +262,36 @@ void RedBlackBuffer::DrawFilledRectangle(
 
 void RedBlackBuffer::DrawLine(
     uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style
-) {}
+) {
+    // deal with the edge case where it's just a vertical line
+    if (xpos_1 == xpos_2) {
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = blackChannel[this->width * j + xpos_1];
+            blackChannel[this->width * j + xpos_1] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+        }
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = redChannel[this->width * j + xpos_1];
+            redChannel[this->width * j + xpos_1] = utils::BlendPixel(style.redChannel, val, style.alpha);
+        }
+        return;
+    }
+
+    // calculate slope
+    float slope = (ypos_2 - ypos_1) / ((float)(xpos_2 - xpos_1));
+
+    uint16_t j;
+
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = blackChannel[this->width * j + i];
+        blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+    }
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = redChannel[this->width * j + i];
+        redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
+    }
+}
 
 GrayscaleBuffer::GrayscaleBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     blackChannel = new uint8_t[width * height];
@@ -292,6 +359,27 @@ void GrayscaleBuffer::DrawFilledRectangle(
 
 void GrayscaleBuffer::DrawLine(
     uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style
-) {}
+) {
+    // deal with the edge case where it's just a vertical line
+    if (xpos_1 == xpos_2) {
+        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+            uint8_t val = blackChannel[this->width * j + xpos_1];
+            blackChannel[this->width * j + xpos_1] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+        }
+
+        return;
+    }
+
+    // calculate slope
+    float slope = (ypos_2 - ypos_1) / ((float)(xpos_2 - xpos_1));
+
+    uint16_t j;
+
+    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+        j = slope * i + ypos_1;
+        uint8_t val = blackChannel[this->width * j + i];
+        blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+    }
+}
 
 } // namespace epaperapi
