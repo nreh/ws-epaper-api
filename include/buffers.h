@@ -139,7 +139,7 @@ class RedBlackBuffer : public AbstractBuffer {
 
     RedBlackBuffer(uint16_t _width, uint16_t _height);
     ~RedBlackBuffer();
-    BufferType type() const override { return BufferType::AbstractBuffer; }
+    BufferType type() const override { return BufferType::RedBlackBuffer; }
 
     /// @brief Write a buffer overtop this one
     /// @param newValues
