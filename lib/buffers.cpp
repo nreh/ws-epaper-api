@@ -1,4 +1,5 @@
 #include "buffers.h"
+#include "elements.h"
 #include "utils.h"
 
 #include <cstring>
@@ -110,6 +111,31 @@ void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->blueChannel, rgb->blueChannel, width * height);
 }
 
+void RGBBuffer::DrawFilledRectangle(
+    uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
+) {
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = redChannel[this->width * j + i];
+            redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
+        }
+    }
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = greenChannel[this->width * j + i];
+            greenChannel[this->width * j + i] = utils::BlendPixel(style.greenChannel, val, style.alpha);
+        }
+    }
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = blueChannel[this->width * j + i];
+            blueChannel[this->width * j + i] = utils::BlendPixel(style.blueChannel, val, style.alpha);
+        }
+    }
+}
+
+void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) {}
+
 RedBlackBuffer::RedBlackBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
     redChannel = new uint8_t[width * height]();
@@ -179,6 +205,27 @@ void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
 }
 
+void RedBlackBuffer::DrawFilledRectangle(
+    uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
+) {
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = blackChannel[this->width * j + i];
+            blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+        }
+    }
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = redChannel[this->width * j + i];
+            redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
+        }
+    }
+}
+
+void RedBlackBuffer::DrawLine(
+    uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style
+) {}
+
 GrayscaleBuffer::GrayscaleBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     blackChannel = new uint8_t[width * height];
     for (int i = 0; i < width * height; i++) {
@@ -231,5 +278,20 @@ void GrayscaleBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     const GrayscaleBuffer* rgb = dynamic_cast<const GrayscaleBuffer*>(&source);
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
 }
+
+void GrayscaleBuffer::DrawFilledRectangle(
+    uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
+) {
+    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+            uint8_t val = blackChannel[this->width * j + i];
+            blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+        }
+    }
+}
+
+void GrayscaleBuffer::DrawLine(
+    uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style
+) {}
 
 } // namespace epaperapi

@@ -1,13 +1,12 @@
 #pragma once
 
+#include "buffers.h"
 #include <stdint.h>
 
 namespace epaperapi {
 
 /// @brief Namespace containing elements that can be drawn
 namespace elements {}
-
-class AbstractBuffer;
 
 /// @brief Contains color information used by buffers for drawing. Certain values are unused depending on the type of buffer.
 /// For example, the Grayscale buffer would not use any of the red green or blue color channels.

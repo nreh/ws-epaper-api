@@ -6,6 +6,8 @@
 
 namespace epaperapi {
 
+class ElementStyle;
+
 enum class BufferType { AbstractBuffer, RGBBuffer, RedBlackBuffer, GrayscaleBuffer };
 static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBlackBuffer", "GrayscaleBuffer"};
 
@@ -21,7 +23,9 @@ static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBla
  */
 class AbstractBuffer {
   public:
+    /// @brief Width of the buffer in pixels
     uint16_t width;
+    /// @brief Height of the buffer in pixels
     uint16_t height;
     float* alphaChannel;
 
@@ -54,6 +58,25 @@ class AbstractBuffer {
     // make un-copyable
     AbstractBuffer(const AbstractBuffer&) = delete;
     AbstractBuffer& operator=(const AbstractBuffer&) = delete;
+
+    // Some helpful utility functions for drawing shapes and stuff on the buffer
+
+    /// @brief Draw a filled rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle
+    virtual void
+    DrawFilledRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) = 0;
+
+    /// @brief Draw a line on the buffer
+    /// @param xpos_1 X position of the start point of the line
+    /// @param ypos_1 Y position of the start point of the line
+    /// @param xpos_2 X position of the end point of the line
+    /// @param ypos_2 Y position of the end point of the line
+    /// @param style How the color/style the line
+    virtual void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) = 0;
 };
 
 /// @brief 3 channel buffer with arrays for red green and blue color
@@ -89,6 +112,23 @@ class RGBBuffer : public AbstractBuffer {
     AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
+
+    /// @brief Draw a filled rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle
+    void
+    DrawFilledRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
+
+    /// @brief Draw a line on the buffer
+    /// @param xpos_1 X position of the start point of the line
+    /// @param ypos_1 Y position of the start point of the line
+    /// @param xpos_2 X position of the end point of the line
+    /// @param ypos_2 Y position of the end point of the line
+    /// @param style How the color/style the line
+    void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
 };
 
 /// @brief 2 channel buffer with arrays for black and red color
@@ -123,6 +163,23 @@ class RedBlackBuffer : public AbstractBuffer {
     AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
+
+    /// @brief Draw a filled rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle
+    void
+    DrawFilledRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
+
+    /// @brief Draw a line on the buffer
+    /// @param xpos_1 X position of the start point of the line
+    /// @param ypos_1 Y position of the start point of the line
+    /// @param xpos_2 X position of the end point of the line
+    /// @param ypos_2 Y position of the end point of the line
+    /// @param style How the color/style the line
+    void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
 };
 
 /// @brief Single channel buffer with a single array for black color
@@ -156,6 +213,23 @@ class GrayscaleBuffer : public AbstractBuffer {
     AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
+
+    /// @brief Draw a filled rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle
+    void
+    DrawFilledRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
+
+    /// @brief Draw a line on the buffer
+    /// @param xpos_1 X position of the start point of the line
+    /// @param ypos_1 Y position of the start point of the line
+    /// @param xpos_2 X position of the end point of the line
+    /// @param ypos_2 Y position of the end point of the line
+    /// @param style How the color/style the line
+    void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
 };
 
 /// @brief Raised when Write(...) is called with an incompatible buffer type
