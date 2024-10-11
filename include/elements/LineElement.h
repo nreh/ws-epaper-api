@@ -7,6 +7,9 @@ class LineElement : public AbstractElement {
   public:
     uint16_t xpos_2, ypos_2;
 
+    /// @brief The style of the line such as color or alpha
+    ElementStyle style;
+
     LineElement(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2)
         : xpos_2(xpos_2), ypos_2(ypos_2), AbstractElement(xpos_1, ypos_1) {}
 

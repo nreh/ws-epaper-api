@@ -62,6 +62,8 @@ struct ElementStyle {
         alpha = _alpha;
         return *this;
     }
+
+    static ElementStyle TransparentStyle() { return ElementStyle().SetAlpha(0); }
 };
 
 /// @brief Abstract class representing something that can be drawn on to a Buffer
@@ -75,9 +77,6 @@ class AbstractElement {
 
     /// @brief The y-position of the element in pixels
     uint16_t ypos = 0;
-
-    /// @brief The style of the element such as color or alpha
-    ElementStyle style;
 
     /// @brief Draw this element to a buffer
     /// @param _buffer Buffer that this element will be drawn on to
@@ -98,3 +97,4 @@ class AbstractElement {
 
 #include "elements/FilledRectangleElement.h"
 #include "elements/LineElement.h"
+#include "elements/TextElement.h"

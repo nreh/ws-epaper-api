@@ -6,6 +6,8 @@ namespace epaperapi::elements {
 class FilledRectangleElement : public AbstractElement {
   public:
     uint16_t width, height;
+    /// @brief The style of the filled rectangle such as color or alpha
+    ElementStyle style;
 
     FilledRectangleElement(uint16_t width, uint16_t height) : width(width), height(height) {}
     FilledRectangleElement(uint16_t width, uint16_t height, uint16_t xpos, uint16_t ypos)
