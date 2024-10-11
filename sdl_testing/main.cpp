@@ -1,6 +1,8 @@
 #include <iostream>
+#include <memory>
 #include <vector>
 
+#include "fonts/CourierPrime_14pt.h"
 #include "sdlsetup.h"
 
 using namespace std;
@@ -35,16 +37,26 @@ int main() {
      */
 
     // Create a diagonal line of boxes increasing in opacity.
+    vector<shared_ptr<epaperapi::AbstractElement>> elements;
     for (int x = 0; x <= 13; x++) {
-        auto elem = new epaperapi::elements::FilledRectangleElement(50, 50);
-        epaperRenderer.elements.push_back(elem);
+        auto elem = make_shared<epaperapi::elements::FilledRectangleElement>(50, 50);
+        elements.push_back(elem);
+
         elem->xpos = x * 15;
         elem->ypos = x * 5;
-        elem->style = epaperapi::ElementStyle(0);
+        elem->style.SetBlackChannel(0);
         elem->style.alpha = x / 13.0f;
+
+        epaperRenderer.elements.push_back(elem.get());
     }
 
-    // PS. Play around the with the sdlTarget.GrayScaleSteps variable and see how the grayscale steps affects rendering!
+    // draw white text above it all
+
+    epaperapi::elements::TextElement<epaperapi::fonts::CourierPrime_14pt> text1("Hello World!");
+    text1.foregroundStyle.SetBlackChannel(255);
+    text1.xpos = (250 / 2) - (text1.GetWidth() / 2);
+    text1.ypos = (122 / 2) - (text1.GetHeight() / 2);
+    epaperRenderer.elements.push_back(&text1);
 
     /**
      * Step: 4: Refresh renderer
@@ -52,7 +64,7 @@ int main() {
 
     // This causes a redraw of all elements we just created
     // the results are sent to an internal buffer and then converted to an SDL texture
-    // where it is thene rendered on to the window.
+    // where it is then rendered on to the window.
     epaperRenderer.Refresh();
 
     /**
