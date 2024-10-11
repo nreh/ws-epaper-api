@@ -61,6 +61,25 @@ class AbstractBuffer {
 
     // Some helpful utility functions for drawing shapes and stuff on the buffer
 
+    /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
+    /// pixels in a byte - 1 bit for each pixel.)
+    /// @param xpos X position in pixels to draw the bitmap on the buffer
+    /// @param ypos Y position in pixels to draw the bitmap on the buffer
+    /// @param width Width of the bitmap in pixels
+    /// @param height Height of the bitmap in pixels
+    /// @param backgroundStyle 0s in the bitmap will be drawn in this style
+    /// @param foregroundStyle 1s in the bitmap will be drawn in this style
+    /// @param bitmap Array of packed bitmap data where each bit represents a single pixel
+    virtual void DrawBitmap(
+        uint16_t xpos,
+        uint16_t ypos,
+        uint16_t width,
+        uint16_t height,
+        const ElementStyle& backgroundStyle,
+        const ElementStyle& foregroundStyle,
+        const uint8_t* bitmap
+    ) = 0;
+
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
     /// @param ypos Y position in pixels of the upper left corner of the rectangle
@@ -113,6 +132,25 @@ class RGBBuffer : public AbstractBuffer {
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 
+    /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
+    /// pixels in a byte - 1 bit for each pixel.)
+    /// @param xpos X position in pixels to draw the bitmap on the buffer
+    /// @param ypos Y position in pixels to draw the bitmap on the buffer
+    /// @param width Width of the bitmap in pixels
+    /// @param height Height of the bitmap in pixels
+    /// @param backgroundStyle 0s in the bitmap will be drawn in this style
+    /// @param foregroundStyle 1s in the bitmap will be drawn in this style
+    /// @param bitmap Array of packed bitmap data where each bit represents a single pixel
+    void DrawBitmap(
+        uint16_t xpos,
+        uint16_t ypos,
+        uint16_t width,
+        uint16_t height,
+        const ElementStyle& backgroundStyle,
+        const ElementStyle& foregroundStyle,
+        const uint8_t* bitmap
+    ) override;
+
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
     /// @param ypos Y position in pixels of the upper left corner of the rectangle
@@ -164,6 +202,25 @@ class RedBlackBuffer : public AbstractBuffer {
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 
+    /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
+    /// pixels in a byte - 1 bit for each pixel.)
+    /// @param xpos X position in pixels to draw the bitmap on the buffer
+    /// @param ypos Y position in pixels to draw the bitmap on the buffer
+    /// @param width Width of the bitmap in pixels
+    /// @param height Height of the bitmap in pixels
+    /// @param backgroundStyle 0s in the bitmap will be drawn in this style
+    /// @param foregroundStyle 1s in the bitmap will be drawn in this style
+    /// @param bitmap Array of packed bitmap data where each bit represents a single pixel
+    void DrawBitmap(
+        uint16_t xpos,
+        uint16_t ypos,
+        uint16_t width,
+        uint16_t height,
+        const ElementStyle& backgroundStyle,
+        const ElementStyle& foregroundStyle,
+        const uint8_t* bitmap
+    ) override;
+
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
     /// @param ypos Y position in pixels of the upper left corner of the rectangle
@@ -213,6 +270,25 @@ class GrayscaleBuffer : public AbstractBuffer {
     AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
+
+    /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
+    /// pixels in a byte - 1 bit for each pixel.)
+    /// @param xpos X position in pixels to draw the bitmap on the buffer
+    /// @param ypos Y position in pixels to draw the bitmap on the buffer
+    /// @param width Width of the bitmap in pixels
+    /// @param height Height of the bitmap in pixels
+    /// @param backgroundStyle 0s in the bitmap will be drawn in this style
+    /// @param foregroundStyle 1s in the bitmap will be drawn in this style
+    /// @param bitmap Array of packed bitmap data where each bit represents a single pixel
+    void DrawBitmap(
+        uint16_t xpos,
+        uint16_t ypos,
+        uint16_t width,
+        uint16_t height,
+        const ElementStyle& backgroundStyle,
+        const ElementStyle& foregroundStyle,
+        const uint8_t* bitmap
+    ) override;
 
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle

@@ -8,6 +8,19 @@
 
 namespace epaperapi {
 
+/// @brief Get pixel in a packed array of bytes
+inline bool getPixel(const uint8_t* bitmap, size_t width, size_t i, size_t j) {
+    // Calculate the 1D index from 2D coordinates
+    size_t n = j * width + i;
+
+    // Calculate byte index and bit position
+    size_t byte_index = n / 8;
+    size_t bit_position = n % 8;
+
+    // Extract the pixel value (0 or 1)
+    return (bitmap[byte_index] >> (7 - bit_position)) & 0x01;
+}
+
 AbstractBuffer::AbstractBuffer(uint16_t _width, uint16_t _height) : width(_width), height(_height) {
     alphaChannel = new float[width * height];
 }
@@ -110,6 +123,16 @@ void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->greenChannel, rgb->greenChannel, width * height);
     std::memcpy(this->blueChannel, rgb->blueChannel, width * height);
 }
+
+void RGBBuffer::DrawBitmap(
+    uint16_t xpos,
+    uint16_t ypos,
+    uint16_t width,
+    uint16_t height,
+    const ElementStyle& backgroundStyle,
+    const ElementStyle& foregroundStyle,
+    const uint8_t* bitmap
+) {}
 
 void RGBBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
@@ -243,6 +266,16 @@ void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
 }
 
+void RedBlackBuffer::DrawBitmap(
+    uint16_t xpos,
+    uint16_t ypos,
+    uint16_t width,
+    uint16_t height,
+    const ElementStyle& backgroundStyle,
+    const ElementStyle& foregroundStyle,
+    const uint8_t* bitmap
+) {}
+
 void RedBlackBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
 ) {
@@ -344,6 +377,33 @@ void GrayscaleBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     }
     const GrayscaleBuffer* rgb = dynamic_cast<const GrayscaleBuffer*>(&source);
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
+}
+
+void GrayscaleBuffer::DrawBitmap(
+    uint16_t xpos,
+    uint16_t ypos,
+    uint16_t width,
+    uint16_t height,
+    const ElementStyle& backgroundStyle,
+    const ElementStyle& foregroundStyle,
+    const uint8_t* bitmap
+) {
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                blackChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.blackChannel, blackChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                blackChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.blackChannel, blackChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
 }
 
 void GrayscaleBuffer::DrawFilledRectangle(
