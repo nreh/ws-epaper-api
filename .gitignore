@@ -3,3 +3,4 @@ build**
 CMakeFiles/
 CMakeFiles/**
 .vscode/**
+**__pycache__**
