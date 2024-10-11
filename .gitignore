@@ -4,3 +4,4 @@ CMakeFiles/
 CMakeFiles/**
 .vscode/**
 **__pycache__**
+**ignore_**
