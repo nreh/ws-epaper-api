@@ -9,7 +9,10 @@ namespace epaperapi::elements {
 /// @brief Element for drawing text using a font
 template <class Font> class TextElement : public AbstractElement {
   public:
-    static_assert(std::is_base_of<fonts::AbstractFont, Font>::value, "TextElement Font must derive from AbstractFont.");
+    static_assert(
+        std::is_base_of<fonts::AbstractFont, Font>::value,
+        "TextElement Font must derive from AbstractFont. Are you sure you passed in a valid font class?"
+    );
     const fonts::AbstractFont* textFont = nullptr;
 
     /// @brief The style of foreground of the text
