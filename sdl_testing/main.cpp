@@ -23,7 +23,7 @@ int main() {
      * And it is a grayscale display with either fully black or fully white (so grayscale steps = 2)
      */
 
-    SDLDrawTarget sdlTarget(sdlrenderer, 250, 122, SDLDrawTarget::COLORMODE::grayscale); // grayscale means no RGB color
+    SDLDrawTarget sdlTarget(sdlrenderer, 250, 122, SDLDrawTarget::ColorMode::grayscale); // grayscale means no RGB color
     sdlTarget.GrayScaleSteps = 2; // the physical display can only render 2 grayscale steps, either fully black or white.
     epaperapi::Renderer epaperRenderer(sdlTarget);
 
@@ -36,7 +36,7 @@ int main() {
 
     // Create a diagonal line of boxes increasing in opacity.
     for (int x = 0; x <= 13; x++) {
-        auto elem = new epaperapi::FilledRectangleElement(50, 50);
+        auto elem = new epaperapi::elements::FilledRectangleElement(50, 50);
         epaperRenderer.elements.push_back(elem);
         elem->xpos = x * 15;
         elem->ypos = x * 5;
