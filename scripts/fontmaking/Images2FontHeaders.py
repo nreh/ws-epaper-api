@@ -7,7 +7,6 @@ import argparse
 from datetime import datetime
 import traceback
 
-import PIL.Image
 import common
 import os
 from pathlib import Path
@@ -17,6 +16,7 @@ common.requirePackages(["PIL", "numpy"])
 
 # autopep8: off
 import string 
+import PIL.Image
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
@@ -40,9 +40,17 @@ parser.add_argument(
 parser.add_argument(
     '--debug', help='Enable debug tracebacks', action='store_true')
 
+parser.add_argument(
+    '--invertmask', help='Characters whose pixels should be inverted prior to generating bytes. Useful for when bitmap save formats cause issues with coloring.', default='')
+
+parser.add_argument(
+    '--autoinvert', help='When given, any character that is detected to have its colors reversed will be automatically inverted. Use --invertmask to specify which characters to never invert. Useful for when bitmap save formats cause issues with coloring.', action='store_true')
+
 args = parser.parse_args()
 dirs = args.directories
 nopack = args.nopack
+invertmask = args.invertmask
+autoinvert = args.autoinvert
 license = args.license
 
 debug = args.debug
@@ -54,6 +62,8 @@ if nopack:
     print("Warning --nopack flag given means the generated headerfile will probably not be usable.")
 
 print()
+
+autoInvertedChars = []
 
 
 def packElement(bits: bytearray):
@@ -73,12 +83,16 @@ def packElement(bits: bytearray):
         byte = 0
         for j in range(8):
             byte |= (bits[i + j] << (7 - j))
+        if byte > 255 or byte < 0:
+            print(f'Warning byte is {byte}')
         packed.append(byte)
 
     return packed
 
 
 def convertImageToBytes(filename, character, pack):
+    global autoInvertedChars
+
     # Format of bytes:
     #
     # The bits are packed so that 1 byte contains 8 pixels worth of bits.
@@ -95,11 +109,44 @@ def convertImageToBytes(filename, character, pack):
 
     # convert to bits
     arr: np.ndarray = np.asarray(img, dtype=np.uint8)
-    arr = 1 - arr  # invert
+
+    arr = arr.flatten()
+
+    # count number of black pixels vs white
+    white = 0
+    black = 0
+    for i in arr:
+        if i == 1:
+            white += 1
+        else:
+            black += 1
+
+    doInvert = True
+
+    if black > white:
+        # image might not need to be inverted here
+        if autoinvert:
+            if character in invertmask:
+                print(
+                    f'\tCharacter \'{character}\' not inverted due to it being in --invertmask')
+            else:
+                autoInvertedChars.append(character)
+                doInvert = False  # "invert" the colors by basically not inverting
+        else:
+            autoInvertedChars.append(character)
+
+    if autoinvert == False and character in invertmask:
+        doInvert = False
+        print(
+            f'\tCharacter \'{character}\' inverted due to it being in --invertmask')
+
+    if doInvert:
+        arr = 1 - arr  # invert
+
     if pack:
-        data += packElement(bytearray(arr.flatten()))
+        data += packElement(bytearray(arr))
     else:
-        data += bytearray(arr.flatten())
+        data += bytearray(arr)
 
     return img.height, img.width, data
 
@@ -218,6 +265,19 @@ for d in dirs:
         print(
             f'\tGenerated {cppFontname(config["name"], config["fontsize"])}.h')
 
+        if autoinvert:
+            if len(autoInvertedChars) == 0:
+                print('\tNo characters auto-inverted')
+            else:
+                print(
+                    f'\tAutoinverted the following characters: {"".join(autoInvertedChars)}')
+        else:
+            if len(autoInvertedChars) > 0:
+                print(
+                    f'\tNote: The following characters may have broken colors: {"".join(autoInvertedChars)}')
+                print(
+                    '\tRerun this script with --autoinvert to automatically fix them')
+
     except Exception as e:
         print(f'ERROR: Skipping {d} - {str(e)}')
 
@@ -228,3 +288,5 @@ for d in dirs:
 
 print()
 print("Done!")
+
+print()
