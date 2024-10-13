@@ -79,9 +79,7 @@ template <class Font> class TextElement : public AbstractElement {
         for (int i = 0; i < text.length(); i++) {
             // draw character
             bufferXpos += DrawCharacter(target, text[i], bufferXpos);
-            if (i > 0) {
-                bufferXpos += characterSpacing;
-            }
+            bufferXpos += characterSpacing;
         }
     }
 };
