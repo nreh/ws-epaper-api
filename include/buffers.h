@@ -61,6 +61,12 @@ class AbstractBuffer {
 
     // Some helpful utility functions for drawing shapes and stuff on the buffer
 
+    /// @brief Draw a pixel at a specified x and y position
+    /// @param xpos X position in pixels to draw the pixel
+    /// @param ypos Y position in pixels to draw the pixel
+    /// @param style Pixel will be drawn in this style
+    virtual void DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) = 0;
+
     /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
     /// pixels in a byte - 1 bit for each pixel.)
     /// @param xpos X position in pixels to draw the bitmap on the buffer
@@ -132,6 +138,12 @@ class RGBBuffer : public AbstractBuffer {
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 
+    /// @brief Draw a pixel at a specified x and y position
+    /// @param xpos X position in pixels to draw the pixel
+    /// @param ypos Y position in pixels to draw the pixel
+    /// @param style Pixel will be drawn in this style
+    void DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) override;
+
     /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
     /// pixels in a byte - 1 bit for each pixel.)
     /// @param xpos X position in pixels to draw the bitmap on the buffer
@@ -202,6 +214,12 @@ class RedBlackBuffer : public AbstractBuffer {
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
 
+    /// @brief Draw a pixel at a specified x and y position
+    /// @param xpos X position in pixels to draw the pixel
+    /// @param ypos Y position in pixels to draw the pixel
+    /// @param style Pixel will be drawn in this style
+    void DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) override;
+
     /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
     /// pixels in a byte - 1 bit for each pixel.)
     /// @param xpos X position in pixels to draw the bitmap on the buffer
@@ -270,6 +288,12 @@ class GrayscaleBuffer : public AbstractBuffer {
     AbstractBuffer* CreateBufferOfSameType(uint16_t width, uint16_t height) override;
 
     void CopyBufferFrom(const AbstractBuffer& source) override;
+
+    /// @brief Draw a pixel at a specified x and y position
+    /// @param xpos X position in pixels to draw the pixel
+    /// @param ypos Y position in pixels to draw the pixel
+    /// @param style Pixel will be drawn in this style
+    void DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) override;
 
     /// @brief Draw pixels on the buffer given a bitmap of 0s and 1s (note, the bitmap is assumed to be packed, ie. each 8
     /// pixels in a byte - 1 bit for each pixel.)

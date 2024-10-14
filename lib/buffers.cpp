@@ -124,6 +124,17 @@ void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->blueChannel, rgb->blueChannel, width * height);
 }
 
+void RGBBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) {
+    if (xpos > width || ypos > height) {
+        return;
+    }
+
+    redChannel[ypos * width + xpos] = utils::BlendPixel(style.redChannel, redChannel[ypos * width + xpos], style.alpha);
+    greenChannel[ypos * width + xpos] =
+        utils::BlendPixel(style.greenChannel, greenChannel[ypos * width + xpos], style.alpha);
+    blueChannel[ypos * width + xpos] = utils::BlendPixel(style.blueChannel, blueChannel[ypos * width + xpos], style.alpha);
+}
+
 void RGBBuffer::DrawBitmap(
     uint16_t xpos,
     uint16_t ypos,
@@ -266,6 +277,16 @@ void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
 }
 
+void RedBlackBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) {
+    if (xpos > width || ypos > height) {
+        return;
+    }
+
+    blackChannel[ypos * width + xpos] =
+        utils::BlendPixel(style.blackChannel, blackChannel[ypos * width + xpos], style.alpha);
+    redChannel[ypos * width + xpos] = utils::BlendPixel(style.redChannel, redChannel[ypos * width + xpos], style.alpha);
+}
+
 void RedBlackBuffer::DrawBitmap(
     uint16_t xpos,
     uint16_t ypos,
@@ -377,6 +398,15 @@ void GrayscaleBuffer::CopyBufferFrom(const AbstractBuffer& source) {
     }
     const GrayscaleBuffer* rgb = dynamic_cast<const GrayscaleBuffer*>(&source);
     std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
+}
+
+void GrayscaleBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) {
+    if (xpos > width || ypos > height) {
+        return;
+    }
+
+    blackChannel[ypos * width + xpos] =
+        utils::BlendPixel(style.blackChannel, blackChannel[ypos * width + xpos], style.alpha);
 }
 
 void GrayscaleBuffer::DrawBitmap(
