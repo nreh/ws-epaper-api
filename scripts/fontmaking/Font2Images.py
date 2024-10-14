@@ -17,15 +17,18 @@ common.requirePackages(["PIL"])
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
+from PIL import BdfFontFile
+from PIL import PcfFontFile
 # autopep8: on
 
 parser = argparse.ArgumentParser(
     prog='Font2Images.py',
-    description='Generates images from a .ttf file that can be manually editted and later turned into a C++ font headerfile',
+    description='Generates images from a font file that can be manually editted and later turned into a C++ font headerfile',
     epilog="Example: Font2Images.py CourierPrime.ttf 'Courier Prime' 8 12 14 16"
 )
 
-parser.add_argument("fontfile", help='Path to ttf font file to convert')
+parser.add_argument(
+    "fontfile", help='Path to font file to convert (if using bitmap fonts pass the --bitmap flag)')
 parser.add_argument("fontname", help="Name of the font")
 parser.add_argument("sizes", nargs='+', help="Sizes of the font to convert")
 parser.add_argument("--charset", required=False,
@@ -70,6 +73,7 @@ def generateCharacterImage(character, font, characterHeight) -> Image.Image:
     w, h = font.getsize(character)
     image = Image.new('1', (w, characterHeight), 1)
     draw = ImageDraw.Draw(image)
+    draw.fontmode = '1'
     draw.text((0, 0), character, font=font)
     return image
 
@@ -79,7 +83,27 @@ for s in sizes:
     dir = f'./{fontname}_{s}pt/'
     os.makedirs(dir)
 
-    font = ImageFont.truetype(args.fontfile, int(s))
+    try:
+        font = ImageFont.truetype(args.fontfile, int(s))  # true type font
+    except Exception as e1:
+        try:
+            print(
+                f'\tUnable to load {args.fontfile} as a truetype font ({str(e1)}), trying .pil instead...')
+            font = ImageFont.load(args.fontfile)
+        except Exception as e2:
+            print(
+                f'\tUnable to load {args.fontfile} as a .pil either ({str(e2)}), trying to convert to .pil...')
+            fp = open(args.fontfile, "rb")
+            try:
+                p = PcfFontFile.PcfFontFile(fp)
+            except SyntaxError:
+                fp.seek(0)
+                p = BdfFontFile.BdfFontFile(fp)
+
+            p.save(args.fontfile)
+            ff = os.path.splitext(args.fontfile)[0] + ".pil"
+
+            font = ImageFont.load(ff)
 
     minHeight, maxHeight = determineMaxCharsetHeight(
         charset, font)  # all characters must have the same height, this helps us clamp to a height where all chars will fit
