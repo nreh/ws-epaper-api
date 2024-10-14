@@ -4,7 +4,7 @@ This file contains scripts for creating fonts from font files and images that ca
 
 - **Font2Images.py**: Generate .bmp images of characters from a fontfile (supports truetype, bcf, pdf).
 
-- **CreateEmpty**: Generate empty .bmp images from a characterset. Useful when you want to create a font from scratch.
+- **CreateEmpty.py**: Generate empty .bmp images from a characterset. Useful when you want to create a font from scratch.
 
 - **Images2FontHeaders.py**: From a folder of .bmp images, create a C++ headerfile that can be imported and used by the the
   ws-epaper-api's `TextElement`.
@@ -52,7 +52,7 @@ CourierPrime_16pt.h
 Now you can move these files into your include directory and use them in the `TextElement`!
 
 ```cpp
-epaperapi::elements::TextElement<epaperapi::fonts::CourierPrime_14pt font1> text1("Hello World!");
+TextElement<CourierPrime_14pt font1> text1("Hello World!");
 ```
 
 ## 💡 Tips
