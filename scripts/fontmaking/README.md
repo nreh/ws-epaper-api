@@ -1,8 +1,9 @@
 # 🔤 Font Making
 
-This file contains scripts for creating fonts from font files and images that can then be used by `TextElement`.
+This folder contains scripts for creating fonts from font files and images that can then be used by
+[`TextElement`](../../include/elements/TextElement.h).
 
-- **Font2Images.py**: Generate .bmp images of characters from a fontfile (supports truetype, bcf, pdf).
+- **Font2Images.py**: Generate .bmp images of characters from a fontfile (supports truetype, bcf, pcf).
 
 - **CreateEmpty.py**: Generate empty .bmp images from a characterset. Useful when you want to create a font from scratch.
 
