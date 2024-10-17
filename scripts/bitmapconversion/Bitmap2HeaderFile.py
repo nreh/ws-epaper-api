@@ -19,7 +19,7 @@ import PIL.ImageOps
 # autopep8: on
 
 parser = argparse.ArgumentParser(
-    prog='Bitmap2HeaderFiles.py',
+    prog='Bitmap2HeaderFile.py',
     description='Converts 1-bit .bmp files to C++ header files usable by ws-epaper-api'
 )
 
@@ -63,7 +63,7 @@ def bytesToString(bytes: bytearray):
 
 def generateHeaderfile(width, height, bytes):
     return f"""/**
- * This file was generated automatically using scripts/bitmapconversion/Bitmap2HeaderFiles.py
+ * This file was generated automatically using scripts/bitmapconversion/Bitmap2HeaderFile.py
  */
  
 #pragma once
