@@ -1,5 +1,5 @@
 /**
- * This file was generated automatically using scripts/bitmapconversion/Bitmap2HeaderFiles.py
+ * This file was generated automatically using scripts/bitmapconversion/Bitmap2HeaderFile.py
  */
 
 #pragma once
