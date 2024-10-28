@@ -1,6 +1,7 @@
 #pragma once
 
 #include "buffers.h"
+#include <cstring>
 #include <stdint.h>
 
 /**
@@ -153,6 +154,121 @@ inline void TransformBuffer(AbstractBuffer& source, AbstractBuffer& destination,
     }
 
     source.Transform(*func, destination);
+}
+
+// RGB buffer operations - (thanks ChatGPT!)
+
+// Convert RGBBuffer to 1-bit monochrome (black & white)
+inline void convertToMonochrome(const RGBBuffer& buffer, uint8_t* output) {
+    uint16_t width = buffer.width;
+    uint16_t height = buffer.height;
+    int byteWidth = (width + 7) / 8;
+    memset(output, 0, byteWidth * height);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int idx = y * width + x;
+            uint8_t red = buffer.redChannel[idx];
+            uint8_t green = buffer.greenChannel[idx];
+            uint8_t blue = buffer.blueChannel[idx];
+            uint8_t brightness = (red + green + blue) / 3;
+            if (brightness > 127) {
+                output[y * byteWidth + (x / 8)] |= (0x80 >> (x % 8));
+            }
+        }
+    }
+}
+
+// Convert RGBBuffer to 4-bit grayscale
+inline void convertTo4BitGrayscale(const RGBBuffer& buffer, uint8_t* output) {
+    uint16_t width = buffer.width;
+    uint16_t height = buffer.height;
+    int byteWidth = (width + 1) / 2;
+    memset(output, 0, byteWidth * height);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int idx = y * width + x;
+            uint8_t red = buffer.redChannel[idx];
+            uint8_t green = buffer.greenChannel[idx];
+            uint8_t blue = buffer.blueChannel[idx];
+            uint8_t brightness = (red + green + blue) / 3;
+            uint8_t grayscale = brightness / 17; // Scale to 0-15
+
+            if (x % 2 == 0) {
+                output[y * byteWidth + (x / 2)] |= (grayscale << 4);
+            } else {
+                output[y * byteWidth + (x / 2)] |= grayscale;
+            }
+        }
+    }
+}
+
+// Convert RGBBuffer to 4-bit color (16 colors)
+inline void convertTo4BitColor(const RGBBuffer& buffer, uint8_t* output) {
+    uint16_t width = buffer.width;
+    uint16_t height = buffer.height;
+    int byteWidth = (width + 1) / 2;
+    memset(output, 0, byteWidth * height);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int idx = y * width + x;
+            uint8_t red = buffer.redChannel[idx];
+            uint8_t green = buffer.greenChannel[idx];
+            uint8_t blue = buffer.blueChannel[idx];
+            uint8_t colorIdx = 0;
+
+            // Simple color quantization to 4-bit color index
+            if (red > 127)
+                colorIdx |= 0b1000;
+            if (green > 127)
+                colorIdx |= 0b0100;
+            if (blue > 127)
+                colorIdx |= 0b0010;
+
+            if (x % 2 == 0) {
+                output[y * byteWidth + (x / 2)] |= (colorIdx << 4);
+            } else {
+                output[y * byteWidth + (x / 2)] |= colorIdx;
+            }
+        }
+    }
+}
+
+// Convert RGBBuffer to 8-bit RGB (256 colors)
+inline void convertTo8BitRGB(const RGBBuffer& buffer, uint8_t* output) {
+    uint16_t width = buffer.width;
+    int height = buffer.height;
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int idx = y * width + x;
+            uint8_t red = buffer.redChannel[idx] >> 5;     // 3 bits
+            uint8_t green = buffer.greenChannel[idx] >> 5; // 3 bits
+            uint8_t blue = buffer.blueChannel[idx] >> 6;   // 2 bits
+
+            output[idx] = (red << 5) | (green << 2) | blue;
+        }
+    }
+}
+
+// Convert RGBBuffer to 16-bit RGB (5-6-5 format)
+inline void convertTo16BitRGB(const RGBBuffer& buffer, uint8_t* output) {
+    uint16_t width = buffer.width;
+    uint16_t height = buffer.height;
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int idx = y * width + x;
+            uint8_t red = buffer.redChannel[idx] >> 3;     // 5 bits
+            uint8_t green = buffer.greenChannel[idx] >> 2; // 6 bits
+            uint8_t blue = buffer.blueChannel[idx] >> 3;   // 5 bits
+
+            output[2 * idx] = ((red << 3) | (green >> 3)) & 0xFF;
+            output[2 * idx + 1] = ((green << 5) | blue) & 0xFF;
+        }
+    }
 }
 
 } // namespace utils
