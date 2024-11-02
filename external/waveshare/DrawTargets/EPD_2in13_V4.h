@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../EPD_Common.h"
+
 extern "C" {
 #include <DEV_Config.h>
 }
