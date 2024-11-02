@@ -5,6 +5,7 @@
 
 namespace epaperapi {
 
+/// @brief Indicates how the display should be refreshed. When in doubt, use Normal.
 enum class RefreshMode { Normal, Fast, Partial };
 
 namespace devices {
