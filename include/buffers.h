@@ -12,7 +12,7 @@ enum class BufferType { AbstractBuffer, RGBBuffer, RedBlackBuffer, GrayscaleBuff
 static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBlackBuffer", "GrayscaleBuffer"};
 
 /**
- * @brief A block of memory representing a rectangle of pixels.
+ * @brief A buffer is a block of memory representing a rectangle of pixels.
  *
  * There are different types of buffers depending on the
  * physical capabilities of the device you're trying to draw on. For example, an e-paper display with only grayscale has no
