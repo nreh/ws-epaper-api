@@ -5,9 +5,6 @@
 extern "C" {
 #include <DEV_Config.h>
 }
-#include <bufferutils.h>
-#include <memory>
-#include <wsepaperapi.h>
 
 namespace epaperapi {
 
@@ -96,7 +93,7 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
     }
 
     /// @brief Refresh the display with current buffer
-    /// @param mode
+    /// @param mode How to refresh the display
     void Refresh(RefreshMode mode) override {
         epaperapi::utils::PosterizeGrayscale(_buffer, 2);
 
@@ -114,7 +111,7 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
             break;
 
         default:
-            return; // todo: Throw unsupport refreshmode exception...
+            throw UnsupportedRefreshMode(mode, "EPD_2in13_V4");
         }
     }
 
