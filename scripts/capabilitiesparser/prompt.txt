@@ -1,0 +1,63 @@
+I'm going to give you a C++ header file, I want you to parse details of a pixel display. There are many possible types of displays, some with different widths/heights and colors that can be rendered. I want you to parse the following information from the headerfile:
+
+FullName = ""  # example: 2.13inch e-paper V4
+ScreenWidth = 0  # example: 122
+ScreenHeight = 0  # example: 250
+SupportedColorChannels = []  # possible values: 'black', 'red', 'green', 'blue', 'yellow', etc...
+
+Also, for SupportedColorChannels, if only one color channel is given (for example in the function void EPD_2IN13_Display(UBYTE *Image); only one channel is passed) assume it is 'black'. If there are two, assume 'red', 'black'. Obviously, if the name of the variables suggests something different then use that instead.
+
+Furthermore, in some cases, certain displays support 'gray' or 'white' colors. Those colors fall under black - in no scenario should a 'gray' or 'white' color be added to the support color channels. They can be safely ignored and assumed to be covered by the 'black' color channel. For example: if BLACK and WHITE are mentioned, only put the "black" color channel in. Same goes for if a GRAY is encountered. However, do mention any occurrences of this happening in the notes section.
+
+In addition, record any function or functions under the following categories:
+
+"Initialize", "Clear", "Display", "Display_Base", "Display_Partial", "Display_Fast, "Display_Misc", "Sleep", "Misc"
+
+The name of the function and its arguments should be recorded like so:
+
+    void EPD_2IN13_Display(UBYTE *Image);
+
+    becomes
+
+    EPD_2IN13_Display(UBYTE *Image)
+
+The last category "Misc" is for functions that fall under none of the categories or if you're unsure as to what category it falls under.
+
+Your response should be a JSON format that looks like this (without the comments):
+
+{
+    "FullName": "",
+    "ScreenWidth": "",
+    "ScreenHeight": "",
+    "SupportedColorChannels": [ list of strings... ]
+    "Functions": {
+        "Initialize": [ list of strings... ],
+        "Clear": [ list of strings... ],
+        "Display": [ list of strings... ], // For example: EPD_5in79_Display(const UBYTE *Image)
+        "Display_Base": [ list of strings... ], // For example: "EPD_5in79_Display_Base(const UBYTE *Image)"
+        "Display_Partial": [ list of strings... ],
+        "Display_Fast": [ list of strings... ],
+        "Display_Misc": [ list of strings... ], // example: EPD_5in79_Display_Base_color(UBYTE color) would go here since it's for displaying a base color 
+        "Sleep": [ list of strings... ],
+        "Misc": [ list of strings...]
+    },
+    "Notes": ""
+}
+
+Under the "Notes" key, put any warnings or confusions you had while parsing. It's better to put something here than to leave it blank. One important thing is why you chose your specific choice of color channels. Another is the categorization of the functions.
+
+Your response should JUST be the JSON, nothing else! This includes any markdown formatting,
+
+THIS:
+
+{
+    "foo": "bar"
+}
+
+NOT THIS:
+
+```json
+{
+    "foo": "bar"
+}
+```
