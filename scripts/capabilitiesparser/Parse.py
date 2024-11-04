@@ -43,6 +43,9 @@ parser.add_argument(
 parser.add_argument(
     "--output", help='Directory to output parsed results - default is \'./results\'', default='./results')
 
+parser.add_argument('--full',
+                    help='By default files that have already been parsed will not be reparsed. If this flag is passed all files regardless of whether they have been parsed or not will be reparsed and have .json files regenerated.', action='store_true', default=False)
+
 args = parser.parse_args()
 
 headerpath = args.headerpath
@@ -51,6 +54,7 @@ singlemode = args.single
 model = args.model
 promptfile = args.prompt
 outputdir = args.output
+fullMode = args.full
 
 # * Model and prompt file
 # ************************
@@ -148,8 +152,8 @@ class EPaperDetails:
     Contains details parsed from the header files
     """
 
-    def __init__(self):
-        self.filename = ""  # name of the source file this information was extracted from
+    def __init__(self, filename):
+        self.filename = filename  # name of the source file this information was extracted from
         self.name = ""  # example: EPD_2in13_V4
         self.fullPath = ""  # example: epaper/e-Paper/EPD_2in13_V4.h
         self.fullName = ""  # example: 2.13inch e-paper V4
@@ -229,7 +233,7 @@ class EPaperDetails:
         )
 
         while run.status == 'in_progress':
-            time.sleep(1)
+            time.sleep(0.25)
 
         if run.status == 'completed':
             result = client.beta.threads.messages.list(
@@ -279,7 +283,7 @@ class EPaperDetails:
 
         outputPath = pathlib.Path(outputDirectory)
 
-        out = open(outputPath / (self.name + '.json'),
+        out = open(outputPath / (self.filename + '.json'),
                    'w', encoding='utf-8', errors='replace')
         json.dump(self.toJson(), out, indent=2)
         out.close()
@@ -292,13 +296,13 @@ if singlemode:
     print()
     with alive_bar(bar=None, title=pathlib.Path(headerpath).name, monitor=None) as prog:
         try:
-            det = EPaperDetails()
+            det = EPaperDetails(pathlib.Path(headerpath).stem)
             det.ParseFromHeaderFile(headerpath)
             det.ParseExampleFile(examplepath)
             det.Save(outputdir)
         except Exception as e:
             function_name = traceback.extract_tb(e.__traceback__)[-1].name
-            print(f'[!] {headerpath}: {str(e)} in function {function_name}()')
+            print(f'[X] {headerpath}: {str(e)} in function {function_name}()')
 
     print()
     print('--------------------')
@@ -312,7 +316,7 @@ else:
 
     # find all .c source files in the examplepath directory
     examplefiles = [os.path.join(examplepath, f) for f in os.listdir(
-        examplepath) if os.path.isfile(os.path.join(examplepath, f)) and f.endswith('.h')]
+        examplepath) if os.path.isfile(os.path.join(examplepath, f)) and f.endswith('.c')]
     print(
         f'Found {len(examplefiles)} header files in the {examplepath} directory')
 
@@ -321,16 +325,34 @@ else:
             f"Warning, mismatch between number of header files ({len(headerfiles)}) and number of example files ({len(examplefiles)})!")
 
     print()
-    with alive_bar(len(headerfiles), title_lenth=10) as prog:
+    with alive_bar(len(headerfiles), title_length=20) as prog:
         for h in headerfiles:
             name = pathlib.Path(h).stem
             prog.title = name
-            try:
-                det = EPaperDetails()
-                det.ParseFromHeaderFile()
-                det.Save(outputdir)
-            except Exception as e:
-                function_name = traceback.extract_tb(e.__traceback__)[-1].name
+
+            if not fullMode and (pathlib.Path(outputdir) / f'{name}.json').exists():
+                # don't regenerate existing json
                 print(
-                    f'[!] {headerpath}: {str(e)} in function {function_name}()')
+                    f'[!] Skipping processing of {name}.h due to existing file {name}.json')
+            else:
+                try:
+                    det = EPaperDetails(name)
+                    det.ParseFromHeaderFile(h)
+
+                    # find example file
+                    examplename = det.filename + '_test.c'
+                    exFile = pathlib.Path(examplepath) / examplename
+
+                    if exFile.exists():
+                        det.ParseExampleFile(str(exFile))
+                    else:
+                        print(
+                            f"[!] Unable to find example file for {name} (file {examplename} does not exist in example directory)")
+
+                    det.Save(outputdir)
+                except Exception as e:
+                    function_name = traceback.extract_tb(
+                        e.__traceback__)[-1].name
+                    print(
+                        f'[X] {name}.h: {str(e)} in function {function_name}()')
             prog()
