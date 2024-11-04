@@ -75,8 +75,8 @@ python3 Parse.py ./HeaderFiles ./ExampleFiles
 The script will find all header files in the `HeaderFiles` folder and send them to ChatGPT for parsing. Then, it will attempt
 to find a matching example file in the `ExampleFiles` folder and fill in any remaining information.
 
-> [!NOTE] Due to OpenAI's rate limiting, you'll probably have to re-run the script multiple times to get all header files
-> parsed. Don't worry, any header files that have already been processed will be skipped.
+> [!NOTE]
+> Due to OpenAI's rate limiting, you'll probably have to re-run the script multiple times to get all header files parsed. Don't worry, any header files that have already been processed will be skipped.
 
 ### Example JSON
 
