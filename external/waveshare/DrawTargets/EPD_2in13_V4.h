@@ -31,7 +31,7 @@ const int DEVICE_MEMORYWIDTH = DEVICE_WIDTH % 8 == 0 ? DEVICE_WIDTH / 8 : DEVICE
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = EPD_2in13_V4_HEIGHT;
 
-class EPD_2in13_DrawTarget : public AbstractDrawTarget {
+class EPD_2in13_DrawTarget : public PhysicalEPD {
   private:
     GrayscaleBuffer _buffer;
 
@@ -115,7 +115,7 @@ class EPD_2in13_DrawTarget : public AbstractDrawTarget {
         }
     }
 
-    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), AbstractDrawTarget(_buffer) {
+    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), PhysicalEPD(_buffer) {
         buffer.FillBuffer(255);
         InitializeSPI();
     }

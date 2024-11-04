@@ -1,17 +1,13 @@
 #pragma once
 
-#include <bufferutils.h>
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <wsepaperapi.h>
 
+#include "../include/wsepaperapi.h"
 #include "DEV_Config.h"
 
 namespace epaperapi {
-
-/// @brief Indicates how the display should be refreshed. When in doubt, use Normal.
-enum class RefreshMode { Normal, Fast, Partial };
 
 namespace devices {
 
@@ -27,6 +23,8 @@ class UnsupportedRefreshMode : public std::runtime_error {
 class PhysicalEPD : public AbstractDrawTarget {
   protected:
     bool Open = false;
+
+    PhysicalEPD(AbstractBuffer& _buffer) : AbstractDrawTarget(_buffer) {}
 
   public:
     /// @brief Whether or not the SPI connection / pins are set up. Calling `Exit()` will result in this returning false.

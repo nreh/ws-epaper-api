@@ -3,7 +3,6 @@
 /// @brief The base ws-epaper-api namespace
 namespace epaperapi {}
 
-#include "EPD_Common.h"
 #include "buffers.h"
 #include "bufferutils.h"
 #include "debug.h"
@@ -13,6 +12,9 @@ namespace epaperapi {}
 #include <vector>
 
 namespace epaperapi {
+
+/// @brief Indicates how the display should be refreshed. When in doubt, use Normal.
+enum class RefreshMode { Normal, Fast, Partial };
 
 /// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display.
 class AbstractDrawTarget {
@@ -84,3 +86,5 @@ class Renderer {
 };
 
 } // namespace epaperapi
+
+#include "../external/waveshare/EPD_Common.h"
