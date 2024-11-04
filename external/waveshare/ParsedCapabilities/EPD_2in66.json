@@ -1,0 +1,31 @@
+{
+  "FullName": "2.66inch e-paper",
+  "ScreenWidth": 152,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN66_Init(void)",
+      "EPD_2IN66_Init_partial()"
+    ],
+    "Clear": [
+      "EPD_2IN66_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN66_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN66_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display functions suggest single-channel display capability with default support for 'black'. The EPD_2IN66_Init_partial function suggests partial initialization or operation mode, which is not entirely clear.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

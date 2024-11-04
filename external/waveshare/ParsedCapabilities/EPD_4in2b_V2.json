@@ -1,0 +1,31 @@
+{
+  "FullName": "4.2inch e-paper b&c V1.0",
+  "ScreenWidth": 400,
+  "ScreenHeight": 300,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN2B_V2_Init(void)"
+    ],
+    "Clear": [
+      "EPD_4IN2B_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_4IN2B_V2_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN2B_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The function EPD_4IN2B_V2_Display uses two images, assumed to relate to 'black' and 'red' channels. No additional colors or functionality descriptions are apparent from the function names or comments.",
+  "PaintRotation": 180,
+  "BitmapFunction": "GUI_ReadBmp"
+}

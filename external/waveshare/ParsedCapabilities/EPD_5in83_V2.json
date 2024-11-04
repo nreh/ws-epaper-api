@@ -1,0 +1,30 @@
+{
+  "FullName": "5.83inch e-paper V2",
+  "ScreenWidth": 648,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5in83_V2_Init(void)"
+    ],
+    "Clear": [
+      "EPD_5in83_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_5in83_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_5in83_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels is set to 'black' as no additional color channels are mentioned or implied by the function signatures. The function names align with typical operations for initializing, clearing, displaying, and sleeping which are standard for e-paper displays.",
+  "PaintRotation": 180,
+  "BitmapFunction": "GUI_ReadBmp"
+}

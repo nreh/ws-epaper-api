@@ -1,0 +1,32 @@
+{
+  "FullName": "2.9inch e-paper d",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9D_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN9D_Clear()"
+    ],
+    "Display": [
+      "EPD_2IN9D_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_2IN9D_DisplayPart(UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN9D_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "No specific color channels are mentioned; 'black' is assumed from standard practices. The function EPD_2IN9D_DisplayPart suggests partial updates. Categorization of functions was based on typical naming conventions for e-paper displays.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

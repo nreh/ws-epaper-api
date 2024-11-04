@@ -1,0 +1,30 @@
+{
+  "FullName": "2.13inch DES e-paper",
+  "ScreenWidth": 104,
+  "ScreenHeight": 212,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13_DES_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN13_DES_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN13_DES_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13_DES_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN13_DES_Display function only takes a single image pointer indicating support for 'black' only. No additional color channels are specified in the header file.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

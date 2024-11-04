@@ -1,0 +1,38 @@
+{
+  "FullName": "3.7inch e-paper",
+  "ScreenWidth": 280,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_3IN7_4Gray_Init(void)",
+      "EPD_3IN7_1Gray_Init(void)"
+    ],
+    "Clear": [
+      "EPD_3IN7_4Gray_Clear(void)",
+      "EPD_3IN7_1Gray_Clear(void)"
+    ],
+    "Display": [
+      "EPD_3IN7_4Gray_Display(const UBYTE *Image)",
+      "EPD_3IN7_1Gray_Display(const UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_3IN7_1Gray_Display_Part(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_3IN7_1Gray_Display_Dithered(const UBYTE *Image, int Ditherer)"
+    ],
+    "Sleep": [
+      "EPD_3IN7_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels is set to 'black' due to the presence of 4GRAY functions which suggest support for gray shades, interpreted under the 'black' channel according to the rules. Functions like EPD_3IN7_1Gray_Display_Dithered suggest complex gray rendering but don't add additional colors beyond what's covered.",
+  "PaintScale": 4,
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

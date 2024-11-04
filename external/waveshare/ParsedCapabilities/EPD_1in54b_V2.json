@@ -1,0 +1,31 @@
+{
+  "FullName": "1.54inch e-paper b V2",
+  "ScreenWidth": 200,
+  "ScreenHeight": 200,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54B_V2_Init(void)"
+    ],
+    "Clear": [
+      "EPD_1IN54B_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_1IN54B_V2_Display(const UBYTE *blackimage, const UBYTE *redimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54B_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display function EPD_1IN54B_V2_Display deals with two color channels: black and red. Thus, they were chosen for the SupportedColorChannels. No occurrence of gray or white was noted, so no deductions were made in the color channels for those cases.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

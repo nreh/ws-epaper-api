@@ -1,0 +1,30 @@
+{
+  "FullName": "7.5inch e-paper",
+  "ScreenWidth": 640,
+  "ScreenHeight": 384,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5_Init()"
+    ],
+    "Clear": [
+      "EPD_7IN5_Clear()"
+    ],
+    "Display": [
+      "EPD_7IN5_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN5_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display uses a single channel, assumed to be 'black', as indicated by the argument in EPD_7IN5_Display(). No additional colors like red or blue are mentioned, suggesting it only supports the black color channel.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

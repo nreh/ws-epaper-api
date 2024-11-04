@@ -1,0 +1,33 @@
+{
+  "FullName": "4.37inch e-Paper G V1.0",
+  "ScreenWidth": 512,
+  "ScreenHeight": 368,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "yellow"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN37G_Init(void)"
+    ],
+    "Clear": [
+      "EPD_4IN37G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_4IN37G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN37G_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The supported colors black, red, and yellow are derived from the defined color constants. The function names correspond clearly to their purpose and can be categorized accordingly.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

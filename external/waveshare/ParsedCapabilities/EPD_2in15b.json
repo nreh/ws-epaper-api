@@ -1,0 +1,33 @@
+{
+  "FullName": "2.15inch e-paper b",
+  "ScreenWidth": 160,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN15B_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN15B_Clear(void)",
+      "EPD_2IN15B_Clear_Black(void)",
+      "EPD_2IN15B_Clear_Red(void)"
+    ],
+    "Display": [
+      "EPD_2IN15B_Display(UBYTE *ImageBlack, UBYTE*ImageRed)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN15B_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels include 'black' and 'red' due to the presence of EPD_2IN15B_Display function which accepts black and red image inputs. The only clearing options are for overall, black, and red.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

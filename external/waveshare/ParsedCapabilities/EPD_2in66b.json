@@ -1,0 +1,31 @@
+{
+  "FullName": "2.66inch e-paper b",
+  "ScreenWidth": 152,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN66B_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN66B_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN66B_Display(UBYTE *ImageBlack, UBYTE*ImageRed)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN66B_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN66B_Display function and the naming of its parameters indicate support for 'black' and 'red' color channels.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

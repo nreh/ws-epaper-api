@@ -1,0 +1,39 @@
+{
+  "FullName": "5.65inch e-paper",
+  "ScreenWidth": 600,
+  "ScreenHeight": 448,
+  "SupportedColorChannels": [
+    "black",
+    "green",
+    "blue",
+    "red",
+    "yellow",
+    "orange"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_Init()",
+      "EPD_5IN65F_Init()"
+    ],
+    "Clear": [
+      "EPD_5IN65F_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_5IN65F_Display(const UBYTE *image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_5IN65F_Display_part(const UBYTE *image, UWORD xstart, UWORD ystart, UWORD image_width, UWORD image_heigh)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_5IN65F_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports a variety of colors including black, green, blue, red, yellow, and orange as indicated by the defined color indices. White was ignored based on instructions since it does not offer a unique channel but falls under black. The 'clean' color was not included in SupportedColorChannels since it was marked as unavailable and suggested for 'Afterimage' which is not suitable for regular color display. Function categorization was based on their naming and assumed functionality.",
+  "PaintScale": 7,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_7Color"
+}

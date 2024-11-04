@@ -1,0 +1,31 @@
+{
+  "FullName": "1.54inch e-paper b",
+  "ScreenWidth": 200,
+  "ScreenHeight": 200,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54B_Init()"
+    ],
+    "Clear": [
+      "EPD_1IN54B_Clear()"
+    ],
+    "Display": [
+      "EPD_1IN54B_Display(const UBYTE *blackimage, const UBYTE *redimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54B_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports black and red color channels, as interpreted from the dual image pointers in the EPD_1IN54B_Display function. The header suggests changes from prior versions but does not impact the supported colors for this display. Function categorization is straightforward based on their naming.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

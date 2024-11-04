@@ -1,0 +1,33 @@
+{
+  "FullName": "7.5inch e-paper V2",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5_V2_Init(void)",
+      "EPD_7IN5_V2_Init_Fast(void)",
+      "EPD_7IN5_V2_Init_Partial(void)"
+    ],
+    "Clear": [
+      "EPD_7IN5_V2_Clear(void)",
+      "EPD_7IN5_V2_ClearBlack(void)"
+    ],
+    "Display": [
+      "EPD_7IN5_V2_Display(UBYTE *blackimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_7IN5_V2_Display_Partial(UBYTE *blackimage, UDOUBLE x_start, UDOUBLE y_start, UDOUBLE x_end, UDOUBLE y_end)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN5_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_7IN5_V2_Display function uses a single image pointer, indicating support primarily for the 'black' channel. Additional Initializations suggest fast and partial mode setups which might affect the display's refresh rate and capability. Function names align with typical categories."
+}

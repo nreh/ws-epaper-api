@@ -1,0 +1,35 @@
+{
+  "FullName": "EPD 5.79 inch g",
+  "ScreenWidth": 792,
+  "ScreenHeight": 272,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5in79g_Init(void)"
+    ],
+    "Clear": [
+      "EPD_5in79g_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_5in79g_Display(const UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_5in79g_Show(void)"
+    ],
+    "Sleep": [
+      "EPD_5in79g_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "'black', 'yellow', and 'red' color channels are supported as indicated by the defined colors. The presence of 'white' is ignored based on the instructions, as it's managed within 'black'. 'EPD_5in79g_Show' was categorized under Display_Misc, as it may relate to display functions but specifics are unclear.",
+  "PaintScale": 4,
+  "PaintRotation": 180,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

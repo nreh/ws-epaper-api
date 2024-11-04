@@ -1,0 +1,30 @@
+{
+  "FullName": "2.9inch e-paper",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9_Init(UBYTE Mode)"
+    ],
+    "Clear": [
+      "EPD_2IN9_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN9_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN9_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels is set to 'black' as there are no indications of any color support beyond black and white. No functions suggest the support of additional color channels.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

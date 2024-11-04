@@ -1,0 +1,30 @@
+{
+  "FullName": "5.83inch e-paper",
+  "ScreenWidth": 600,
+  "ScreenHeight": 448,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5IN83_Init()"
+    ],
+    "Clear": [
+      "EPD_5IN83_Clear()"
+    ],
+    "Display": [
+      "EPD_5IN83_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_5IN83_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display uses a single channel, presumed to be 'black', as indicated by the argument in EPD_5IN83_Display(). No additional color information (such as red or blue) is provided, suggesting this display only supports the black color channel.",
+  "PaintRotation": 180,
+  "BitmapFunction": "GUI_ReadBmp"
+}

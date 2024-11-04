@@ -1,0 +1,42 @@
+{
+  "FullName": "7.5inch e-paper B V2",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "yellow"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5B_V2_Init(void)",
+      "EPD_7IN5B_V2_Init_Fast(void)",
+      "EPD_7IN5B_V2_Init_Part(void)"
+    ],
+    "Clear": [
+      "EPD_7IN5B_V2_Clear(void)",
+      "EPD_7IN5B_V2_ClearRed(void)",
+      "EPD_7IN5B_V2_ClearBlack(void)"
+    ],
+    "Display": [
+      "EPD_7IN5B_V2_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_7IN5B_V2_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)"
+    ],
+    "Display_Fast": [
+      "EPD_7IN5B_V2_Display_Fast(const UBYTE *blackimage)"
+    ],
+    "Display_Misc": [
+      "EPD_7IN5B_V2_Display_Base_color(UBYTE color)"
+    ],
+    "Sleep": [
+      "EPD_7IN5B_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display function EPD_7IN5B_V2_Display takes two parameters: blackimage and ryimage, indicating black and possibly a combination of red/yellow given the function name and variable prefix 'ry'. Thus, the color channels 'red' and 'yellow' are included. The function EPD_7IN5B_V2_Display_Base_color might imply setting a base color, categorized as Display_Misc.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,39 @@
+{
+  "FullName": "7.3inch e-Paper (F)",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "yellow",
+    "blue",
+    "green"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN3E_Init()",
+      "EPD_7IN3E_Init_Fast()"
+    ],
+    "Clear": [
+      "EPD_7IN3E_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_7IN3E_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_7IN3E_Show()",
+      "EPD_7IN3E_Show7Block()"
+    ],
+    "Sleep": [
+      "EPD_7IN3E_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The supported color channels are explicitly defined with indices for black, yellow, red, blue, and green, indicating these colors are supported by the display. The function EPD_7IN3E_Show7Block() and EPD_7IN3E_Show() are considered Display_Misc due to lack of clarity on their specific purpose.",
+  "PaintScale": 6,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_6Color"
+}

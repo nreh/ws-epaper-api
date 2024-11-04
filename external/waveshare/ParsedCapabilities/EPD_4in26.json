@@ -1,0 +1,41 @@
+{
+  "FullName": "4.26inch e-paper",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4in26_Init()",
+      "EPD_4in26_Init_Fast()",
+      "EPD_4in26_Init_4GRAY()"
+    ],
+    "Clear": [
+      "EPD_4in26_Clear()"
+    ],
+    "Display": [
+      "EPD_4in26_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_4in26_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_4in26_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l)"
+    ],
+    "Display_Fast": [
+      "EPD_4in26_Display_Fast(UBYTE *Image)"
+    ],
+    "Display_Misc": [
+      "EPD_4in26_4GrayDisplay(UBYTE *Image)"
+    ],
+    "Sleep": [
+      "EPD_4in26_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The header suggests 'black' as the color channel due to its typical use. The function EPD_4in26_4GrayDisplay indicates 4-gray scale support, but gray is classified under 'black'. Functions were categorized based on naming and presumed use.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

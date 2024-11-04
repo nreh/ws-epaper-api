@@ -1,0 +1,36 @@
+{
+  "FullName": "4.2inch e-paper",
+  "ScreenWidth": 400,
+  "ScreenHeight": 300,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN2_Init_Fast()",
+      "EPD_4IN2_Init_Partial()",
+      "EPD_4IN2_Init_4Gray()"
+    ],
+    "Clear": [
+      "EPD_4IN2_Clear()"
+    ],
+    "Display": [
+      "EPD_4IN2_Display(UBYTE *Image)",
+      "EPD_4IN2_4GrayDisplay(const UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_4IN2_PartialDisplay(UWORD X_start, UWORD Y_start, UWORD X_end, UWORD Y_end, UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN2_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports black and grayscale as mentioned in the version log, but grayscale falls under the established rule of not branching out to separate color channels. No additional colors like red or yellow are evident in the display functions. Three initialization functions suggest versatility for fast, partial, and grayscale operations. 'Grayscale' functions were categorically placed under Display as they still pertain to image presentation. Grayscale does not warrant another color channel per instructions.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

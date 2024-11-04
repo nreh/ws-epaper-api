@@ -1,0 +1,30 @@
+{
+  "FullName": "2.13inch e-paper V3",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13_Init(UBYTE Mode)"
+    ],
+    "Clear": [
+      "EPD_2IN13_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN13_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Only one color channel (UBYTE *Image) is used in the EPD_2IN13_Display function, so 'black' is assumed. No other color indications are present. Functions like EPD_2IN13_Init and EPD_2IN13_Clear have clear categorization. The function EPD_2IN13_Display is assumed to represent basic display capabilities since there's no other function for displaying methods.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

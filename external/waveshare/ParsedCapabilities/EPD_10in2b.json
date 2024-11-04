@@ -1,0 +1,31 @@
+{
+  "FullName": "10.2inch b e-paper",
+  "ScreenWidth": 960,
+  "ScreenHeight": 640,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_10IN2b_Init(void)"
+    ],
+    "Clear": [
+      "EPD_10IN2b_Clear(void)"
+    ],
+    "Display": [
+      "EPD_10IN2b_Display(UBYTE *Image, UBYTE *RedImage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_10IN2b_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "This display supports black and red, as indicated by the use of dual channel images in the EPD_10IN2b_Display function. The naming 'RedImage' clearly denotes this functionality.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,31 @@
+{
+  "FullName": "2.13inch e-paper B V4",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13B_V4_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN13B_V4_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN13B_V4_Display(const UBYTE *blackImage, const UBYTE *redImage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13B_V4_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The functions and parameter names indicate support for 'black' and 'red' color channels. The Display function uses two image parameters for these two colors.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

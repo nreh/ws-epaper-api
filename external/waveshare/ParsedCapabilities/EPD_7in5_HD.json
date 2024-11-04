@@ -1,0 +1,31 @@
+{
+  "FullName": "EPD 7.5 inch HD",
+  "ScreenWidth": 880,
+  "ScreenHeight": 528,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5_HD_Init(void)"
+    ],
+    "Clear": [
+      "EPD_7IN5_HD_Clear(void)",
+      "EPD_7IN5_HD_ClearBlack(void)"
+    ],
+    "Display": [
+      "EPD_7IN5_HD_Display(const UBYTE *blackimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN5_HD_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Only `black` color channel is explicitly mentioned since the display function `EPD_7IN5_HD_Display` only uses a `blackimage`. The `ClearBlack` function implies a focus on `black` as well. 'gray' or 'white' colors are not mentioned and hence are not part of SupportedColorChannels.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,30 @@
+{
+  "FullName": "2.9inch DES e-paper",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9_DES_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN9_DES_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN9_DES_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN9_DES_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels is set to 'black' as there are no indications of any color support beyond black and white, which is common in e-paper displays. Function names are straightforward but do not suggest more advanced color capabilities.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

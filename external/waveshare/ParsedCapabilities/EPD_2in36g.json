@@ -1,0 +1,33 @@
+{
+  "FullName": "2.36inch e-Paper (G)",
+  "ScreenWidth": 168,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN36G_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN36G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_2IN36G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN36G_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The color definitions include 'black', 'yellow', and 'red'. 'White' is ignored as it falls under the 'black' channel. Functions are categorized based on their names and expected behaviors.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

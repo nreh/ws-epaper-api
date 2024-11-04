@@ -1,0 +1,30 @@
+{
+  "FullName": "5.84inch e-paper",
+  "ScreenWidth": 768,
+  "ScreenHeight": 256,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5in84_Init()"
+    ],
+    "Clear": [
+      "EPD_5in84_Clear()"
+    ],
+    "Display": [
+      "EPD_5in84_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_5in84_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The header does not specify additional colors, so 'black' is assumed from the single image parameter in the display function. Functions were categorized based on typical e-paper operations.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

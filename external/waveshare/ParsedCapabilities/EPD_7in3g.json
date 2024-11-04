@@ -1,0 +1,33 @@
+{
+  "FullName": "7.3inchg e-paper G",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN3G_Init()"
+    ],
+    "Clear": [
+      "EPD_7IN3G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_7IN3G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN3G_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The header defines colors BLACK, WHITE, YELLOW, and RED. WHITE is covered by the 'black' channel, so it is not included separately. Functions were categorized based on typical e-paper operations.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

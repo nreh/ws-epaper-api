@@ -1,0 +1,34 @@
+{
+  "FullName": "2.13inch e-paper V3",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2in13_V3_Init()"
+    ],
+    "Clear": [
+      "EPD_2in13_V3_Clear()"
+    ],
+    "Display": [
+      "EPD_2in13_V3_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_2in13_V3_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_2in13_V3_Display_Partial(UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2in13_V3_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display function supports a single channel; thus, only 'black' is used. Function categories are determined based on their names.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,38 @@
+{
+  "FullName": "3.52inch e-paper",
+  "ScreenWidth": 240,
+  "ScreenHeight": 360,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_3IN52_Init()"
+    ],
+    "Clear": [
+      "EPD_3IN52_Clear()"
+    ],
+    "Display": [
+      "EPD_3IN52_display(UBYTE* picData)",
+      "EPD_3IN52_display_NUM(UBYTE NUM)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_3IN52_refresh()",
+      "EPD_3IN52_lut_GC()",
+      "EPD_3IN52_lut_DU()"
+    ],
+    "Sleep": [
+      "EPD_3IN52_sleep()"
+    ],
+    "Misc": [
+      "EPD_3IN52_SendCommand(UBYTE Reg)",
+      "EPD_3IN52_SendData(UBYTE Data)"
+    ]
+  },
+  "Notes": "The header defines black as a basic color channel, and while multiple patterns of black and white are defined (e.g., UP_BLACK_DOWN_WHITE), the primary color channel remains black without other colors. The functions have been categorized based on their apparent functionality with a few falling under 'Display_Misc' due to their names suggesting display-related operations but not fitting the main display pattern. Black and white patterns were considered only as black, following predefined rules.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

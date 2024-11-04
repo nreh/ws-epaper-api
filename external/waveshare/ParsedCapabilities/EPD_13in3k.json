@@ -1,0 +1,40 @@
+{
+  "FullName": "13.3inch e-paper (K)",
+  "ScreenWidth": 960,
+  "ScreenHeight": 680,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_13IN3K_Init(void)",
+      "EPD_13IN3K_Init_Part(void)",
+      "EPD_13IN3K_Init_4GRAY(void)"
+    ],
+    "Clear": [
+      "EPD_13IN3K_Clear(void)"
+    ],
+    "Display": [
+      "EPD_13IN3K_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_13IN3K_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_13IN3K_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_13IN3K_color_Base(UBYTE color)",
+      "EPD_13IN3K_4GrayDisplay(UBYTE *Image)"
+    ],
+    "Sleep": [
+      "EPD_13IN3K_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The function EPD_13IN3K_Display only accepts a single image, assumed to be 'black'. The EPD_13IN3K_Init_4GRAY and EPD_13IN3K_4GrayDisplay functions mention gray, but as per instructions, 'gray' is treated as part of the 'black' channel. EPD_13IN3K_color_Base and EPD_13IN3K_4GrayDisplay were categorized under Display_Misc due to their specific purposes for handling color and grayscale display.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

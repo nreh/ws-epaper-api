@@ -1,0 +1,37 @@
+{
+  "FullName": "4.2inch e-paper V2 V1.0",
+  "ScreenWidth": 400,
+  "ScreenHeight": 300,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN2_V2_Init(void)",
+      "EPD_4IN2_V2_Init_Fast(UBYTE Mode)",
+      "EPD_4IN2_V2_Init_4Gray(void)"
+    ],
+    "Clear": [
+      "EPD_4IN2_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_4IN2_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_4IN2_V2_PartialDisplay(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l)"
+    ],
+    "Display_Fast": [
+      "EPD_4IN2_V2_Display_Fast(UBYTE *Image)"
+    ],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN2_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_4IN2_V2_Display function uses a single image pointer, indicating support for 'black'. Functions specifically mention 4Gray and fast modes, offering additional initialization and display functionality. No other color channels like 'red' are explicitly mentioned.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,33 @@
+{
+  "FullName": "2.7inch e-paper",
+  "ScreenWidth": 176,
+  "ScreenHeight": 264,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN7_Init(void)",
+      "EPD_2IN7_Init_4Gray(void)"
+    ],
+    "Clear": [
+      "EPD_2IN7_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN7_Display(const UBYTE *Image)",
+      "EPD_2IN7_4GrayDisplay(const UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN7_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The functions indicate support for '4 grayscale display', with 'EPD_2IN7_4GrayDisplay' specifically handling grayscale. However, 'gray' should be ignored and falls under 'black' in SupportedColorChannels, adhering to the specifications given to only list 'black'.",
+  "PaintScale": 4,
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,42 @@
+{
+  "FullName": "2.7inch V2 e-paper",
+  "ScreenWidth": 176,
+  "ScreenHeight": 264,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN7_V2_Init(void)",
+      "EPD_2IN7_V2_Init_Fast(void)",
+      "EPD_2IN7_V2_Init_4GRAY(void)"
+    ],
+    "Clear": [
+      "EPD_2IN7_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN7_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_2IN7_V2_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_2IN7_V2_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yende)"
+    ],
+    "Display_Fast": [
+      "EPD_2IN7_V2_Display_Fast(UBYTE *Image)"
+    ],
+    "Display_Misc": [
+      "EPD_2IN7_V2_Display_Base_color(UBYTE color)",
+      "EPD_2IN7_V2_4GrayDisplay(UBYTE *Image)"
+    ],
+    "Sleep": [
+      "EPD_2IN7_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels is set to 'black' due to the presence of 4GRAY_INITIALIZE function suggesting support for gray shades, which are interpreted under the 'black' channel according to the rules. The function EPD_2IN7_V2_4GrayDisplay might suggest more complex color support, but under current guidelines, no additional colors are added.",
+  "PaintScale": 2,
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

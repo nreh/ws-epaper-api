@@ -1,0 +1,34 @@
+{
+  "FullName": "7.5inch e-paper b&c",
+  "ScreenWidth": 640,
+  "ScreenHeight": 384,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "yellow"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5BC_Init()"
+    ],
+    "Clear": [
+      "EPD_7IN5BC_Clear()"
+    ],
+    "Display": [
+      "EPD_7IN5BC_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_7IN5BC_DisplayHalfScreen(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN5BC_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The function EPD_7IN5BC_Display takes two image pointers, suggesting support for black and possibly two additional color channels, assumed to be red and yellow based on naming (ryimage). The function EPD_7IN5BC_DisplayHalfScreen was categorized under Display_Partial due to its descriptive name indicating a partial screen operation. The color channel assumptions are based on typical e-paper color schemes and the function signature.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

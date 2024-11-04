@@ -1,0 +1,31 @@
+{
+  "FullName": "2.9inch e-paper b&c V3.0",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9BC_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN9BC_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN9BC_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN9BC_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN9BC_Display function uses two image pointers, which typically represent 'black' and 'red' channels, commonly used for color displays. There is no detailed explanation for more colors or other functionalities except the standard ones in the functions.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

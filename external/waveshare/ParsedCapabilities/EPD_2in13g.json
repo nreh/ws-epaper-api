@@ -1,0 +1,33 @@
+{
+  "FullName": "2.13inch e-paper G",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13G_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN13G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_2IN13G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13G_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The header defines colors BLACK, WHITE, YELLOW, and RED. WHITE is covered by the 'black' channel, so it is not included separately. Functions were categorized based on typical e-paper operations.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

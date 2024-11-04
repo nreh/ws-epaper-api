@@ -1,0 +1,39 @@
+{
+  "FullName": "2.13inch e-paper V4",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2in13_V4_Init(void)",
+      "EPD_2in13_V4_Init_Fast(void)",
+      "EPD_2in13_V4_Init_GUI(void)"
+    ],
+    "Clear": [
+      "EPD_2in13_V4_Clear(void)",
+      "EPD_2in13_V4_Clear_Black(void)"
+    ],
+    "Display": [
+      "EPD_2in13_V4_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_2in13_V4_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_2in13_V4_Display_Partial(UBYTE *Image)"
+    ],
+    "Display_Fast": [
+      "EPD_2in13_V4_Display_Fast(UBYTE *Image)"
+    ],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2in13_V4_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Only black is supported explicitly as all functions and clears reference 'black'. The function EPD_2in13_V4_Init_GUI doesn't indicate a specific display capability but is included for comprehensive initialization.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

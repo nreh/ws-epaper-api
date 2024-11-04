@@ -1,0 +1,35 @@
+{
+  "FullName": "1.54inch e-paper V2",
+  "ScreenWidth": 200,
+  "ScreenHeight": 200,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54_V2_Init()",
+      "EPD_1IN54_V2_Init_Partial()"
+    ],
+    "Clear": [
+      "EPD_1IN54_V2_Clear()"
+    ],
+    "Display": [
+      "EPD_1IN54_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_1IN54_V2_DisplayPartBaseImage(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_1IN54_V2_DisplayPart(UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54_V2_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display primarily supports the black color channel, with no indication of additional colors. The various display functions suggest support for full and partial image updates, with DisplayPartBaseImage indicating a base image setup possibly for partial updates. The presence of partial initialization and display support aligns with these observations.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

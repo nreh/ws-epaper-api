@@ -1,0 +1,31 @@
+{
+  "FullName": "2.7inch e-paper V2",
+  "ScreenWidth": 176,
+  "ScreenHeight": 264,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN7B_V2_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN7B_V2_Clear()"
+    ],
+    "Display": [
+      "EPD_2IN7B_V2_Display(UBYTE *Imageblack, UBYTE *Imagered)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN7B_V2_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN7B_V2_Display function indicates a dual-color display using black and red channels. Function categorization was straightforward given the typical e-paper operations.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

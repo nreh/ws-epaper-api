@@ -1,0 +1,35 @@
+{
+  "FullName": "4inch e-Paper E",
+  "ScreenWidth": 400,
+  "ScreenHeight": 600,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red",
+    "blue",
+    "green"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN0E_Init()"
+    ],
+    "Clear": [
+      "EPD_4IN0E_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_4IN0E_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_4IN0E_Show7Block()",
+      "EPD_4IN0E_Show()"
+    ],
+    "Sleep": [
+      "EPD_4IN0E_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "This display supports multiple colors: black, yellow, red, blue, and green. WHITE is included in the header but categorized under 'black' based on instructions. Functions like EPD_4IN0E_Show7Block and EPD_4IN0E_Show were placed in Display_Misc because their specific purpose wasn't clear, though they seem related to display functionality."
+}

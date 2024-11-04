@@ -1,0 +1,31 @@
+{
+  "FullName": "2.13inch e-paper b&c",
+  "ScreenWidth": 104,
+  "ScreenHeight": 212,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13BC_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN13BC_Clear()"
+    ],
+    "Display": [
+      "EPD_2IN13BC_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13BC_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN13BC_Display function suggests a dual-color channel display using black and red (or yellow) channels. Function categorization was straightforward based on typical e-paper operations.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

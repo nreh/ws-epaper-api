@@ -1,0 +1,33 @@
+{
+  "FullName": "1.64inch e-paper(G)",
+  "ScreenWidth": 168,
+  "ScreenHeight": 168,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN64G_Init()"
+    ],
+    "Clear": [
+      "EPD_1IN64G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_1IN64G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN64G_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The color definitions suggest support for 'black', 'yellow', and 'red'. The 'white' color is ignored since it's considered part of the 'black' channel. Function categorization is based on their straightforward naming.",
+  "PaintScale": 4,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

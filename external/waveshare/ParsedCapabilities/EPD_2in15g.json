@@ -1,0 +1,33 @@
+{
+  "FullName": "2inch15 e-paper (G)",
+  "ScreenWidth": 160,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "yellow",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN15G_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN15G_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_2IN15G_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN15G_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports 'black', 'yellow', and 'red' as per the defined color constants. 'WHITE' is ignored as it falls under 'black' as per instruction. The function EPD_2IN15G_Clear suggests support for multiple colors due to the color parameter.",
+  "PaintScale": 4,
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
+}

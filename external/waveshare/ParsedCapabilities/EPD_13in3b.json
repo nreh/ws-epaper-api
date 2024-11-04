@@ -1,0 +1,38 @@
+{
+  "FullName": "13.3inch e-paper (B) V1.0",
+  "ScreenWidth": 960,
+  "ScreenHeight": 680,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_13IN3B_Init(void)"
+    ],
+    "Clear": [
+      "EPD_13IN3B_Clear(void)",
+      "EPD_13IN3B_Clear_Black(void)",
+      "EPD_13IN3B_Clear_Red(void)"
+    ],
+    "Display": [
+      "EPD_13IN3B_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [
+      "EPD_13IN3B_Display_Base(const UBYTE *blackimage, const UBYTE *ryimage)",
+      "EPD_13IN3B_Display_Base_White(void)"
+    ],
+    "Display_Partial": [
+      "EPD_13IN3B_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_13IN3B_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_13IN3B_Display function uses two images, assumed to be for 'black' and 'red', thus those channels are used. The function EPD_13IN3B_Display_Base_White mentions 'White' but is included in 'Display_Base' for functionality rather than color channel support. Other functions have clear categorization based on their names.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

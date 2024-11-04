@@ -1,0 +1,31 @@
+{
+  "FullName": "1.54inch e-paper c",
+  "ScreenWidth": 152,
+  "ScreenHeight": 152,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54C_Init(void)"
+    ],
+    "Clear": [
+      "EPD_1IN54C_Clear(void)"
+    ],
+    "Display": [
+      "EPD_1IN54C_Display(const UBYTE *blackimage, const UBYTE *redimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54C_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports 'black' and 'red', as indicated by the dual image channel parameters in the EPD_1IN54C_Display function. This is a full-color capability with those specific colors.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

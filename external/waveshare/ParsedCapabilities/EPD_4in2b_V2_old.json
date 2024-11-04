@@ -1,0 +1,29 @@
+{
+  "FullName": "4.2inch e-paper b&c",
+  "ScreenWidth": 400,
+  "ScreenHeight": 300,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN2B_V2_Init(void)"
+    ],
+    "Clear": [
+      "EPD_4IN2B_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_4IN2B_V2_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN2B_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Supports 'black' and 'red' color channels due to the dual image parameters in EPD_4IN2B_V2_Display indicating separate channels. No 'gray' or 'white' colors of concern."
+}

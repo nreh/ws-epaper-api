@@ -1,0 +1,32 @@
+{
+  "FullName": "2.13inch e-paper d",
+  "ScreenWidth": 104,
+  "ScreenHeight": 212,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13D_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN13D_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN13D_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_2IN13D_DisplayPart(UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13D_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Only 'black' color channel is supported since EPD_2IN13D_Display function has one color channel. No 'gray' or 'white' colors mentioned that need to be ignored.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

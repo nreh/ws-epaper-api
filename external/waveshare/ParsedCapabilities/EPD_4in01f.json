@@ -1,0 +1,42 @@
+{
+  "FullName": "4.01inch e-paper",
+  "ScreenWidth": 640,
+  "ScreenHeight": 400,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "orange"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_Init(void)",
+      "EPD_4IN01F_Init(void)"
+    ],
+    "Clear": [
+      "EPD_4IN01F_Clear(UBYTE color)",
+      "EPD_4IN01F_ReClear(void)"
+    ],
+    "Display": [
+      "EPD_4IN01F_Display(const UBYTE *image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_4IN01F_Display_part(const UBYTE *image, UWORD xstart, UWORD ystart, UWORD image_width, UWORD image_heigh)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_4IN01F_Show7Block(void)"
+    ],
+    "Sleep": [
+      "EPD_4IN01F_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels include black, red, green, blue, yellow, and orange as defined by the color index. WHITE and CLEAN are ignored, following the guideline to treat them as part of the 'black' channel. Multiple initialization functions are provided; 'EPD_Init' seems to be a generic initialization function.",
+  "PaintScale": 7,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_7Color"
+}

@@ -1,0 +1,30 @@
+{
+  "FullName": "1.54inch DES e-paper V1.0",
+  "ScreenWidth": 152,
+  "ScreenHeight": 152,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54_DES_Init(void)"
+    ],
+    "Clear": [
+      "EPD_1IN54_DES_Clear(void)"
+    ],
+    "Display": [
+      "EPD_1IN54_DES_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54_DES_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Only one color channel (UBYTE *Image) is used in the EPD_1IN54_DES_Display function, so 'black' is assumed. Functions are clearly named, so categorization was straightforward.",
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

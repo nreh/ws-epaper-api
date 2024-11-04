@@ -1,0 +1,31 @@
+{
+  "FullName": "2.13inch e-paper b V3",
+  "ScreenWidth": 104,
+  "ScreenHeight": 212,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13B_V3_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN13B_V3_Clear()"
+    ],
+    "Display": [
+      "EPD_2IN13B_V3_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13B_V3_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports two color channels: black and red, as indicated by the parameters in the EPD_2IN13B_V3_Display() function. 'ryimage' suggests the second channel is 'red/yellow' but for simplicity, it's assumed to mean red in the SupportedColorChannels list.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

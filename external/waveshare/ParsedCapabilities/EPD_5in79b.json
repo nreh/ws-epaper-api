@@ -1,0 +1,31 @@
+{
+  "FullName": "5.79inch e-paper V1.0",
+  "ScreenWidth": 792,
+  "ScreenHeight": 272,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5in79b_Init(void)"
+    ],
+    "Clear": [
+      "EPD_5in79b_Clear(void)"
+    ],
+    "Display": [
+      "EPD_5in79b_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_5in79b_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_5in79b_Display function uses two image pointers, which commonly refer to 'black' and 'red' channels in similar headers. This assumption was made for the supported color channels. Function names suggest straightforward categorization.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

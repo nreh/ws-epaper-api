@@ -1,0 +1,38 @@
+{
+  "FullName": "7.3inch e-Paper (F) Driver",
+  "ScreenWidth": 800,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black",
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "orange"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN3F_Init(void)"
+    ],
+    "Clear": [
+      "EPD_7IN3F_Clear(UBYTE color)"
+    ],
+    "Display": [
+      "EPD_7IN3F_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [
+      "EPD_7IN3F_Show7Block(void)"
+    ],
+    "Sleep": [
+      "EPD_7IN3F_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The SupportedColorChannels include black, red, green, blue, yellow, and orange as defined by the color index. WHITE and CLEAN are ignored, given part of the guidelines to only consider black as the primary channel for those cases.",
+  "PaintScale": 7,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp_RGB_7Color"
+}

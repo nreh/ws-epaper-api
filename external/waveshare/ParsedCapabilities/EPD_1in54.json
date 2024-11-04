@@ -1,0 +1,30 @@
+{
+  "FullName": "1.54inch e-paper",
+  "ScreenWidth": 200,
+  "ScreenHeight": 200,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN54_Init(UBYTE Mode)"
+    ],
+    "Clear": [
+      "EPD_1IN54_Clear(void)"
+    ],
+    "Display": [
+      "EPD_1IN54_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN54_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display function EPD_1IN54_Display only takes one image parameter, which implies a single color channel, identified as 'black'. It doesn't list gray or white, so the assumption holds that 'black' covers both.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

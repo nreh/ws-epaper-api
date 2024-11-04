@@ -1,0 +1,33 @@
+{
+  "FullName": "1.02inch e-paper",
+  "ScreenWidth": 80,
+  "ScreenHeight": 128,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_1IN02_Init()",
+      "EPD_1IN02_Part_Init()"
+    ],
+    "Clear": [
+      "EPD_1IN02_Clear()"
+    ],
+    "Display": [
+      "EPD_1IN02_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_1IN02_DisplayPartial(UBYTE *Image1, UBYTE *Image2)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_1IN02_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports only the black color channel as no other colors were specified. EPD_1IN02_DisplayPartial was categorized under Display_Partial due to its name and function signature implying partial image updates. Two initialization functions are present, one of which implies partial updates, but they both are listed under Initialize. The display functions were straightforwardly categorized based on their names.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

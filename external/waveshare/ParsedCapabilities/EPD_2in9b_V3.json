@@ -1,0 +1,31 @@
+{
+  "FullName": "2.9inch e-paper b V3",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9B_V3_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN9B_V3_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN9B_V3_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN9B_V3_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "Supports 'black' and 'red' color channels as indicated by the function EPD_2IN9B_V3_Display which takes 'blackimage' and 'ryimage'. No mention of 'gray' or 'white' colors.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,34 @@
+{
+  "FullName": "2.13inch e-paper V2 V3.0",
+  "ScreenWidth": 122,
+  "ScreenHeight": 250,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN13_V2_Init(UBYTE Mode)"
+    ],
+    "Clear": [
+      "EPD_2IN13_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN13_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_2IN13_V2_DisplayPartBaseImage(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_2IN13_V2_DisplayPart(UBYTE *Image)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN13_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The EPD_2IN13_V2_Display function uses a single image pointer, indicating support for 'black'. The categorization of functions such as EPD_2IN13_V2_DisplayPart and EPD_2IN13_V2_DisplayPartBaseImage are assumed based on their function names. The Display should refer to the default display function, while DisplayPartBaseImage is categorized under Display_Base.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

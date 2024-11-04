@@ -1,0 +1,33 @@
+{
+  "FullName": "7.5inch e-paper HD",
+  "ScreenWidth": 880,
+  "ScreenHeight": 528,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_7IN5B_HD_Init(void)"
+    ],
+    "Clear": [
+      "EPD_7IN5B_HD_Clear(void)",
+      "EPD_7IN5B_HD_ClearRed(void)",
+      "EPD_7IN5B_HD_ClearBlack(void)"
+    ],
+    "Display": [
+      "EPD_7IN5B_HD_Display(const UBYTE *blackimage, const UBYTE *ryimage)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_7IN5B_HD_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The function EPD_7IN5B_HD_Display indicates using separate channels for 'black' and 'red', which suggests it supports these colors. Clear functions for specific 'red' and 'black' channels also confirm this. 'ryimage' in Display function indicates possibly 'red/yellow', but 'red' is more commonly supported.",
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,41 @@
+{
+  "FullName": "2.9inch e-paper V2",
+  "ScreenWidth": 128,
+  "ScreenHeight": 296,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN9_V2_Init(void)",
+      "EPD_2IN9_V2_Init_Fast(void)",
+      "EPD_2IN9_V2_Gray4_Init(void)"
+    ],
+    "Clear": [
+      "EPD_2IN9_V2_Clear(void)"
+    ],
+    "Display": [
+      "EPD_2IN9_V2_Display(UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_2IN9_V2_Display_Base(UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_2IN9_V2_Display_Partial(UBYTE *Image)"
+    ],
+    "Display_Fast": [
+      "EPD_2IN9_V2_Display_Fast(UBYTE *Image)"
+    ],
+    "Display_Misc": [
+      "EPD_2IN9_V2_4GrayDisplay(UBYTE *Image)"
+    ],
+    "Sleep": [
+      "EPD_2IN9_V2_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports only black and shades of gray, hence only 'black' is listed under color channels. The function EPD_2IN9_V2_Gray4_Init indicates grayscale support but is covered under 'black'. EPD_2IN9_V2_4GrayDisplay suggests 4-gray level support, also categorized under 'Display_Misc'.",
+  "PaintScale": 4,
+  "PaintRotation": 90,
+  "BitmapFunction": "GUI_ReadBmp"
+}

@@ -1,0 +1,33 @@
+{
+  "FullName": "4.37inch e-paper b",
+  "ScreenWidth": 176,
+  "ScreenHeight": 480,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_4IN37B_Init()"
+    ],
+    "Clear": [
+      "EPD_4IN37B_Clear()"
+    ],
+    "Display": [
+      "EPD_4IN37B_Display(UBYTE *ImageBlack, UBYTE*ImageRed)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [
+      "EPD_4IN37B_Display_Part(UBYTE *ImageBlack, UBYTE*ImageRed, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)"
+    ],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_4IN37B_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports two color channels: black and red, derived from the arguments in EPD_4IN37B_Display and EPD_4IN37B_Display_Part functions. The function names and parameters clearly indicate support for these two specific channels.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

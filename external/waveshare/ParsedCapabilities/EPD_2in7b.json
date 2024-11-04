@@ -1,0 +1,31 @@
+{
+  "FullName": "2.7inch e-paper b",
+  "ScreenWidth": 176,
+  "ScreenHeight": 264,
+  "SupportedColorChannels": [
+    "black",
+    "red"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_2IN7B_Init()"
+    ],
+    "Clear": [
+      "EPD_2IN7B_Clear()"
+    ],
+    "Display": [
+      "EPD_2IN7B_Display(UBYTE *Imageblack, UBYTE *Imagered)"
+    ],
+    "Display_Base": [],
+    "Display_Partial": [],
+    "Display_Fast": [],
+    "Display_Misc": [],
+    "Sleep": [
+      "EPD_2IN7B_Sleep()"
+    ],
+    "Misc": []
+  },
+  "Notes": "The display supports two color channels: black and red, deduced from the dual arguments in EPD_2IN7B_Display(UBYTE *Imageblack, UBYTE *Imagered). No mention of additional color channels or gray/white colors was found, so the assumption of black and red stands.",
+  "PaintRotation": 270,
+  "BitmapFunction": "GUI_ReadBmp"
+}

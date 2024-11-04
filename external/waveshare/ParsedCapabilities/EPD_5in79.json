@@ -1,0 +1,44 @@
+{
+  "FullName": "5.79inch e-paper",
+  "ScreenWidth": 792,
+  "ScreenHeight": 272,
+  "SupportedColorChannels": [
+    "black"
+  ],
+  "Functions": {
+    "Initialize": [
+      "EPD_5in79_Init(void)",
+      "EPD_5in79_Init_Fast(void)",
+      "EPD_5in79_Init_Partial(void)",
+      "EPD_5in79_Init_4Gray(void)"
+    ],
+    "Clear": [
+      "EPD_5in79_Clear(void)",
+      "EPD_5in79_Clear_Black(void)"
+    ],
+    "Display": [
+      "EPD_5in79_Display(const UBYTE *Image)"
+    ],
+    "Display_Base": [
+      "EPD_5in79_Display_Base(const UBYTE *Image)"
+    ],
+    "Display_Partial": [
+      "EPD_5in79_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)"
+    ],
+    "Display_Fast": [
+      "EPD_5in79_Display_Fast(const UBYTE *Image)"
+    ],
+    "Display_Misc": [
+      "EPD_5in79_4GrayDisplay(UBYTE *Image)",
+      "EPD_5in79_Display_Base_color(UBYTE color)"
+    ],
+    "Sleep": [
+      "EPD_5in79_Sleep(void)"
+    ],
+    "Misc": []
+  },
+  "Notes": "The function EPD_5in79_Display_Base_color indicates color support but it's not specified which colors, so it's general. The gray functions suggest grayscale support covered under 'black'.",
+  "PaintScale": 2,
+  "PaintRotation": 0,
+  "BitmapFunction": "GUI_ReadBmp"
+}
