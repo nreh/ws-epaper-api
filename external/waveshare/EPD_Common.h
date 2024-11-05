@@ -5,11 +5,17 @@
 #include <string>
 
 #include "../include/wsepaperapi.h"
-#include "DEV_Config.h"
 
 namespace epaperapi {
 
 namespace devices {
+
+/// @brief Access underlying bcm2835 hardware interface library
+namespace interface {
+extern "C" {
+#include "DEV_Config.h"
+}
+} // namespace interface
 
 /// @brief Raised when an epaper display is refreshed with an invalid RefreshMode. For example, not all displays support
 /// Partial refreshes.
@@ -36,7 +42,7 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     bool Open = false;
     bool AutoExit = true;
 
-    PhysicalEPDDrawTarget(AbstractBuffer& _buffer) : AbstractDrawTarget(_buffer) {}
+    PhysicalEPDDrawTarget(AbstractBuffer& _buffer) : AbstractDrawTarget(_buffer) { InitializeSPI(); }
 
   public:
     virtual std::string GetDeviceName() const = 0;
@@ -55,13 +61,13 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     /// @brief Initialize pins and SPI protocol. You shouldn't have to run this manually as this is run automatically when
     /// the class is initialized.
     void InitializeSPI() {
-        DEV_Module_Init();
+        interface::DEV_Module_Init();
         Open = true;
     }
 
     /// @brief Shuts off power to the device, ends SPI protocol, and deallocates memory
     void Exit() {
-        DEV_Module_Exit();
+        interface::DEV_Module_Exit();
         Open = false;
     }
 
