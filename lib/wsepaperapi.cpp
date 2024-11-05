@@ -31,7 +31,7 @@ void Renderer::RegenerateBuffer() {
         utils::TransformBuffer(*intermediateBuffer, tempBuffer, transformation);
     }
 }
-void Renderer::Refresh(RefreshMode mode, bool regenerateBuffer) {
+void Renderer::Refresh(int mode, bool regenerateBuffer) {
 
     if (regenerateBuffer) {
         RegenerateBuffer();

@@ -70,7 +70,7 @@ class Renderer {
     /// @param mode How the display should be refreshed
     /// @param regenerateBuffer If true, all visible elements have their Draw() function called and the buffer is
     /// regenerated. You can disble this if you know no changes have been made to the elements.
-    void Refresh(RefreshMode mode = RefreshMode::Normal, bool regenerateBuffer = true);
+    void Refresh(int mode = RefreshMode::Normal, bool regenerateBuffer = true);
 
     /// @brief Change what transformation is performed on the buffer before being set to the DrawTarget. Useful if your
     /// display is physically rotated and you want your coordinate system to reflect that.
