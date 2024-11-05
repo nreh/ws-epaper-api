@@ -7,9 +7,9 @@ namespace debug {
 void DebugLog(std::string message);
 
 #ifdef WSEPAPERAPI_DEBUG_MODE
-    #define DEBUG(x) epaperapi::debug::DebugLog(#x)
+    #define WSAPI_DEBUG(x) epaperapi::debug::DebugLog(#x)
 #else
-    #define DEBUG(x)
+    #define WSAPI_DEBUG(x)
 #endif
 
 } // namespace debug
