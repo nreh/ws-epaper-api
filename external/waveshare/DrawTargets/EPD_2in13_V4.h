@@ -2,10 +2,6 @@
 
 #include "../EPD_Common.h"
 
-extern "C" {
-#include <DEV_Config.h>
-}
-
 namespace epaperapi {
 
 /// @brief Waveshare devices that you can draw to
