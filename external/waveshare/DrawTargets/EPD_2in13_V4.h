@@ -24,33 +24,20 @@ extern "C" {
 /// @brief Width of device in pixels
 const int DEVICE_WIDTH = EPD_2in13_V4_WIDTH;
 
-/// @brief Amount of memory each row of pixels takes. This is roughly 8 times smaller than the device pixel width because we
-/// can store 8 pixels in a single byte. Total bytes sent to the device is DEVICE_MEMORYWIDTH * DEVICE_HEIGHT
-const int DEVICE_MEMORYWIDTH = DEVICE_WIDTH % 8 == 0 ? DEVICE_WIDTH / 8 : DEVICE_WIDTH / 8 + 1;
-
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = EPD_2in13_V4_HEIGHT;
 
-class EPD_2in13_DrawTarget : public PhysicalEPD {
-  private:
-    GrayscaleBuffer _buffer;
+enum RefreshMode { Normal = 0, Fast = 1, Partial = 2, Base = 3 };
 
-    /// @brief Instead of 1 pixel per byte, the E-Paper display expects 8 pixels per byte
-    uint8_t* packedBits = new uint8_t[DEVICE_MEMORYWIDTH * DEVICE_HEIGHT];
-
-    /// @brief If true, pins have been deactived and SPI closed. You'll need to call InitializeSPI() again before using the
-    /// display.
-    bool HasClosed = false;
-
+class EPD_2in13_DrawTarget : public Black1BitEPD {
   public:
-    /// @brief Initialize pins and SPI protocol. You shouldn't have to run this manually as this is run automatically when
-    /// the DrawTarget is created.
-    void InitializeSPI() {
-        DEV_Module_Init(); // initialize pins and SPI protocol
-    }
+    std::string GetDeviceName() const override { return "EPD_2in13_V4"; }
+
+    int GetWidth() const override { return DEVICE_WIDTH; }
+    int GetHeight() const override { return DEVICE_HEIGHT; }
 
     /// @brief Initializes the E-Paper display
-    void Init() { controller::EPD_2in13_V4_Init(); }
+    void Init() override { controller::EPD_2in13_V4_Init(); }
 
     void FastInit() { controller::EPD_2in13_V4_Init_Fast(); }
 
@@ -61,71 +48,52 @@ class EPD_2in13_DrawTarget : public PhysicalEPD {
     void ClearBlack() { controller::EPD_2in13_V4_Clear_Black(); }
 
     /// @brief Draw current buffer onto the display
-    void DisplayBuffer() {
-        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
-        controller::EPD_2in13_V4_Display(packedBits);
-    }
+    void Display() { controller::EPD_2in13_V4_Display(packedBits); }
 
-    void DisplayBufferFast() {
-        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
-        controller::EPD_2in13_V4_Display_Fast(packedBits);
-    }
+    void DisplayFast() { controller::EPD_2in13_V4_Display_Fast(packedBits); }
 
     /// @brief Draw the current buffer onto the display
-    void DisplayBufferBase() {
-        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
-        controller::EPD_2in13_V4_Display_Base(packedBits);
-    }
+    void DisplayBase() { controller::EPD_2in13_V4_Display_Base(packedBits); }
 
     /// @brief Partially refresh the display with a new image
-    void DisplayBufferPartial() {
-        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, DEVICE_WIDTH, DEVICE_HEIGHT);
-        controller::EPD_2in13_V4_Display_Partial(packedBits);
-    }
+    void DisplayPartial() { controller::EPD_2in13_V4_Display_Partial(packedBits); }
 
     /// @brief Put the device to sleep
     void Sleep() override { controller::EPD_2in13_V4_Sleep(); }
 
-    /// @brief Shuts off power to the device, ends SPI protocol, and deallocates memory
-    void Exit() {
-        DEV_Module_Exit();
-        HasClosed = true;
-    }
-
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
-    void Refresh(RefreshMode mode) override {
-        epaperapi::utils::PosterizeGrayscale(_buffer, 2);
+    void Refresh(int mode) override {
+        if (!IsOpen()) {
+            throw RefreshingClosedDevice(GetDeviceName());
+        }
 
-        switch (mode) {
+        PreprocessBuffers();
+
+        switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Normal:
-            DisplayBuffer();
+            Display();
             break;
 
         case RefreshMode::Fast:
-            DisplayBufferFast();
+            DisplayFast();
             break;
 
         case RefreshMode::Partial:
-            DisplayBufferPartial();
+            DisplayPartial();
+            break;
+
+        case RefreshMode::Base:
+            DisplayBase();
             break;
 
         default:
-            throw UnsupportedRefreshMode(mode, "EPD_2in13_V4");
+            throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
     }
 
-    EPD_2in13_DrawTarget() : _buffer(DEVICE_WIDTH, DEVICE_HEIGHT), PhysicalEPD(_buffer) {
-        buffer.FillBuffer(255);
-        InitializeSPI();
-    }
-
-    ~EPD_2in13_DrawTarget() {
-        delete[] packedBits;
-        if (!HasClosed) {
-            Exit();
-        }
-    }
+    EPD_2in13_DrawTarget() : Black1BitEPD(GetWidth(), GetHeight()) {}
+    ~EPD_2in13_DrawTarget() {}
 };
 
 } // namespace EPD_2in13_V4

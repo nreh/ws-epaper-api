@@ -207,7 +207,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     }
 
     /// @brief Refresh the display
-    void Refresh(epaperapi::RefreshMode mode) override { RenderToSDL(buffer); }
+    void Refresh(int mode) override { RenderToSDL(buffer); }
 
     /// @brief Clear the display to white
     void Clear() { // Set render color to white (RGBA: 255, 255, 255, 255)
@@ -224,13 +224,6 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         // Clear the screen with the black color
         SDL_RenderClear(renderer);
     }
-    /// @brief Initialize the display. Because there's no physical display to initialize in this class, this function does
-    /// nothing.
-    void Init() override {}
-
-    /// @brief Put the display to sleep. Because there's no physical display to put to sleep in this class, this function
-    /// does nothing.
-    void Sleep() override {}
 
     ~SDLDrawTarget() { delete &buffer; }
 };

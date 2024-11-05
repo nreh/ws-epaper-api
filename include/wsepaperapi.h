@@ -14,14 +14,12 @@ namespace epaperapi {}
 namespace epaperapi {
 
 /// @brief Indicates how the display should be refreshed. When in doubt, use Normal.
-enum class RefreshMode { Normal, Fast, Partial };
+enum RefreshMode { Normal = 0, Fast = 1, Partial = 2 };
 
-/// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display.
+/// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display but can also be a virtual
+/// display for testing.
 class AbstractDrawTarget {
   public:
-    /// @brief Initializes the display and runs logic - if any - that might be necessary before the display can be used.
-    virtual void Init() = 0;
-
     uint16_t width, height;
 
     /// @brief Contains pixels that are currently being displayed. Useful for partial refreshes where we need the old pixel
@@ -29,13 +27,10 @@ class AbstractDrawTarget {
     AbstractBuffer& buffer;
 
     /// @brief Refresh the display, showing the contents of the buffer.
-    virtual void Refresh(RefreshMode mode) = 0;
+    virtual void Refresh(int mode) = 0;
 
     /// @brief Clear the display to white
     virtual void Clear() = 0;
-
-    /// @brief Enter sleep mode
-    virtual void Sleep() = 0;
 
     AbstractDrawTarget(AbstractBuffer& _buffer) : buffer(_buffer) {}
 };
