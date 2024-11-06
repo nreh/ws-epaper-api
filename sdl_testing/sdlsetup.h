@@ -87,7 +87,6 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
 
   private:
     SDL_Renderer* renderer;
-    uint16_t width, height;
     ColorMode colormode;
 
     /// @brief Converts Buffer to an SDL texture and renders it to the SDL window
@@ -198,10 +197,7 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
      * if `ColorMode::grayscale` is used, only the blackchannel is drawn. The default is rgb.
      */
     SDLDrawTarget(SDL_Renderer* _renderer, uint16_t _width, uint16_t _height, ColorMode _mode = ColorMode::rgb)
-        : width(_width), height(_height),
-          epaperapi::AbstractDrawTarget(
-              *(this->CreateBufferBasedOnColorMode(_width, _height, _mode)) // can't believe this works lol
-          ) {
+        : epaperapi::AbstractDrawTarget(*(this->CreateBufferBasedOnColorMode(_width, _height, _mode))) {
         renderer = _renderer;
         colormode = _mode;
     }

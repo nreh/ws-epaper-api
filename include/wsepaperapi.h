@@ -20,7 +20,11 @@ enum RefreshMode { Normal = 0, Fast = 1, Partial = 2 };
 /// display for testing.
 class AbstractDrawTarget {
   public:
-    uint16_t width, height;
+    /// @brief The width of the DrawTarget in pixels
+    const uint16_t width;
+
+    /// @brief The height of the DrawTarget in pixels
+    const uint16_t height;
 
     /// @brief Contains pixels that are currently being displayed. Useful for partial refreshes where we need the old pixel
     /// values.
@@ -32,7 +36,7 @@ class AbstractDrawTarget {
     /// @brief Clear the display to white
     virtual void Clear() = 0;
 
-    AbstractDrawTarget(AbstractBuffer& _buffer) : buffer(_buffer) {}
+    AbstractDrawTarget(AbstractBuffer& _buffer) : buffer(_buffer), width(_buffer.width), height(_buffer.height) {}
 };
 
 /// @brief Handles draw calls to the draw target as well as holding a list of all elements to be drawn.
