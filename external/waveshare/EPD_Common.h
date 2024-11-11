@@ -78,7 +78,7 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     }
 
     virtual void Init() = 0;
-
+    virtual void Display() = 0;
     virtual void Sleep() = 0;
 
     /// @brief Get the width of the physical display in pixels
