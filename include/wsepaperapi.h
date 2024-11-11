@@ -14,7 +14,7 @@ namespace epaperapi {}
 namespace epaperapi {
 
 /// @brief Indicates how the display should be refreshed. When in doubt, use Normal.
-enum RefreshMode { Normal = 0, Fast = 1, Partial = 2 };
+enum RefreshMode { Normal = 0, Partial = 1 };
 
 /// @brief Abstract class representing something that can be drawn on. Usually an E-Paper display but can also be a virtual
 /// display for testing.
