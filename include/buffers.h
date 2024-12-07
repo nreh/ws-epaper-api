@@ -179,6 +179,19 @@ class RGBBuffer : public AbstractBuffer {
     /// @param ypos_2 Y position of the end point of the line
     /// @param style How the color/style the line
     void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
+
+    /// @brief Converts this RGB buffer to a 4 color (2 bit color) array
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo4Color(uint8_t* dest);
+
+    /// @brief Converts this RGB buffer to a 6 color (4 bit color) array
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo6Color(uint8_t* dest);
+
+    /// @brief Does the same thing as ConvertTo6Color() but is possibly better due to thresholding rather than hard coding
+    /// colors.
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo6Color_Variant2(uint8_t* dest);
 };
 
 /// @brief 2 channel buffer with arrays for black and red color

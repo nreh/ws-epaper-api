@@ -208,6 +208,144 @@ void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint
     }
 }
 
+void RGBBuffer::ConvertTo4Color(uint8_t* dest) {
+    // Iterate through the pixels in the RGB buffer
+    for (uint16_t y = 0; y < height; ++y) {
+        for (uint16_t x = 0; x < width; ++x) {
+            // Calculate the index of the current pixel
+            size_t pixelIndex = y * width + x;
+
+            // Retrieve the R, G, B values
+            uint8_t r = redChannel[pixelIndex];
+            uint8_t g = greenChannel[pixelIndex];
+            uint8_t b = blueChannel[pixelIndex];
+
+            // Determine the 4-color index
+            uint8_t colorIndex;
+            if (r < 128 && g < 128 && b < 128) {
+                colorIndex = 0; // Black
+            } else if (r > 127 && g > 127 && b > 127) {
+                colorIndex = 1; // White
+            } else if (r < 128 && g > 127 && b > 127) {
+                colorIndex = 2; // Yellow
+            } else if (r < 128 && g < 128 && b > 127) {
+                colorIndex = 3; // Red
+            } else {
+                colorIndex = 0; // Default to black for safety
+            }
+
+            // Pack the color index into the destination buffer
+            size_t byteIndex = pixelIndex / 4;             // 4 pixels per byte
+            size_t bitOffset = (3 - (pixelIndex % 4)) * 2; // Determine the bit position
+
+            dest[byteIndex] &= ~(0x03 << bitOffset);      // Clear the 2 bits
+            dest[byteIndex] |= (colorIndex << bitOffset); // Set the 2 bits
+        }
+    }
+}
+
+void RGBBuffer::ConvertTo6Color(uint8_t* dest) {
+    size_t pixelCount = width * height;
+    size_t byteIndex = 0;
+
+    for (size_t i = 0; i < pixelCount; i += 2) {
+        // Fetch RGB values for two pixels
+        uint8_t r1 = redChannel[i];
+        uint8_t g1 = greenChannel[i];
+        uint8_t b1 = blueChannel[i];
+
+        uint8_t r2 = (i + 1 < pixelCount) ? redChannel[i + 1] : 0;
+        uint8_t g2 = (i + 1 < pixelCount) ? greenChannel[i + 1] : 0;
+        uint8_t b2 = (i + 1 < pixelCount) ? blueChannel[i + 1] : 0;
+
+        // Map the first pixel to an indexed color
+        uint8_t index1 = 0;
+        if (r1 == 0 && g1 == 0 && b1 == 0)
+            index1 = 0; // Black
+        else if (r1 == 255 && g1 == 255 && b1 == 255)
+            index1 = 1; // White
+        else if (r1 == 0 && g1 == 255 && b1 == 255)
+            index1 = 2; // Yellow
+        else if (r1 == 0 && g1 == 0 && b1 == 255)
+            index1 = 3; // Red
+        else if (r1 == 255 && g1 == 0 && b1 == 0)
+            index1 = 5; // Blue
+        else if (r1 == 0 && g1 == 255 && b1 == 0)
+            index1 = 6; // Green
+
+        // Map the second pixel to an indexed color
+        uint8_t index2 = 0;
+        if (r2 == 0 && g2 == 0 && b2 == 0)
+            index2 = 0; // Black
+        else if (r2 == 255 && g2 == 255 && b2 == 255)
+            index2 = 1; // White
+        else if (r2 == 0 && g2 == 255 && b2 == 255)
+            index2 = 2; // Yellow
+        else if (r2 == 0 && g2 == 0 && b2 == 255)
+            index2 = 3; // Red
+        else if (r2 == 255 && g2 == 0 && b2 == 0)
+            index2 = 5; // Blue
+        else if (r2 == 0 && g2 == 255 && b2 == 0)
+            index2 = 6; // Green
+
+        // Pack the two 4-bit values into one byte
+        dest[byteIndex++] = (index1 << 4) | index2;
+    }
+}
+
+void RGBBuffer::ConvertTo6Color_Variant2(uint8_t* dest) {
+    size_t pixelCount = width * height;
+    size_t byteIndex = 0;
+
+    for (size_t i = 0; i < pixelCount; i += 2) {
+        // Fetch RGB values for two pixels
+        uint8_t r1 = redChannel[i];
+        uint8_t g1 = greenChannel[i];
+        uint8_t b1 = blueChannel[i];
+
+        uint8_t r2 = (i + 1 < pixelCount) ? redChannel[i + 1] : 0;
+        uint8_t g2 = (i + 1 < pixelCount) ? greenChannel[i + 1] : 0;
+        uint8_t b2 = (i + 1 < pixelCount) ? blueChannel[i + 1] : 0;
+
+        // Map the first pixel to an indexed color using thresholds
+        uint8_t index1;
+        if (r1 < 128 && g1 < 128 && b1 < 128)
+            index1 = 0; // Black
+        else if (r1 > 127 && g1 > 127 && b1 > 127)
+            index1 = 1; // White
+        else if (r1 < 128 && g1 > 127 && b1 > 127)
+            index1 = 2; // Yellow
+        else if (r1 < 128 && g1 < 128 && b1 > 127)
+            index1 = 3; // Red
+        else if (r1 > 127 && g1 < 128 && b1 < 128)
+            index1 = 5; // Blue
+        else if (r1 < 128 && g1 > 127 && b1 < 128)
+            index1 = 6; // Green
+        else
+            index1 = 0; // Default to Black
+
+        // Map the second pixel to an indexed color using thresholds
+        uint8_t index2;
+        if (r2 < 128 && g2 < 128 && b2 < 128)
+            index2 = 0; // Black
+        else if (r2 > 127 && g2 > 127 && b2 > 127)
+            index2 = 1; // White
+        else if (r2 < 128 && g2 > 127 && b2 > 127)
+            index2 = 2; // Yellow
+        else if (r2 < 128 && g2 < 128 && b2 > 127)
+            index2 = 3; // Red
+        else if (r2 > 127 && g2 < 128 && b2 < 128)
+            index2 = 5; // Blue
+        else if (r2 < 128 && g2 > 127 && b2 < 128)
+            index2 = 6; // Green
+        else
+            index2 = 0; // Default to Black
+
+        // Pack the two 4-bit values into one byte
+        dest[byteIndex++] = (index1 << 4) | index2;
+    }
+}
+
 RedBlackBuffer::RedBlackBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
     redChannel = new uint8_t[width * height]();

@@ -93,7 +93,7 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     virtual void PreprocessBuffers() = 0;
 };
 
-/// @brief Represents an E-Paper display that displays a single monochrome (1 scale) black channel
+/// @brief Represents an E-Paper display that displays a single 1 bit black channel
 class Black1BitEPD : public PhysicalEPDDrawTarget {
   protected:
     GrayscaleBuffer _buffer;
@@ -118,6 +118,88 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
     }
 
     ~Black1BitEPD() { delete[] packedBits; }
+};
+
+/// @brief Represents an E-Paper display that displays a two 1 bit channels: Red and Black
+class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
+  protected:
+    RedBlackBuffer _buffer;
+
+    uint8_t* packedBitsBlack;
+    uint8_t* packedBitsRed;
+
+    /// @brief Get the number of bytes each row of pixels takes up.
+    int GetMemoryWidth(int width) const { return width % 8 == 0 ? width / 8 : width / 8 + 1; }
+
+    RedBlack1BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+        packedBitsBlack = new uint8_t[GetMemoryWidth(width) * height];
+        packedBitsRed = new uint8_t[GetMemoryWidth(width) * height];
+        buffer.FillBuffer(255);
+    }
+
+    /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
+    /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
+    /// contains 8 pixels. This function should be run before any calls to the display functions.
+    void PreprocessBuffers() override {
+        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBitsBlack, GetWidth(), GetHeight());
+        epaperapi::utils::Pack1Bit(_buffer.redChannel, packedBitsRed, GetWidth(), GetHeight());
+    }
+
+    ~RedBlack1BitEPD() {
+        delete[] packedBitsBlack;
+        delete[] packedBitsRed;
+    }
+};
+
+/// @brief Represents an E-Paper display that displays 2 bit pixels with red/yellow/black color channels
+class Color2BitEPD : public PhysicalEPDDrawTarget {
+  protected:
+    RGBBuffer _buffer;
+
+    uint8_t* packedBits;
+
+    /// @brief Get the number of bytes each row of pixels takes up.
+    int GetMemoryWidth(int width) const { return width % 4 == 0 ? width / 4 : width / 4 + 1; }
+
+    Color2BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+        packedBits = new uint8_t[GetMemoryWidth(width) * height];
+        buffer.FillBuffer(255);
+    }
+
+    /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
+    /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
+    /// contains 8 pixels. This function should be run before any calls to the display functions.
+    void PreprocessBuffers() override { _buffer.ConvertTo4Color(packedBits); }
+
+    ~Color2BitEPD() { delete[] packedBits; }
+};
+
+class Color4BitEPD : public PhysicalEPDDrawTarget {
+  protected:
+    RGBBuffer _buffer;
+
+    uint8_t* packedBits;
+
+    /// @brief Get the number of bytes each row of pixels takes up.
+    int GetMemoryWidth(int width) const { return width % 2 == 0 ? width / 2 : width / 2 + 1; }
+
+    Color4BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+        packedBits = new uint8_t[GetMemoryWidth(width) * height];
+        buffer.FillBuffer(255);
+    }
+
+  public:
+    /// @brief When true, the RGB conversion to 4 bit color will use different logic which may result in better (or worse)
+    /// color conversion. Defaults to true, set to false if experiences color artifacts or problems.
+    bool use6ColorVariant2 = true;
+
+  protected:
+    /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
+    /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
+    /// contains 8 pixels. This function should be run before any calls to the display functions.
+    void PreprocessBuffers() override { _buffer.ConvertTo6Color(packedBits); }
+
+    ~Color4BitEPD() { delete[] packedBits; }
 };
 
 } // namespace devices
