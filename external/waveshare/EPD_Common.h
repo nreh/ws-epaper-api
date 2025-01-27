@@ -42,7 +42,11 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     bool Open = false;
     bool AutoExit = true;
 
-    PhysicalEPDDrawTarget(AbstractBuffer& _buffer) : AbstractDrawTarget(_buffer) { InitializeSPI(); }
+    PhysicalEPDDrawTarget(AbstractBuffer& _buffer, bool initializeSPI) : AbstractDrawTarget(_buffer) {
+        if (initializeSPI) {
+            InitializeSPI();
+        }
+    }
 
   public:
     virtual std::string GetDeviceName() const = 0;
@@ -104,7 +108,8 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
     /// @brief Get the number of bytes each row of pixels takes up.
     int GetMemoryWidth(int width) const { return width % 8 == 0 ? width / 8 : width / 8 + 1; }
 
-    Black1BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+    Black1BitEPD(int width, int height, bool initializeSPI = true)
+        : _buffer(width, height), PhysicalEPDDrawTarget(_buffer, initializeSPI) {
         packedBits = new uint8_t[GetMemoryWidth(width) * height];
         buffer.FillBuffer(255);
     }
@@ -134,7 +139,8 @@ class Black2BitEPD : public PhysicalEPDDrawTarget {
     /// @brief Get ther number of bytes each row of pixels takes up when stored as 4 shades of gray
     int GetGrayscaleMemoryWidth(int width) const { return width % 4 == 0 ? width / 4 : width / 4 + 1; }
 
-    Black2BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+    Black2BitEPD(int width, int height, bool initializeSPI = true)
+        : _buffer(width, height), PhysicalEPDDrawTarget(_buffer, initializeSPI) {
         packedBits_1bit = new uint8_t[GetMemoryWidth(width) * height];
         packedBits_2bit = new uint8_t[GetGrayscaleMemoryWidth(width) * height];
         buffer.FillBuffer(255);
@@ -165,7 +171,8 @@ class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
     /// @brief Get the number of bytes each row of pixels takes up.
     int GetMemoryWidth(int width) const { return width % 8 == 0 ? width / 8 : width / 8 + 1; }
 
-    RedBlack1BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+    RedBlack1BitEPD(int width, int height, bool initializeSPI = true)
+        : _buffer(width, height), PhysicalEPDDrawTarget(_buffer, initializeSPI) {
         packedBitsBlack = new uint8_t[GetMemoryWidth(width) * height];
         packedBitsRed = new uint8_t[GetMemoryWidth(width) * height];
         buffer.FillBuffer(255);
@@ -195,7 +202,8 @@ class Color2BitEPD : public PhysicalEPDDrawTarget {
     /// @brief Get the number of bytes each row of pixels takes up.
     int GetMemoryWidth(int width) const { return width % 4 == 0 ? width / 4 : width / 4 + 1; }
 
-    Color2BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+    Color2BitEPD(int width, int height, bool initializeSPI = true)
+        : _buffer(width, height), PhysicalEPDDrawTarget(_buffer, initializeSPI) {
         packedBits = new uint8_t[GetMemoryWidth(width) * height];
         buffer.FillBuffer(255);
     }
@@ -216,7 +224,8 @@ class Color4BitEPD : public PhysicalEPDDrawTarget {
     /// @brief Get the number of bytes each row of pixels takes up.
     int GetMemoryWidth(int width) const { return width % 2 == 0 ? width / 2 : width / 2 + 1; }
 
-    Color4BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+    Color4BitEPD(int width, int height, bool initializeSPI = true)
+        : _buffer(width, height), PhysicalEPDDrawTarget(_buffer, initializeSPI) {
         packedBits = new uint8_t[GetMemoryWidth(width) * height];
         buffer.FillBuffer(255);
     }
