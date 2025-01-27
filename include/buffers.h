@@ -7,6 +7,9 @@
 namespace epaperapi {
 
 class ElementStyle;
+namespace utils {
+class SupportedPalette;
+}
 
 enum class BufferType { AbstractBuffer, RGBBuffer, RedBlackBuffer, GrayscaleBuffer };
 static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBlackBuffer", "GrayscaleBuffer"};
@@ -18,8 +21,8 @@ static const char* BufferTypeStrings[] = {"AbstractBuffer", "RGBBuffer", "RedBla
  * physical capabilities of the device you're trying to draw on. For example, an e-paper display with only grayscale has no
  * need for an RGB buffer - that would be a waste of 2/3 of the bytes we'd allocate.
  *
- * For that reason, each use-case (grayscale, 2-color, RGB) has a different implementation of the Abstract buffer with
- * different capabilities and limitations for each.
+ * For that reason, each use-case (grayscale, 2-color, RGB, etc...) has a different implementation of the Abstract buffer
+ * with different capabilities and limitations for each.
  */
 class AbstractBuffer {
   public:
@@ -180,11 +183,12 @@ class RGBBuffer : public AbstractBuffer {
     /// @param style How the color/style the line
     void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
 
-    /// @brief Converts this RGB buffer to a 4 color (2 bit color) array
+    /// @brief Converts this RGB buffer to a 4 color (2 bit color) array with the color palette: black, white, yellow red
     /// @param dest Destination array to write pixel data to
     void ConvertTo4Color(uint8_t* dest);
 
-    /// @brief Converts this RGB buffer to a 6 color (4 bit color) array
+    /// @brief Converts this RGB buffer to a 6 color (4 bit color) array with the color palette: black, white, yellow red,
+    /// blue, green
     /// @param dest Destination array to write pixel data to
     void ConvertTo6Color(uint8_t* dest);
 
@@ -192,6 +196,22 @@ class RGBBuffer : public AbstractBuffer {
     /// colors.
     /// @param dest Destination array to write pixel data to
     void ConvertTo6Color_Variant2(uint8_t* dest);
+
+    /// @brief Converts this RGB buffer to a 7 color (4 bit color) array
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo7Color(uint8_t* dest);
+
+    /// @brief Writes the RGB buffer to a destination array in 2 bit color format with a predefined palette of supported
+    /// colors
+    /// @param dest Destination array to write pixel data to
+    /// @param palette Supported colors that can be drawn on the display
+    void Quantize2Bit(uint8_t* dest, const utils::SupportedPalette& palette);
+
+    /// @brief Writes the RGB buffer to a destination array in 4 bit color format with a predefined palette of supported
+    /// colors
+    /// @param dest Destination array to write pixel data to
+    /// @param palette Supported colors that can be drawn on the display
+    void Quantize4Bit(uint8_t* dest, const utils::SupportedPalette& palette);
 };
 
 /// @brief 2 channel buffer with arrays for black and red color
@@ -343,6 +363,14 @@ class GrayscaleBuffer : public AbstractBuffer {
     /// @param ypos_2 Y position of the end point of the line
     /// @param style How the color/style the line
     void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
+
+    /// @brief Converts this buffer to a 1 bit black/white array.
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo1Bit(uint8_t* dest);
+
+    /// @brief Converts this buffer to a 2 bit, 4 shades of grayscale, array.
+    /// @param dest Destination array to write pixel data to
+    void ConvertTo2Bit(uint8_t* dest);
 };
 
 /// @brief Raised when Write(...) is called with an incompatible buffer type

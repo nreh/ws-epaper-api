@@ -1,4 +1,5 @@
 #include "buffers.h"
+#include "bufferutils.h"
 #include "elements.h"
 #include "utils.h"
 
@@ -209,6 +210,8 @@ void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint
 }
 
 void RGBBuffer::ConvertTo4Color(uint8_t* dest) {
+    memset(dest, 0, height * width);
+
     // Iterate through the pixels in the RGB buffer
     for (uint16_t y = 0; y < height; ++y) {
         for (uint16_t x = 0; x < width; ++x) {
@@ -246,6 +249,7 @@ void RGBBuffer::ConvertTo4Color(uint8_t* dest) {
 
 void RGBBuffer::ConvertTo6Color(uint8_t* dest) {
     size_t pixelCount = width * height;
+    memset(dest, 0, pixelCount);
     size_t byteIndex = 0;
 
     for (size_t i = 0; i < pixelCount; i += 2) {
@@ -343,6 +347,110 @@ void RGBBuffer::ConvertTo6Color_Variant2(uint8_t* dest) {
 
         // Pack the two 4-bit values into one byte
         dest[byteIndex++] = (index1 << 4) | index2;
+    }
+}
+
+void RGBBuffer::ConvertTo7Color(uint8_t* dest) {
+    size_t pixelCount = width * height;
+    memset(dest, 0, pixelCount);
+    size_t byteIndex = 0;
+
+    for (size_t i = 0; i < pixelCount; i += 2) {
+        // Fetch RGB values for two pixels
+        uint8_t r1 = redChannel[i];
+        uint8_t g1 = greenChannel[i];
+        uint8_t b1 = blueChannel[i];
+
+        uint8_t r2 = (i + 1 < pixelCount) ? redChannel[i + 1] : 0;
+        uint8_t g2 = (i + 1 < pixelCount) ? greenChannel[i + 1] : 0;
+        uint8_t b2 = (i + 1 < pixelCount) ? blueChannel[i + 1] : 0;
+
+        // Map the first pixel to an indexed color
+        uint8_t index1 = 0;
+        if (r1 == 0 && g1 == 0 && b1 == 0)
+            index1 = 0; // Black
+        else if (r1 == 255 && g1 == 255 && b1 == 255)
+            index1 = 1; // White
+        else if (r1 == 0 && g1 == 255 && b1 == 0)
+            index1 = 2; // Green
+        else if (r1 == 0 && g1 == 0 && b1 == 255)
+            index1 = 3; // Blue
+        else if (r1 == 255 && g1 == 0 && b1 == 0)
+            index1 = 4; // Red
+        else if (r1 == 255 && g1 == 255 && b1 == 0)
+            index1 = 5; // Yellow
+        else if (r1 == 255 && g1 == 165 && b1 == 0)
+            index1 = 6; // Orange
+
+        // Map the second pixel to an indexed color
+        uint8_t index2 = 0;
+        if (r2 == 0 && g2 == 0 && b2 == 0)
+            index2 = 0; // Black
+        else if (r2 == 255 && g2 == 255 && b2 == 255)
+            index2 = 1; // White
+        else if (r2 == 0 && g2 == 255 && b2 == 0)
+            index2 = 2; // Green
+        else if (r2 == 0 && g2 == 0 && b2 == 255)
+            index2 = 3; // Blue
+        else if (r2 == 255 && g2 == 0 && b2 == 0)
+            index2 = 4; // Red
+        else if (r2 == 255 && g2 == 255 && b2 == 0)
+            index2 = 5; // Yellow
+        else if (r2 == 255 && g2 == 165 && b2 == 0)
+            index2 = 6; // Orange
+
+        // Pack the two 4-bit values into one byte
+        dest[byteIndex++] = (index1 << 4) | index2;
+    }
+}
+
+void RGBBuffer::Quantize2Bit(uint8_t* dest, const utils::SupportedPalette& palette) {
+    // Iterate through the pixels in the RGB buffer
+    for (uint16_t y = 0; y < height; ++y) {
+        for (uint16_t x = 0; x < width; ++x) {
+            // Calculate the index of the current pixel
+            size_t pixelIndex = y * width + x;
+
+            // Retrieve the R, G, B values
+            uint8_t r = redChannel[pixelIndex];
+            uint8_t g = greenChannel[pixelIndex];
+            uint8_t b = blueChannel[pixelIndex];
+
+            // Determine the 4-color index
+            uint8_t colorIndex = palette.GetNearestColor(r, g, b);
+
+            // Pack the color index into the destination buffer
+            size_t byteIndex = pixelIndex / 4;             // 4 pixels per byte
+            size_t bitOffset = (3 - (pixelIndex % 4)) * 2; // Determine the bit position
+
+            dest[byteIndex] &= ~(0x03 << bitOffset);      // Clear the 2 bits
+            dest[byteIndex] |= (colorIndex << bitOffset); // Set the 2 bits
+        }
+    }
+}
+
+void RGBBuffer::Quantize4Bit(uint8_t* dest, const utils::SupportedPalette& palette) {
+    // Iterate through the pixels in the RGB buffer
+    for (uint16_t y = 0; y < height; ++y) {
+        for (uint16_t x = 0; x < width; ++x) {
+            // Calculate the index of the current pixel
+            size_t pixelIndex = y * width + x;
+
+            // Retrieve the R, G, B values
+            uint8_t r = redChannel[pixelIndex];
+            uint8_t g = greenChannel[pixelIndex];
+            uint8_t b = blueChannel[pixelIndex];
+
+            // Determine the 16-color index
+            uint8_t colorIndex = palette.GetNearestColor(r, g, b);
+
+            // Pack the color index into the destination buffer
+            size_t byteIndex = pixelIndex / 2;             // 2 pixels per byte
+            size_t bitOffset = (1 - (pixelIndex % 2)) * 4; // Determine the bit position
+
+            dest[byteIndex] &= ~(0x0F << bitOffset);      // Clear the 4 bits
+            dest[byteIndex] |= (colorIndex << bitOffset); // Set the 4 bits
+        }
     }
 }
 
@@ -607,6 +715,50 @@ void GrayscaleBuffer::DrawLine(
         j = slope * i + ypos_1;
         uint8_t val = blackChannel[this->width * j + i];
         blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
+    }
+}
+
+void GrayscaleBuffer::ConvertTo1Bit(uint8_t* dest) {
+    uint16_t packedBytesWidth = width % 8 == 0 ? width / 8 : width / 8 + 1;
+    memset(dest, 0, height * packedBytesWidth);
+
+    uint16_t verticalPos = 0;
+
+    for (uint16_t y = 0; y < height; y++) {
+        for (uint16_t x = 0; x < width; x++) {
+            // pack 8 pixels into 1 byte
+            auto val = blackChannel[y * width + x];
+            if (val == 255) {
+                dest[verticalPos + (x / 8)] |= (1 << (7 - (x % 8))); // write 1
+            } else {
+                dest[verticalPos + (x / 8)] &= ~(1 << (7 - (x % 8))); // write 0
+            }
+        }
+        verticalPos += packedBytesWidth;
+    }
+}
+
+void GrayscaleBuffer::ConvertTo2Bit(uint8_t* dest) {
+    uint16_t packedBytesWidth = width % 4 == 0 ? width / 4 : width / 4 + 1;
+    memset(dest, 0, height * packedBytesWidth);
+
+    uint16_t verticalPos = 0;
+
+    for (uint16_t y = 0; y < height; y++) {
+        for (uint16_t x = 0; x < width; x++) {
+            auto val = blackChannel[y * width + x];
+            int shift = 6 - (x % 4) * 2; // Determine which pair of bits to modify
+            if (val > 191) {
+                dest[verticalPos + (x / 4)] |= (0b11 << shift); // Black
+            } else if (val > 127) {
+                dest[verticalPos + (x / 4)] |= (0b10 << shift); // Dark Gray
+            } else if (val > 63) {
+                dest[verticalPos + (x / 4)] |= (0b01 << shift); // Light Gray
+            } else {
+                dest[verticalPos + (x / 4)] &= ~(0b11 << shift); // White (clear bits)
+            }
+        }
+        verticalPos += packedBytesWidth;
     }
 }
 
