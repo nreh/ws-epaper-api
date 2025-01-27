@@ -1,3 +1,5 @@
+# Parsed Capabilities
+
 This folder contains a .json file containing information about each headerfile/device in the
 `external/waveshare/epaper/e-Paper` folder which can then be used to create **DrawTarget** header files for use by the epaper
 API.
@@ -8,6 +10,8 @@ each header file and determine what color channels are supported, what functions
 In addition to this, extra information from example C files are also used to determine things like color scale, rotation, and
 what bitmap function is used for displaying images. All these things help create header files that are more likely to work
 without needing to manually fix anything.
+
+Finally the .json files were then categorized into folders using the `scripts/capabilitiesparser/Utils.py` script.
 
 These example files can be obtained from:
 https://github.com/waveshareteam/e-Paper/tree/master/RaspberryPi_JetsonNano/c/examples

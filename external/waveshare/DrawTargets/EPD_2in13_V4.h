@@ -1,3 +1,57 @@
+/**
+ * This file was automatically generated using Generate.py in scripts/capabilitiesparser/Generate.py.
+ * See the README.md in scripts/capabilitiesparser for more details.
+ *
+ * Display: 2.13inch e-paper V4
+ * Shortname: EPD_2in13_V4
+ * Generated On: 27 January 2025 @ 2:59 AM
+ * Supported Color Channels: black
+ * Type: Black1BitEPD
+ *
+ * The following JSON data was used:
+ * {
+ *   "FullName": "2.13inch e-paper V4",
+ *   "ScreenWidth": 122,
+ *   "ScreenHeight": 250,
+ *   "SupportedColorChannels": [
+ *     "black"
+ *   ],
+ *   "Functions": {
+ *     "Initialize": [
+ *       "EPD_2in13_V4_Init(void)",
+ *       "EPD_2in13_V4_Init_Fast(void)",
+ *       "EPD_2in13_V4_Init_GUI(void)"
+ *     ],
+ *     "Clear": [
+ *       "EPD_2in13_V4_Clear(void)",
+ *       "EPD_2in13_V4_Clear_Black(void)"
+ *     ],
+ *     "Display": [
+ *       "EPD_2in13_V4_Display(UBYTE *Image)"
+ *     ],
+ *     "Display_Base": [
+ *       "EPD_2in13_V4_Display_Base(UBYTE *Image)"
+ *     ],
+ *     "Display_Partial": [
+ *       "EPD_2in13_V4_Display_Partial(UBYTE *Image)"
+ *     ],
+ *     "Display_Fast": [
+ *       "EPD_2in13_V4_Display_Fast(UBYTE *Image)"
+ *     ],
+ *     "Display_Misc": [],
+ *     "Sleep": [
+ *       "EPD_2in13_V4_Sleep(void)"
+ *     ],
+ *     "Misc": []
+ *   },
+ *   "Notes": "Only black is supported explicitly as all functions and clears reference 'black'. The function
+ * EPD_2in13_V4_Init_GUI doesn't indicate a specific display capability but is included for comprehensive
+ * initialization.",
+ *   "PaintRotation": 90,
+ *   "BitmapFunction": "GUI_ReadBmp"
+ * }
+ */
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -7,7 +61,7 @@ namespace epaperapi {
 /// @brief Waveshare devices that you can draw to
 namespace devices {
 
-/// @brief 2.13 inch display (Version 4)
+/// @brief 2.13inch e-paper V4
 namespace EPD_2in13_V4 {
 
 /// @brief Access the underlying EPD class provided by Waveshare. Can be used for more low level control.
@@ -18,44 +72,48 @@ extern "C" {
 } // namespace controller
 
 /// @brief Width of device in pixels
-const int DEVICE_WIDTH = EPD_2in13_V4_WIDTH;
+const int DEVICE_WIDTH = 122;
 
 /// @brief Height of device in pixels
-const int DEVICE_HEIGHT = EPD_2in13_V4_HEIGHT;
+const int DEVICE_HEIGHT = 250;
 
-enum RefreshMode { Normal = 0, Fast = 1, Partial = 2, Base = 3 };
+enum RefreshMode { Display = 0, Partial = 1, Base = 2, Fast = 3 };
 
-class EPD_2in13_DrawTarget : public Black1BitEPD {
+class EPD_2in13_V4_DrawTarget : public Black1BitEPD {
   public:
-    std::string GetDeviceName() const override { return "EPD_2in13_V4"; }
-
+    std::string GetDeviceName() const override { return "2.13inch e-paper V4"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
 
-    /// @brief Initializes the E-Paper display
-    void Init() override { controller::EPD_2in13_V4_Init(); }
+    /// @brief Initialize the display
+    void Init() { controller::EPD_2in13_V4_Init(); }
 
-    void FastInit() { controller::EPD_2in13_V4_Init_Fast(); }
+    /// @brief Initialize the display
+    void Init_GUI() { controller::EPD_2in13_V4_Init_GUI(); }
 
-    /// @brief Clear the screen to white
-    void Clear() override { controller::EPD_2in13_V4_Clear(); }
+    /// @brief Initialize the display
+    void Init_Fast() { controller::EPD_2in13_V4_Init_Fast(); }
 
-    /// @brief Clear the screen to black
-    void ClearBlack() { controller::EPD_2in13_V4_Clear_Black(); }
+    /// @brief Clear the display
+    void Clear() { controller::EPD_2in13_V4_Clear(); }
 
-    /// @brief Draw current buffer onto the display
+    /// @brief Clear the display
+    void Clear_Black() { controller::EPD_2in13_V4_Clear_Black(); }
+
+    /// @brief Put the display to sleep
+    void Sleep() { controller::EPD_2in13_V4_Sleep(); }
+
+    /// @brief Display pixels in buffers to display
     void Display() { controller::EPD_2in13_V4_Display(packedBits); }
 
-    void DisplayFast() { controller::EPD_2in13_V4_Display_Fast(packedBits); }
+    /// @brief Display pixels in buffers to display
+    void Display_Base() { controller::EPD_2in13_V4_Display_Base(packedBits); }
 
-    /// @brief Draw the current buffer onto the display
-    void DisplayBase() { controller::EPD_2in13_V4_Display_Base(packedBits); }
+    /// @brief Display pixels in buffers to display
+    void Display_Fast() { controller::EPD_2in13_V4_Display_Fast(packedBits); }
 
-    /// @brief Partially refresh the display with a new image
-    void DisplayPartial() { controller::EPD_2in13_V4_Display_Partial(packedBits); }
-
-    /// @brief Put the device to sleep
-    void Sleep() override { controller::EPD_2in13_V4_Sleep(); }
+    /// @brief Display pixels in buffers to display
+    void Display_Partial() { controller::EPD_2in13_V4_Display_Partial(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -67,20 +125,20 @@ class EPD_2in13_DrawTarget : public Black1BitEPD {
         PreprocessBuffers();
 
         switch (static_cast<RefreshMode>(mode)) {
-        case RefreshMode::Normal:
+        case RefreshMode::Display:
             Display();
             break;
 
+        case RefreshMode::Base:
+            Display_Base();
+            break;
+
         case RefreshMode::Fast:
-            DisplayFast();
+            Display_Fast();
             break;
 
         case RefreshMode::Partial:
-            DisplayPartial();
-            break;
-
-        case RefreshMode::Base:
-            DisplayBase();
+            Display_Partial();
             break;
 
         default:
@@ -88,8 +146,8 @@ class EPD_2in13_DrawTarget : public Black1BitEPD {
         }
     }
 
-    EPD_2in13_DrawTarget() : Black1BitEPD(GetWidth(), GetHeight()) {}
-    ~EPD_2in13_DrawTarget() {}
+    EPD_2in13_V4_DrawTarget() : Black1BitEPD(GetWidth(), GetHeight()) {}
+    ~EPD_2in13_V4_DrawTarget() {}
 };
 
 } // namespace EPD_2in13_V4

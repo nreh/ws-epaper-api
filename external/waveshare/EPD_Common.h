@@ -112,12 +112,46 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
     /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
-    void PreprocessBuffers() override {
-        epaperapi::utils::PosterizeGrayscale(_buffer, 2);
-        epaperapi::utils::Pack1Bit(_buffer.blackChannel, packedBits, GetWidth(), GetHeight());
-    }
+    void PreprocessBuffers() override { _buffer.ConvertTo1Bit(packedBits); }
 
     ~Black1BitEPD() { delete[] packedBits; }
+};
+
+/// @brief Represents an E-Paper display that displays a single 2 bit black channel with 4 shades of gray
+class Black2BitEPD : public PhysicalEPDDrawTarget {
+  protected:
+    GrayscaleBuffer _buffer;
+
+    /// @brief Instead of 1 pixel per byte, the E-Paper display expects 8 pixels per byte
+    uint8_t* packedBits_1bit;
+
+    /// @brief Store pixel data but this time for 4 shades of gray (meaning 2 bits per pixel)
+    uint8_t* packedBits_2bit;
+
+    /// @brief Get the number of bytes each row of pixels takes up.
+    int GetMemoryWidth(int width) const { return width % 8 == 0 ? width / 8 : width / 8 + 1; }
+
+    /// @brief Get ther number of bytes each row of pixels takes up when stored as 4 shades of gray
+    int GetGrayscaleMemoryWidth(int width) const { return width % 4 == 0 ? width / 4 : width / 4 + 1; }
+
+    Black2BitEPD(int width, int height) : _buffer(width, height), PhysicalEPDDrawTarget(_buffer) {
+        packedBits_1bit = new uint8_t[GetMemoryWidth(width) * height];
+        packedBits_2bit = new uint8_t[GetGrayscaleMemoryWidth(width) * height];
+        buffer.FillBuffer(255);
+    }
+
+    /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
+    /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
+    /// contains 8 pixels. This function should be run before any calls to the display functions.
+    void PreprocessBuffers() override {
+        _buffer.ConvertTo1Bit(packedBits_1bit);
+        _buffer.ConvertTo2Bit(packedBits_2bit);
+    }
+
+    ~Black2BitEPD() {
+        delete[] packedBits_1bit;
+        delete[] packedBits_2bit;
+    }
 };
 
 /// @brief Represents an E-Paper display that displays a two 1 bit channels: Red and Black
@@ -155,7 +189,7 @@ class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
 class Color2BitEPD : public PhysicalEPDDrawTarget {
   protected:
     RGBBuffer _buffer;
-
+    utils::SupportedPalette palette = utils::SupportedPalette::Make6Color();
     uint8_t* packedBits;
 
     /// @brief Get the number of bytes each row of pixels takes up.
@@ -177,7 +211,6 @@ class Color2BitEPD : public PhysicalEPDDrawTarget {
 class Color4BitEPD : public PhysicalEPDDrawTarget {
   protected:
     RGBBuffer _buffer;
-
     uint8_t* packedBits;
 
     /// @brief Get the number of bytes each row of pixels takes up.
@@ -188,18 +221,28 @@ class Color4BitEPD : public PhysicalEPDDrawTarget {
         buffer.FillBuffer(255);
     }
 
-  public:
-    /// @brief When true, the RGB conversion to 4 bit color will use different logic which may result in better (or worse)
-    /// color conversion. Defaults to true, set to false if experiences color artifacts or problems.
-    bool use6ColorVariant2 = true;
-
   protected:
+    ~Color4BitEPD() { delete[] packedBits; }
+};
+
+class _6Color4BitEPD : public Color4BitEPD {
+  protected:
+    utils::SupportedPalette palette = utils::SupportedPalette::Make6Color();
+
     /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
-    void PreprocessBuffers() override { _buffer.ConvertTo6Color(packedBits); }
+    void PreprocessBuffers() override { _buffer.Quantize4Bit(packedBits, palette); }
+};
 
-    ~Color4BitEPD() { delete[] packedBits; }
+class _7Color4BitEPD : public Color4BitEPD {
+  protected:
+    utils::SupportedPalette palette = utils::SupportedPalette::Make7Color();
+
+    /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
+    /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
+    /// contains 8 pixels. This function should be run before any calls to the display functions.
+    void PreprocessBuffers() override { _buffer.Quantize4Bit(packedBits, palette); }
 };
 
 } // namespace devices
