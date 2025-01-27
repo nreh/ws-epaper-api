@@ -2,7 +2,9 @@
 
 #include "buffers.h"
 #include <cstring>
+#include <limits>
 #include <stdint.h>
+#include <vector>
 
 /**
  * Helper functions to perform operations on Buffers
@@ -58,6 +60,7 @@ inline void PosterizeGrayscale(GrayscaleBuffer& grayscale, uint8_t steps) {
 /// @param height
 inline void Pack1Bit(uint8_t* pixelsArray, uint8_t* packedPixelsArray, uint16_t width, uint16_t height) {
     uint16_t packedBytesWidth = width % 8 == 0 ? width / 8 : width / 8 + 1;
+    memset(packedPixelsArray, 0, height * packedBytesWidth);
 
     uint16_t verticalPos = 0;
 
@@ -270,6 +273,81 @@ inline void convertTo16BitRGB(const RGBBuffer& buffer, uint8_t* output) {
         }
     }
 }
+
+struct RGB {
+    uint8_t r, g, b;
+    RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
+};
+
+/// @brief Represents colors that an EPD display supports
+class SupportedPalette {
+  private:
+    std::vector<RGB> colors;
+
+    SupportedPalette(std::vector<RGB> colors) : colors(colors) {}
+
+  public:
+    /// @brief Given an RGB color, returns the index of the nearest supported color
+    uint8_t GetNearestColor(const uint8_t& r, const uint8_t& g, const uint8_t& b) const {
+        uint8_t nearestIndex = 0;
+        uint32_t smallestDistanceSquared = std::numeric_limits<uint32_t>::max();
+
+        uint8_t i = 0;
+        for (const auto& c : colors) {
+            if (c.r == r && c.g == g && c.b == b) {
+                return i;
+            }
+            i++;
+        }
+
+        for (i = 0; i < colors.size(); ++i) {
+            uint32_t distanceSquared = (r - colors[i].r) * (r - colors[i].r) + (g - colors[i].g) * (g - colors[i].g) +
+                                       (b - colors[i].b) * (b - colors[i].b);
+
+            if (distanceSquared < smallestDistanceSquared) {
+                smallestDistanceSquared = distanceSquared;
+                nearestIndex = i;
+            }
+        }
+
+        return nearestIndex;
+    }
+
+    /// @brief Generate supported colors for 7 color displays (Black, White, Green, Blue, Red, Yellow, Orange)
+    static SupportedPalette Make7Color() {
+        return SupportedPalette({
+            RGB(0, 0, 0),       // Black
+            RGB(255, 255, 255), // White
+            RGB(0, 255, 0),     // Green
+            RGB(255, 0, 0),     // Blue
+            RGB(0, 0, 255),     // Red
+            RGB(0, 255, 255),   // Yellow
+            RGB(0, 128, 255)    // Orange
+        });
+    }
+
+    /// @brief Generate supported colors for 6 color displays (Black, White, Yellow, Red, Blue, Green)
+    static SupportedPalette Make6Color() {
+        return SupportedPalette({
+            RGB(0, 0, 0),       // Black
+            RGB(255, 255, 255), // White
+            RGB(0, 255, 255),   // Yellow
+            RGB(0, 0, 255),     // Red
+            RGB(255, 0, 0),     // Blue
+            RGB(0, 255, 0)      // Green
+        });
+    }
+
+    /// @brief Generate supported colors for 4 color displays (Black, White, Yellow, Red)
+    static SupportedPalette Make4Color() {
+        return SupportedPalette({
+            RGB(0, 0, 0),       // Black
+            RGB(255, 255, 255), // White
+            RGB(0, 255, 255),   // Yellow
+            RGB(0, 0, 255)      // Red
+        });
+    }
+};
 
 } // namespace utils
 } // namespace epaperapi
