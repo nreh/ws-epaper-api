@@ -1,3 +1,6 @@
+import textwrap
+
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -25,8 +28,8 @@ class Logger:
         else:
             if area != '':
                 area = f' @ {area}'
-            print(
-                f'{prefixColor}[{self.filename}]{area} |{bcolors.ENDC}{messageColor} {message}{bcolors.ENDC}')
+            print(textwrap.indent(
+                f'{message}{bcolors.ENDC}', f'{prefixColor}[{self.filename}]{area} |{bcolors.ENDC}{messageColor} '))
 
     def info(self, message, area=''):
         self.write('info', message, area)

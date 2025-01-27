@@ -40,20 +40,22 @@ class Generator():
 
     def CreateFunctionFromSignature(self, functionSignature: str, category: str, functionName: str, docstring: str,
                                     first: bool = False, passedParameters: 'list[str]' = []):
-        function_name = functionSignature.split("(")[0]
+        function_ident = functionSignature.split("(")[0]
         num_args = count_args(functionSignature)
 
         if num_args > len(passedParameters):
             self.log.warning(
                 f'Function \'{functionSignature}\' takes {num_args} arguments but we expected at most {len(passedParameters)} - skipping',
                 f'{category} Loop')
+            self.builder.ignoredFunctions.append(
+                f'{functionSignature} was skipped because I\'m not sure what arguments to pass in!')
             return None  # function takes too many arguments, Skip
         else:
-            content = f'controller::{function_name}({", ".join(passedParameters[0:num_args])});'
+            content = f'controller::{function_ident}({", ".join(passedParameters[0:num_args])});'
 
             return cb.Function(
                 functionName if first else extract_function_suffix(
-                    function_name, functionName),
+                    function_ident, functionName),
                 content,
                 docstring
             )
@@ -117,7 +119,12 @@ class Generator():
             # we want to add it to DisplayFunctions instead of Functions
             func = self.CreateFunctionFromSignature(i, 'Display', 'Display',
                                                     'Display pixels in buffers to display', first, [])
+
+            if func is None:
+                continue
+
             self.builder.DisplayFunctions.append(func)
+
             first = False
 
     def BuildHeaderfile(self):

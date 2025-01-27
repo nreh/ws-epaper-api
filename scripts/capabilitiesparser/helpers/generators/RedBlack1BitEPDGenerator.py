@@ -6,13 +6,14 @@ from ..EPaperDetails import EPaperDetails
 from ..logging import Logger
 
 
-class Black1BitEPD_Generator(Generator):
+class RedBlack1BitEPD_Generator(Generator):
     """
-    Generate C++ code for a black 1 bit EPD display
+    Generate C++ code for a redblack 1 bit EPD display
     """
 
     def __init__(self, det: EPaperDetails, log: Logger):
-        super().__init__(DrawTargetClassBuilder(det, det.name, 'Black1BitEPD', log), det, log)
+        super().__init__(DrawTargetClassBuilder(
+            det, det.name, 'RedBlack1BitEPD', log), det, log)
 
     # add packedBits argument
     def CreateDisplayFunctions(self):
@@ -26,10 +27,14 @@ class Black1BitEPD_Generator(Generator):
             self.det.functions['Display_Fast'] + \
             self.det.functions['Display_Misc']
 
-        for i in sorted(combined, key=len):
+        def sorter(name):
+            return len(name.split('(')[0])
+
+        for i in sorted(combined, key=sorter):
             # we want to add it to DisplayFunctions instead of Functions
             func = self.CreateFunctionFromSignature(i, 'Display', 'Display',
-                                                    'Display pixels in buffers to display', first, ['packedBits'])
+                                                    'Display pixels in buffers to display', first,
+                                                    ['packedBitsBlack', 'packedBitsRed'])
 
             if func is None:
                 continue

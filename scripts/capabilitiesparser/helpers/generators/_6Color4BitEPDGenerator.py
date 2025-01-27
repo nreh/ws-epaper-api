@@ -6,13 +6,14 @@ from ..EPaperDetails import EPaperDetails
 from ..logging import Logger
 
 
-class Black1BitEPD_Generator(Generator):
+class _6Color4BitEPD_Generator(Generator):
     """
-    Generate C++ code for a black 1 bit EPD display
+    Generate C++ code for a 6 color (4 bits per pixel) EPD display
     """
 
     def __init__(self, det: EPaperDetails, log: Logger):
-        super().__init__(DrawTargetClassBuilder(det, det.name, 'Black1BitEPD', log), det, log)
+        super().__init__(DrawTargetClassBuilder(
+            det, det.name, '_6Color4BitEPD', log), det, log)
 
     # add packedBits argument
     def CreateDisplayFunctions(self):

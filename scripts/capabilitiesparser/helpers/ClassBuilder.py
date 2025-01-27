@@ -1,9 +1,26 @@
 # This file contains code for create C++ DrawTarget headers files piece by piece
 
 from datetime import datetime
+import json
 import textwrap
 from .EPaperDetails import EPaperDetails
 from logging import Logger
+
+
+def dict_to_wrapped_string(data, width=120, indent=2, prefix=" * "):
+    # Convert dictionary to JSON string with proper indentation
+    json_string = json.dumps(data, indent=indent)
+    # Split the JSON string into lines
+    lines = json_string.splitlines()
+    # Wrap each line individually, with the specified width and prefix
+    wrapped_lines = []
+    for line in lines:
+        wrapped_lines.extend(
+            textwrap.wrap(line, width=width,
+                          subsequent_indent=prefix, initial_indent=prefix)
+        )
+    # Join the wrapped lines into a single string
+    return "\n".join(wrapped_lines)
 
 
 class Param:
@@ -55,6 +72,7 @@ class DrawTargetClassBuilder:
         self.inherits = inherits
         self.DisplayFunctions: 'list[Function]' = []
         self.functions: 'list[Function]' = []
+        self.ignoredFunctions: list[str] = []
 
     def ConstructRefreshFunction(self) -> Function:
         conditions = []
@@ -114,6 +132,17 @@ default:
 
         return s
 
+    def DocumentIgnoredFunctions(self) -> str:
+        if len(self.ignoredFunctions) == 0:
+            return ""
+        else:
+            s = "// The following functions were not created:\n\n"
+            for i in self.ignoredFunctions:
+                s += f'//  ! {i}\n'
+            s += '\n'
+
+            return s
+
     def ConstructFunctionDeclarations(self) -> str:
         r = ''
 
@@ -135,6 +164,9 @@ default:
  * Generated On: {datetime.now().strftime("%-d %B %Y @ %-I:%M %p")}
  * Supported Color Channels: {",".join(self.det.supportColorChannels)}
  * Type: {self.inherits}
+ *
+ * The following JSON data was used:
+{dict_to_wrapped_string(self.det.raw)}
  */
  
 #pragma once
@@ -157,10 +189,10 @@ extern "C" {{
 }} // namespace controller
 
 /// @brief Width of device in pixels
-const int DEVICE_WIDTH = {self.det.name}_WIDTH;
+const int DEVICE_WIDTH = {self.det.screenWidth};
 
 /// @brief Height of device in pixels
-const int DEVICE_HEIGHT = {self.det.name}_HEIGHT;
+const int DEVICE_HEIGHT = {self.det.screenHeight};
 
 {self.ConstructRefreshModeEnum()}
 
@@ -170,7 +202,7 @@ class {self.det.name}_DrawTarget : public {self.inherits} {{
     int GetWidth() const override {{ return DEVICE_WIDTH; }}
     int GetHeight() const override {{ return DEVICE_HEIGHT; }}
     
-{textwrap.indent(self.ConstructFunctionDeclarations(), '    ')}
+{textwrap.indent(self.DocumentIgnoredFunctions(), '    ')}{textwrap.indent(self.ConstructFunctionDeclarations(), '    ')}
 
     {self.det.name}_DrawTarget() : {self.inherits}(GetWidth(), GetHeight()) {{}}
     ~{self.det.name}_DrawTarget() {{}}

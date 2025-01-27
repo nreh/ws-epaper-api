@@ -66,6 +66,9 @@ class EPaperDetails:
         self.bitmapFunction = None
         self.notes = None
         self.functions = {}
+        self.mode = ''  # Optional. Used by Generate.py for debugging/logging
+        # raw JSON parsed from file. Used for debugging/logging.
+        self.raw: dict = None
 
     def parseFromJson(self, json: dict):
         self.fullName = json['FullName']
@@ -80,6 +83,7 @@ class EPaperDetails:
             self.paintRotation = json['PaintRotation']
         if 'BitmapFunction' in json.keys():
             self.bitmapFunction = json['BitmapFunction']
+        self.raw = json
 
     def toJson(self) -> dict:
         json = {
@@ -183,16 +187,38 @@ class EPaperDetails:
         """
         if self.HasExampleFile():
             if self.paintScale == 2 or self.paintScale == None:
-                if self.bitmapFunction == 'GUI_ReadBmp':
+                if self.bitmapFunction == 'GUI_ReadBmp':  # 1 bit color meaning that only 1 shade of the color is used
                     if 'black' in self.supportColorChannels:
                         if len(self.supportColorChannels) == 1:
-                            # 1 Bit monochrome mode
+                            # 1 Bit black and white mode
                             return 'Black1BitEPD'
-                        else:
-                            # Red/Black mode
-                            return 'RedBlack1BitEPD'
+                        elif len(self.supportColorChannels) == 2:
+                            if 'red' in self.supportColorChannels:
+                                # 1 bit Red/Black mode
+                                return 'RedBlack1BitEPD'
+                            else:
+                                return 'Unknown1BitMonochromeDoubleChannel'
                     else:
                         # must be some other unknown single channel color
-                        return 'UnknownSingleChannel'
+                        return 'Unknown1BitMonochromeSingleChannel'
+            elif self.paintScale == 4:
+                if self.bitmapFunction == 'GUI_ReadBmp_RGB_4Color':
+                    return 'Color2BitEPD'
+                elif self.bitmapFunction == 'GUI_ReadBmp' and len(self.supportColorChannels) > 0 and self.supportColorChannels[0] == 'black':
+                    return 'Black2BitEPD'
+                else:
+                    return 'Unknown4Scale'
+            elif self.paintScale == 6:
+                if self.bitmapFunction == 'GUI_ReadBmp_RGB_6Color':
+                    return '6Color4BitEPD'
+                else:
+                    return 'Unknown6Scale'
+            elif self.paintScale == 7:
+                if self.bitmapFunction == 'GUI_ReadBmp_RGB_7Color':
+                    return '7Color4BitEPD'
+                else:
+                    return 'Unknown7Scale'
+        else:
+            return 'NoExampleFile'
 
         return 'Unknown'

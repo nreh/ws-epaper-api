@@ -1,1 +1,6 @@
 from .Black1BitEPDGenerator import Black1BitEPD_Generator
+from .Black2BitEPDGenerator import Black2BitEPD_Generator
+from .RedBlack1BitEPDGenerator import RedBlack1BitEPD_Generator
+from .Color2BitEPDGenerator import Color2BitEPD_Generator
+from ._6Color4BitEPDGenerator import _6Color4BitEPD_Generator
+from ._7Color4BitEPDGenerator import _7Color4BitEPD_Generator
