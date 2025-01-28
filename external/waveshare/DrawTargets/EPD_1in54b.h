@@ -4,7 +4,7 @@
  *
  * Display: 1.54inch e-paper b
  * Shortname: EPD_1in54b
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -118,7 +118,7 @@ class EPD_1in54b_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_1in54b_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_1in54b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_1in54b_DrawTarget() {}
 };
 

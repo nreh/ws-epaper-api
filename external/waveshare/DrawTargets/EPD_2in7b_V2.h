@@ -4,7 +4,7 @@
  *
  * Display: 2.7inch e-paper V2
  * Shortname: EPD_2in7b_V2
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -117,7 +117,7 @@ class EPD_2in7b_V2_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_2in7b_V2_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_2in7b_V2_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_2in7b_V2_DrawTarget() {}
 };
 

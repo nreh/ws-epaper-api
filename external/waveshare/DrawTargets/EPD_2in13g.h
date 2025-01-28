@@ -4,7 +4,7 @@
  *
  * Display: 2.13inch e-paper G
  * Shortname: EPD_2in13g
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -118,7 +118,7 @@ class EPD_2in13g_DrawTarget : public Color2BitEPD {
         
     }
 
-    EPD_2in13g_DrawTarget() : Color2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_2in13g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_2in13g_DrawTarget() {}
 };
 

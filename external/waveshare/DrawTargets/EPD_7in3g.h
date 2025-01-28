@@ -4,7 +4,7 @@
  *
  * Display: 7.3inchg e-paper G
  * Shortname: EPD_7in3g
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -118,7 +118,7 @@ class EPD_7in3g_DrawTarget : public Color2BitEPD {
         
     }
 
-    EPD_7in3g_DrawTarget() : Color2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_7in3g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_7in3g_DrawTarget() {}
 };
 

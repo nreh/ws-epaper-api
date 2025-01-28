@@ -4,7 +4,7 @@
  *
  * Display: 13.3inch e-paper (B) V1.0
  * Shortname: EPD_13in3b
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -157,7 +157,7 @@ class EPD_13in3b_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_13in3b_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_13in3b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_13in3b_DrawTarget() {}
 };
 

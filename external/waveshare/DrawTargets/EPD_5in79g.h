@@ -4,7 +4,7 @@
  *
  * Display: EPD 5.79 inch g
  * Shortname: EPD_5in79g
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -130,7 +130,7 @@ class EPD_5in79g_DrawTarget : public Color2BitEPD {
         
     }
 
-    EPD_5in79g_DrawTarget() : Color2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_5in79g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_5in79g_DrawTarget() {}
 };
 

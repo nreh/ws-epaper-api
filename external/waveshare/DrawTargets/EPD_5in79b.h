@@ -4,7 +4,7 @@
  *
  * Display: 5.79inch e-paper V1.0
  * Shortname: EPD_5in79b
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -118,7 +118,7 @@ class EPD_5in79b_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_5in79b_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_5in79b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_5in79b_DrawTarget() {}
 };
 

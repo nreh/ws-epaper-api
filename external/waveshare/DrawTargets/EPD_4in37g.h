@@ -4,7 +4,7 @@
  *
  * Display: 4.37inch e-Paper G V1.0
  * Shortname: EPD_4in37g
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red,yellow
  * Type: Color2BitEPD
  *
@@ -118,7 +118,7 @@ class EPD_4in37g_DrawTarget : public Color2BitEPD {
         
     }
 
-    EPD_4in37g_DrawTarget() : Color2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_4in37g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_4in37g_DrawTarget() {}
 };
 

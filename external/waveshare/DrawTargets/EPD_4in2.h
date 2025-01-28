@@ -4,7 +4,7 @@
  *
  * Display: 4.2inch e-paper
  * Shortname: EPD_4in2
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black
  * Type: Black2BitEPD
  *
@@ -148,7 +148,7 @@ class EPD_4in2_DrawTarget : public Black2BitEPD {
         
     }
 
-    EPD_4in2_DrawTarget() : Black2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_4in2_DrawTarget(bool initializeSPI = true) : Black2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_4in2_DrawTarget() {}
 };
 

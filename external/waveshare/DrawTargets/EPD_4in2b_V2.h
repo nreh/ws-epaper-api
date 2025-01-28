@@ -4,7 +4,7 @@
  *
  * Display: 4.2inch e-paper b&c V1.0
  * Shortname: EPD_4in2b_V2
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -117,7 +117,7 @@ class EPD_4in2b_V2_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_4in2b_V2_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_4in2b_V2_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_4in2b_V2_DrawTarget() {}
 };
 

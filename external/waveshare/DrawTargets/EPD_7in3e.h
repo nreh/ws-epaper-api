@@ -4,7 +4,7 @@
  *
  * Display: 7.3inch e-Paper (F)
  * Shortname: EPD_7in3e
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red,yellow,blue,green
  * Type: _6Color4BitEPD
  *
@@ -148,7 +148,7 @@ class EPD_7in3e_DrawTarget : public _6Color4BitEPD {
         
     }
 
-    EPD_7in3e_DrawTarget() : _6Color4BitEPD(GetWidth(), GetHeight()) {}
+    EPD_7in3e_DrawTarget(bool initializeSPI = true) : _6Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_7in3e_DrawTarget() {}
 };
 

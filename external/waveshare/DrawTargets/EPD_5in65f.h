@@ -4,7 +4,7 @@
  *
  * Display: 5.65inch e-paper
  * Shortname: EPD_5in65f
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,green,blue,red,yellow,orange
  * Type: _7Color4BitEPD
  *
@@ -133,7 +133,7 @@ class EPD_5in65f_DrawTarget : public _7Color4BitEPD {
         
     }
 
-    EPD_5in65f_DrawTarget() : _7Color4BitEPD(GetWidth(), GetHeight()) {}
+    EPD_5in65f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_5in65f_DrawTarget() {}
 };
 

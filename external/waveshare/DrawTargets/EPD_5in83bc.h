@@ -4,7 +4,7 @@
  *
  * Display: 5.83inch e-paper b&c
  * Shortname: EPD_5in83bc
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -129,7 +129,7 @@ class EPD_5in83bc_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_5in83bc_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_5in83bc_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_5in83bc_DrawTarget() {}
 };
 

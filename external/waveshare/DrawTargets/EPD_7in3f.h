@@ -4,7 +4,7 @@
  *
  * Display: 7.3inch e-Paper (F) Driver
  * Shortname: EPD_7in3f
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red,green,blue,yellow,orange
  * Type: _7Color4BitEPD
  *
@@ -133,7 +133,7 @@ class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
         
     }
 
-    EPD_7in3f_DrawTarget() : _7Color4BitEPD(GetWidth(), GetHeight()) {}
+    EPD_7in3f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_7in3f_DrawTarget() {}
 };
 

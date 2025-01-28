@@ -4,7 +4,7 @@
  *
  * Display: 5.83inch e-paper V2
  * Shortname: EPD_5in83_V2
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *
@@ -117,7 +117,7 @@ class EPD_5in83_V2_DrawTarget : public Black1BitEPD {
         
     }
 
-    EPD_5in83_V2_DrawTarget() : Black1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_5in83_V2_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_5in83_V2_DrawTarget() {}
 };
 

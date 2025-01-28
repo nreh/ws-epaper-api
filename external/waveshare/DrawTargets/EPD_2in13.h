@@ -4,7 +4,7 @@
  *
  * Display: 2.13inch e-paper V3
  * Shortname: EPD_2in13
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *
@@ -117,7 +117,7 @@ class EPD_2in13_DrawTarget : public Black1BitEPD {
         
     }
 
-    EPD_2in13_DrawTarget() : Black1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_2in13_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_2in13_DrawTarget() {}
 };
 

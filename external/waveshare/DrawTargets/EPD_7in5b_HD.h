@@ -4,7 +4,7 @@
  *
  * Display: 7.5inch e-paper HD
  * Shortname: EPD_7in5b_HD
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -130,7 +130,7 @@ class EPD_7in5b_HD_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_7in5b_HD_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_7in5b_HD_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_7in5b_HD_DrawTarget() {}
 };
 

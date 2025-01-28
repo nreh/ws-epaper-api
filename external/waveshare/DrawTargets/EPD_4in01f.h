@@ -4,7 +4,7 @@
  *
  * Display: 4.01inch e-paper
  * Shortname: EPD_4in01f
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red,green,blue,yellow,orange
  * Type: _7Color4BitEPD
  *
@@ -148,7 +148,7 @@ class EPD_4in01f_DrawTarget : public _7Color4BitEPD {
         
     }
 
-    EPD_4in01f_DrawTarget() : _7Color4BitEPD(GetWidth(), GetHeight()) {}
+    EPD_4in01f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_4in01f_DrawTarget() {}
 };
 

@@ -4,7 +4,7 @@
  *
  * Display: 1.64inch e-paper(G)
  * Shortname: EPD_1in64g
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -119,7 +119,7 @@ class EPD_1in64g_DrawTarget : public Color2BitEPD {
         
     }
 
-    EPD_1in64g_DrawTarget() : Color2BitEPD(GetWidth(), GetHeight()) {}
+    EPD_1in64g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_1in64g_DrawTarget() {}
 };
 

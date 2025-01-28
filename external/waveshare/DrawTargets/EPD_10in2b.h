@@ -4,7 +4,7 @@
  *
  * Display: 10.2inch b e-paper
  * Shortname: EPD_10in2b
- * Generated On: 27 January 2025 @ 2:59 AM
+ * Generated On: 27 January 2025 @ 5:09 AM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
@@ -117,7 +117,7 @@ class EPD_10in2b_DrawTarget : public RedBlack1BitEPD {
         
     }
 
-    EPD_10in2b_DrawTarget() : RedBlack1BitEPD(GetWidth(), GetHeight()) {}
+    EPD_10in2b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
     ~EPD_10in2b_DrawTarget() {}
 };
 
