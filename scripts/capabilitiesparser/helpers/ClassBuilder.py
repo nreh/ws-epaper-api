@@ -204,7 +204,7 @@ class {self.det.name}_DrawTarget : public {self.inherits} {{
     
 {textwrap.indent(self.DocumentIgnoredFunctions(), '    ')}{textwrap.indent(self.ConstructFunctionDeclarations(), '    ')}
 
-    {self.det.name}_DrawTarget() : {self.inherits}(GetWidth(), GetHeight()) {{}}
+    {self.det.name}_DrawTarget(bool initializeSPI = true) : {self.inherits}(GetWidth(), GetHeight(), initializeSPI) {{}}
     ~{self.det.name}_DrawTarget() {{}}
 }};
 
