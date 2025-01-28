@@ -81,6 +81,9 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
         }
     }
 
+    virtual AbstractBuffer& GetBuffer() = 0;
+    virtual uint8_t* GetInternalPackedBits() = 0;
+
     virtual void Init() = 0;
     virtual void Display() = 0;
     virtual void Sleep() = 0;
@@ -120,6 +123,10 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
     void PreprocessBuffers() override { _buffer.ConvertTo1Bit(packedBits); }
 
     ~Black1BitEPD() { delete[] packedBits; }
+
+  public:
+    AbstractBuffer& GetBuffer() override { return _buffer; }
+    uint8_t* GetInternalPackedBits() override { return packedBits; }
 };
 
 /// @brief Represents an E-Paper display that displays a single 2 bit black channel with 4 shades of gray
@@ -158,6 +165,10 @@ class Black2BitEPD : public PhysicalEPDDrawTarget {
         delete[] packedBits_1bit;
         delete[] packedBits_2bit;
     }
+
+  public:
+    AbstractBuffer& GetBuffer() override { return _buffer; }
+    uint8_t* GetInternalPackedBits() override { return packedBits_1bit; }
 };
 
 /// @brief Represents an E-Paper display that displays a two 1 bit channels: Red and Black
@@ -190,6 +201,10 @@ class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
         delete[] packedBitsBlack;
         delete[] packedBitsRed;
     }
+
+  public:
+    AbstractBuffer& GetBuffer() override { return _buffer; }
+    uint8_t* GetInternalPackedBits() override { return packedBitsBlack; }
 };
 
 /// @brief Represents an E-Paper display that displays 2 bit pixels with red/yellow/black color channels
@@ -214,6 +229,10 @@ class Color2BitEPD : public PhysicalEPDDrawTarget {
     void PreprocessBuffers() override { _buffer.ConvertTo4Color(packedBits); }
 
     ~Color2BitEPD() { delete[] packedBits; }
+
+  public:
+    AbstractBuffer& GetBuffer() override { return _buffer; }
+    uint8_t* GetInternalPackedBits() override { return packedBits; }
 };
 
 class Color4BitEPD : public PhysicalEPDDrawTarget {
@@ -232,6 +251,10 @@ class Color4BitEPD : public PhysicalEPDDrawTarget {
 
   protected:
     ~Color4BitEPD() { delete[] packedBits; }
+
+  public:
+    AbstractBuffer& GetBuffer() override { return _buffer; }
+    uint8_t* GetInternalPackedBits() override { return packedBits; }
 };
 
 class _6Color4BitEPD : public Color4BitEPD {
