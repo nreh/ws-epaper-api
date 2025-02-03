@@ -144,7 +144,56 @@ void RGBBuffer::DrawBitmap(
     const ElementStyle& backgroundStyle,
     const ElementStyle& foregroundStyle,
     const uint8_t* bitmap
-) {}
+) {
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                redChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.redChannel, redChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                redChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.redChannel, redChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                greenChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.greenChannel, greenChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                greenChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.greenChannel, greenChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                greenChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.greenChannel, greenChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                greenChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.greenChannel, greenChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
+}
 
 void RGBBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
