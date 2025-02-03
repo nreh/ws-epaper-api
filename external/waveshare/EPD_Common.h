@@ -1,9 +1,11 @@
 #pragma once
 
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
 
+#include "../include/bitmaps/Wifi.h"
 #include "../include/wsepaperapi.h"
 
 namespace epaperapi {
@@ -82,7 +84,6 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     }
 
     virtual AbstractBuffer& GetBuffer() = 0;
-    virtual uint8_t* GetInternalPackedBits() = 0;
 
     virtual void Init() = 0;
     virtual void Display() = 0;
@@ -98,6 +99,10 @@ class PhysicalEPDDrawTarget : public AbstractDrawTarget {
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
     virtual void PreprocessBuffers() = 0;
+
+    /// @brief Pretty much does the opposite of `PreprocessBuffers()`, writes internal packed bits representation to the
+    /// target buffer.
+    virtual void UnpackBuffers(AbstractBuffer& target) = 0;
 };
 
 /// @brief Represents an E-Paper display that displays a single 1 bit black channel
@@ -126,7 +131,28 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
 
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
-    uint8_t* GetInternalPackedBits() override { return packedBits; }
+
+    void UnpackBuffers(AbstractBuffer& target) override {
+        if (target.type() != BufferType::GrayscaleBuffer) {
+            throw std::runtime_error(
+                "Cannot unpack buffer for " + GetDeviceName() +
+                " as the target buffer is incompatible (expected GrayscaleBuffer)"
+            );
+        }
+
+        auto t = static_cast<GrayscaleBuffer&>(target).blackChannel;
+
+        auto memWidth = GetMemoryWidth(GetWidth());
+        epaperapi::bitmaps::Wifi wifi;
+        for (int y = 0; y < GetHeight(); y++) {
+            for (int x = 0; x < GetWidth(); x++) {
+                int byte_index = (y * memWidth) + (x / 8);
+                int bit_index = x % 8;
+                uint8_t pixel = packedBits[byte_index] >> (7 - bit_index) & 0x1;
+                t[y * GetWidth() + x] = pixel == 1 ? 0xFF : 0x00;
+            }
+        }
+    }
 };
 
 /// @brief Represents an E-Paper display that displays a single 2 bit black channel with 4 shades of gray
@@ -168,7 +194,8 @@ class Black2BitEPD : public PhysicalEPDDrawTarget {
 
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
-    uint8_t* GetInternalPackedBits() override { return packedBits_1bit; }
+
+    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
 };
 
 /// @brief Represents an E-Paper display that displays a two 1 bit channels: Red and Black
@@ -204,7 +231,8 @@ class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
 
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
-    uint8_t* GetInternalPackedBits() override { return packedBitsBlack; }
+
+    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
 };
 
 /// @brief Represents an E-Paper display that displays 2 bit pixels with red/yellow/black color channels
@@ -232,7 +260,8 @@ class Color2BitEPD : public PhysicalEPDDrawTarget {
 
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
-    uint8_t* GetInternalPackedBits() override { return packedBits; }
+
+    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
 };
 
 class Color4BitEPD : public PhysicalEPDDrawTarget {
@@ -254,7 +283,6 @@ class Color4BitEPD : public PhysicalEPDDrawTarget {
 
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
-    uint8_t* GetInternalPackedBits() override { return packedBits; }
 };
 
 class _6Color4BitEPD : public Color4BitEPD {
@@ -265,6 +293,8 @@ class _6Color4BitEPD : public Color4BitEPD {
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
     void PreprocessBuffers() override { _buffer.Quantize4Bit(packedBits, palette); }
+
+    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
 };
 
 class _7Color4BitEPD : public Color4BitEPD {
@@ -275,6 +305,8 @@ class _7Color4BitEPD : public Color4BitEPD {
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
     void PreprocessBuffers() override { _buffer.Quantize4Bit(packedBits, palette); }
+
+    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
 };
 
 } // namespace devices
