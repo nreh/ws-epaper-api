@@ -143,7 +143,6 @@ class Black1BitEPD : public PhysicalEPDDrawTarget {
         auto t = static_cast<GrayscaleBuffer&>(target).blackChannel;
 
         auto memWidth = GetMemoryWidth(GetWidth());
-        epaperapi::bitmaps::Wifi wifi;
         for (int y = 0; y < GetHeight(); y++) {
             for (int x = 0; x < GetWidth(); x++) {
                 int byte_index = (y * memWidth) + (x / 8);
@@ -232,7 +231,7 @@ class RedBlack1BitEPD : public PhysicalEPDDrawTarget {
   public:
     AbstractBuffer& GetBuffer() override { return _buffer; }
 
-    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
+    void UnpackBuffers(AbstractBuffer& target) override {}
 };
 
 /// @brief Represents an E-Paper display that displays 2 bit pixels with red/yellow/black color channels
