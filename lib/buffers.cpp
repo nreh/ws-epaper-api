@@ -150,7 +150,7 @@ void RGBBuffer::DrawBitmap(
         for (int i = 0; i < width; i++) {
             uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
-            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
                 redChannel[bufferpos] =
                     utils::BlendPixel(foregroundStyle.redChannel, redChannel[bufferpos], foregroundStyle.alpha);
@@ -166,7 +166,7 @@ void RGBBuffer::DrawBitmap(
         for (int i = 0; i < width; i++) {
             uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
-            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
                 greenChannel[bufferpos] =
                     utils::BlendPixel(foregroundStyle.greenChannel, greenChannel[bufferpos], foregroundStyle.alpha);
@@ -182,7 +182,7 @@ void RGBBuffer::DrawBitmap(
         for (int i = 0; i < width; i++) {
             uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
-            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
                 greenChannel[bufferpos] =
                     utils::BlendPixel(foregroundStyle.greenChannel, greenChannel[bufferpos], foregroundStyle.alpha);
@@ -590,7 +590,40 @@ void RedBlackBuffer::DrawBitmap(
     const ElementStyle& backgroundStyle,
     const ElementStyle& foregroundStyle,
     const uint8_t* bitmap
-) {}
+) {
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                redChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.redChannel, redChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                redChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.redChannel, redChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                blackChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.blackChannel, blackChannel[bufferpos], foregroundStyle.alpha);
+            } else {
+                blackChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.blackChannel, blackChannel[bufferpos], backgroundStyle.alpha);
+                ;
+            }
+        }
+    }
+}
 
 void RedBlackBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
@@ -718,7 +751,7 @@ void GrayscaleBuffer::DrawBitmap(
         for (int i = 0; i < width; i++) {
             uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
-            uint16_t bufferpos = bufferYpos * this->width + bufferXpos;
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
                 blackChannel[bufferpos] =
                     utils::BlendPixel(foregroundStyle.blackChannel, blackChannel[bufferpos], foregroundStyle.alpha);
@@ -796,15 +829,15 @@ void GrayscaleBuffer::ConvertTo2Bit(uint8_t* dest) {
     for (uint16_t y = 0; y < height; y++) {
         for (uint16_t x = 0; x < width; x++) {
             auto val = blackChannel[y * width + x];
-            int shift = 6 - (x % 4) * 2; // Determine which pair of bits to modify
-            if (val > 191) {
+            int shift = 6 - ((x % 4) * 2); // Determine which pair of bits to modify
+            if (val < 64) {
                 dest[verticalPos + (x / 4)] |= (0b11 << shift); // Black
-            } else if (val > 127) {
+            } else if (val < 128) {
                 dest[verticalPos + (x / 4)] |= (0b10 << shift); // Dark Gray
-            } else if (val > 63) {
+            } else if (val < 192) {
                 dest[verticalPos + (x / 4)] |= (0b01 << shift); // Light Gray
             } else {
-                dest[verticalPos + (x / 4)] &= ~(0b11 << shift); // White (clear bits)
+                dest[verticalPos + (x / 4)] |= (0b00 << shift); // White (clear bits)
             }
         }
         verticalPos += packedBytesWidth;
