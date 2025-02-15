@@ -125,7 +125,8 @@ class EPD_13in3b_DrawTarget : public RedBlack1BitEPD {
 
     /// @brief Display pixels in buffers to display
     void Display_Base_White() {
-        controller::EPD_13IN3B_Display_Base_White();
+        //! This function 'EPD_13IN3B_Display_Base_White' was never defined in waveshare's code :(
+        // // controller::EPD_13IN3B_Display_Base_White();
     }
 
     /// @brief Refresh the display with current buffer

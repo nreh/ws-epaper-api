@@ -29,7 +29,7 @@
 #
 ******************************************************************************/
 #include "EPD_5in65f.h"
-#include "stdlib.h"
+// // #include "stdlib.h"       Removed as it causes issues with building!
 
 /******************************************************************************
 function:
