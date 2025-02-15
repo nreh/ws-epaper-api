@@ -184,11 +184,11 @@ void RGBBuffer::DrawBitmap(
             bool val = getPixel(bitmap, width, i, j);
             uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
-                greenChannel[bufferpos] =
-                    utils::BlendPixel(foregroundStyle.greenChannel, greenChannel[bufferpos], foregroundStyle.alpha);
+                blueChannel[bufferpos] =
+                    utils::BlendPixel(foregroundStyle.blueChannel, blueChannel[bufferpos], foregroundStyle.alpha);
             } else {
-                greenChannel[bufferpos] =
-                    utils::BlendPixel(backgroundStyle.greenChannel, greenChannel[bufferpos], backgroundStyle.alpha);
+                blueChannel[bufferpos] =
+                    utils::BlendPixel(backgroundStyle.blueChannel, blueChannel[bufferpos], backgroundStyle.alpha);
                 ;
             }
         }
