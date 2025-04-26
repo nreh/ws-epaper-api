@@ -4,7 +4,7 @@
 
 namespace epaperapi::bitmaps {
 
-/// @brief A bitmap image that can be drawn using `BitmapElement`
+/// @brief A bitmap image that can be drawn using `Bitmap1BitElement`
 class AbstractBitmap {
   public:
     /// @brief Get bitmap width in pixels
