@@ -45,7 +45,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -78,31 +78,21 @@ class EPD_5in83bc_DrawTarget : public RedBlack1BitEPD {
     std::string GetDeviceName() const override { return "5.83inch e-paper b&c"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_5IN83BC_Init();
-    }
+    void Init() { controller::EPD_5IN83BC_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_5IN83BC_Clear();
-    }
+    void Clear() { controller::EPD_5IN83BC_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_5IN83BC_Sleep();
-    }
+    void Sleep() { controller::EPD_5IN83BC_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_5IN83BC_Display(packedBitsBlack, packedBitsRed);
-    }
+    void Display() { controller::EPD_5IN83BC_Display(packedBitsBlack, packedBitsRed); }
 
     /// @brief Display pixels in buffers to display
-    void DisplayHalfScreen() {
-        controller::EPD_5IN83BC_DisplayHalfScreen(packedBitsBlack, packedBitsRed);
-    }
+    void DisplayHalfScreen() { controller::EPD_5IN83BC_DisplayHalfScreen(packedBitsBlack, packedBitsRed); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -115,18 +105,16 @@ class EPD_5in83bc_DrawTarget : public RedBlack1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::DisplayHalfScreen:
-        DisplayHalfScreen();
-        break;
-
+            DisplayHalfScreen();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_5in83bc_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

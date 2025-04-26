@@ -42,7 +42,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -75,26 +75,18 @@ class EPD_2in9b_V3_DrawTarget : public RedBlack1BitEPD {
     std::string GetDeviceName() const override { return "2.9inch e-paper b V3"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_2IN9B_V3_Init();
-    }
+    void Init() { controller::EPD_2IN9B_V3_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_2IN9B_V3_Clear();
-    }
+    void Clear() { controller::EPD_2IN9B_V3_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_2IN9B_V3_Sleep();
-    }
+    void Sleep() { controller::EPD_2IN9B_V3_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_2IN9B_V3_Display(packedBitsBlack, packedBitsRed);
-    }
+    void Display() { controller::EPD_2IN9B_V3_Display(packedBitsBlack, packedBitsRed); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -107,14 +99,12 @@ class EPD_2in9b_V3_DrawTarget : public RedBlack1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
-
+            Display();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_2in9b_V3_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

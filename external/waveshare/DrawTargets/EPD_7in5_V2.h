@@ -47,7 +47,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -80,45 +80,32 @@ class EPD_7in5_V2_DrawTarget : public Black1BitEPD {
     std::string GetDeviceName() const override { return "7.5inch e-paper V2"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_7IN5_V2_Display_Part(UBYTE *blackimage, UDOUBLE x_start, UDOUBLE y_start, UDOUBLE x_end, UDOUBLE y_end) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_7IN5_V2_Display_Part(UBYTE *blackimage, UDOUBLE x_start, UDOUBLE y_start, UDOUBLE x_end, UDOUBLE y_end) was
+    //  skipped because I'm not sure what arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_7IN5_V2_Init();
-    }
+    void Init() { controller::EPD_7IN5_V2_Init(); }
 
     /// @brief Initialize the display
-    void Init_Fast() {
-        controller::EPD_7IN5_V2_Init_Fast();
-    }
+    void Init_Fast() { controller::EPD_7IN5_V2_Init_Fast(); }
 
     /// @brief Initialize the display
-    void Init_Part() {
-        controller::EPD_7IN5_V2_Init_Part();
-    }
+    void Init_Part() { controller::EPD_7IN5_V2_Init_Part(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_7IN5_V2_Clear();
-    }
+    void Clear() { controller::EPD_7IN5_V2_Clear(); }
 
     /// @brief Clear the display
-    void ClearBlack() {
-        controller::EPD_7IN5_V2_ClearBlack();
-    }
+    void ClearBlack() { controller::EPD_7IN5_V2_ClearBlack(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_7IN5_V2_Sleep();
-    }
+    void Sleep() { controller::EPD_7IN5_V2_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_7IN5_V2_Display(packedBits);
-    }
+    void Display() { controller::EPD_7IN5_V2_Display(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -131,14 +118,12 @@ class EPD_7in5_V2_DrawTarget : public Black1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
-
+            Display();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_7in5_V2_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

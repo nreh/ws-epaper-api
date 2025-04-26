@@ -53,7 +53,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -86,55 +86,38 @@ class EPD_4in26_DrawTarget : public Black2BitEPD {
     std::string GetDeviceName() const override { return "4.26inch e-paper"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_4in26_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_4in26_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l) was skipped because I'm not sure what
+    //  arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_4in26_Init();
-    }
+    void Init() { controller::EPD_4in26_Init(); }
 
     /// @brief Initialize the display
-    void Init_Fast() {
-        controller::EPD_4in26_Init_Fast();
-    }
+    void Init_Fast() { controller::EPD_4in26_Init_Fast(); }
 
     /// @brief Initialize the display
-    void Init_4GRAY() {
-        controller::EPD_4in26_Init_4GRAY();
-    }
+    void Init_4GRAY() { controller::EPD_4in26_Init_4GRAY(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_4in26_Clear();
-    }
+    void Clear() { controller::EPD_4in26_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_4in26_Sleep();
-    }
+    void Sleep() { controller::EPD_4in26_Sleep(); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display() {
-        controller::EPD_4in26_Display(packedBits_1bit);
-    }
+    void Display() { controller::EPD_4in26_Display(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Base() {
-        controller::EPD_4in26_Display_Base(packedBits_1bit);
-    }
+    void Display_Base() { controller::EPD_4in26_Display_Base(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Fast() {
-        controller::EPD_4in26_Display_Fast(packedBits_1bit);
-    }
+    void Display_Fast() { controller::EPD_4in26_Display_Fast(packedBits_1bit); }
 
     /// @brief Display pixels in 2 bit buffer to display (4 shades of gray)
-    void EPD_4in26_4GrayDisplay() {
-        controller::EPD_4in26_4GrayDisplay(packedBits_2bit);
-    }
+    void EPD_4in26_4GrayDisplay() { controller::EPD_4in26_4GrayDisplay(packedBits_2bit); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -147,26 +130,24 @@ class EPD_4in26_DrawTarget : public Black2BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Base:
-        Display_Base();
-        break;
+            Display_Base();
+            break;
 
         case RefreshMode::Fast:
-        Display_Fast();
-        break;
+            Display_Fast();
+            break;
 
         case RefreshMode::EPD_4in26_4GrayDisplay:
-        EPD_4in26_4GrayDisplay();
-        break;
-
+            EPD_4in26_4GrayDisplay();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_4in26_DrawTarget(bool initializeSPI = true) : Black2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

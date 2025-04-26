@@ -53,7 +53,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -86,56 +86,36 @@ class EPD_2in9_V2_DrawTarget : public Black2BitEPD {
     std::string GetDeviceName() const override { return "2.9inch e-paper V2"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
-    /// @brief Initialize the display
-    void Init() {
-        controller::EPD_2IN9_V2_Init();
-    }
 
     /// @brief Initialize the display
-    void Init_Fast() {
-        controller::EPD_2IN9_V2_Init_Fast();
-    }
+    void Init() { controller::EPD_2IN9_V2_Init(); }
 
     /// @brief Initialize the display
-    void Init2() {
-        controller::EPD_2IN9_V2_Gray4_Init();
-    }
+    void Init_Fast() { controller::EPD_2IN9_V2_Init_Fast(); }
+
+    /// @brief Initialize the display
+    void Init2() { controller::EPD_2IN9_V2_Gray4_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_2IN9_V2_Clear();
-    }
+    void Clear() { controller::EPD_2IN9_V2_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_2IN9_V2_Sleep();
-    }
+    void Sleep() { controller::EPD_2IN9_V2_Sleep(); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display() {
-        controller::EPD_2IN9_V2_Display(packedBits_1bit);
-    }
+    void Display() { controller::EPD_2IN9_V2_Display(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Base() {
-        controller::EPD_2IN9_V2_Display_Base(packedBits_1bit);
-    }
+    void Display_Base() { controller::EPD_2IN9_V2_Display_Base(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Fast() {
-        controller::EPD_2IN9_V2_Display_Fast(packedBits_1bit);
-    }
+    void Display_Fast() { controller::EPD_2IN9_V2_Display_Fast(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Partial() {
-        controller::EPD_2IN9_V2_Display_Partial(packedBits_1bit);
-    }
+    void Display_Partial() { controller::EPD_2IN9_V2_Display_Partial(packedBits_1bit); }
 
     /// @brief Display pixels in 2 bit buffer to display (4 shades of gray)
-    void EPD_2IN9_V2_4GrayDisplay() {
-        controller::EPD_2IN9_V2_4GrayDisplay(packedBits_2bit);
-    }
+    void EPD_2IN9_V2_4GrayDisplay() { controller::EPD_2IN9_V2_4GrayDisplay(packedBits_2bit); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -148,30 +128,28 @@ class EPD_2in9_V2_DrawTarget : public Black2BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Base:
-        Display_Base();
-        break;
+            Display_Base();
+            break;
 
         case RefreshMode::Fast:
-        Display_Fast();
-        break;
+            Display_Fast();
+            break;
 
         case RefreshMode::Partial:
-        Display_Partial();
-        break;
+            Display_Partial();
+            break;
 
         case RefreshMode::EPD_2IN9_V2_4GrayDisplay:
-        EPD_2IN9_V2_4GrayDisplay();
-        break;
-
+            EPD_2IN9_V2_4GrayDisplay();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_2in9_V2_DrawTarget(bool initializeSPI = true) : Black2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

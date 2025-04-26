@@ -48,7 +48,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -81,41 +81,27 @@ class EPD_1in54_V2_DrawTarget : public Black1BitEPD {
     std::string GetDeviceName() const override { return "1.54inch e-paper V2"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
-    /// @brief Initialize the display
-    void Init() {
-        controller::EPD_1IN54_V2_Init();
-    }
 
     /// @brief Initialize the display
-    void Init_Partial() {
-        controller::EPD_1IN54_V2_Init_Partial();
-    }
+    void Init() { controller::EPD_1IN54_V2_Init(); }
+
+    /// @brief Initialize the display
+    void Init_Partial() { controller::EPD_1IN54_V2_Init_Partial(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_1IN54_V2_Clear();
-    }
+    void Clear() { controller::EPD_1IN54_V2_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_1IN54_V2_Sleep();
-    }
+    void Sleep() { controller::EPD_1IN54_V2_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_1IN54_V2_Display(packedBits);
-    }
+    void Display() { controller::EPD_1IN54_V2_Display(packedBits); }
 
     /// @brief Display pixels in buffers to display
-    void DisplayPart() {
-        controller::EPD_1IN54_V2_DisplayPart(packedBits);
-    }
+    void DisplayPart() { controller::EPD_1IN54_V2_DisplayPart(packedBits); }
 
     /// @brief Display pixels in buffers to display
-    void DisplayPartBaseImage() {
-        controller::EPD_1IN54_V2_DisplayPartBaseImage(packedBits);
-    }
+    void DisplayPartBaseImage() { controller::EPD_1IN54_V2_DisplayPartBaseImage(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -128,22 +114,20 @@ class EPD_1in54_V2_DrawTarget : public Black1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::DisplayPart:
-        DisplayPart();
-        break;
+            DisplayPart();
+            break;
 
         case RefreshMode::DisplayPartBaseImage:
-        DisplayPartBaseImage();
-        break;
-
+            DisplayPartBaseImage();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_1in54_V2_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

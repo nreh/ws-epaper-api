@@ -50,7 +50,7 @@
  *   "BitmapFunction": "GUI_ReadBmp_RGB_7Color"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -83,31 +83,21 @@ class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
     std::string GetDeviceName() const override { return "7.3inch e-Paper (F) Driver"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_7IN3F_Init();
-    }
+    void Init() { controller::EPD_7IN3F_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_7IN3F_Clear(0x1);
-    }
+    void Clear() { controller::EPD_7IN3F_Clear(0x1); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_7IN3F_Sleep();
-    }
+    void Sleep() { controller::EPD_7IN3F_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_7IN3F_Show7Block();
-    }
+    void Display() { controller::EPD_7IN3F_Show7Block(); }
 
     /// @brief Display pixels in buffers to display
-    void Display2() {
-        controller::EPD_7IN3F_Display(packedBits);
-    }
+    void Display2() { controller::EPD_7IN3F_Display(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -120,18 +110,16 @@ class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Display2:
-        Display2();
-        break;
-
+            Display2();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_7in3f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

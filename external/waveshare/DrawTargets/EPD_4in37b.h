@@ -46,7 +46,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -79,30 +79,23 @@ class EPD_4in37b_DrawTarget : public RedBlack1BitEPD {
     std::string GetDeviceName() const override { return "4.37inch e-paper b"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_4IN37B_Display_Part(UBYTE *ImageBlack, UBYTE*ImageRed, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_4IN37B_Display_Part(UBYTE *ImageBlack, UBYTE*ImageRed, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was
+    //  skipped because I'm not sure what arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_4IN37B_Init();
-    }
+    void Init() { controller::EPD_4IN37B_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_4IN37B_Clear();
-    }
+    void Clear() { controller::EPD_4IN37B_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_4IN37B_Sleep();
-    }
+    void Sleep() { controller::EPD_4IN37B_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_4IN37B_Display(packedBitsBlack, packedBitsRed);
-    }
+    void Display() { controller::EPD_4IN37B_Display(packedBitsBlack, packedBitsRed); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -115,14 +108,12 @@ class EPD_4in37b_DrawTarget : public RedBlack1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
-
+            Display();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_4in37b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

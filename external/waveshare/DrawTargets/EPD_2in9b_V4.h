@@ -53,7 +53,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -86,60 +86,41 @@ class EPD_2in9b_V4_DrawTarget : public RedBlack1BitEPD {
     std::string GetDeviceName() const override { return "2.9inch e-paper b V4"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_2IN9B_V4_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_2IN9B_V4_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was skipped
+    //  because I'm not sure what arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_2IN9B_V4_Init();
-    }
+    void Init() { controller::EPD_2IN9B_V4_Init(); }
 
     /// @brief Initialize the display
-    void Init_Fast() {
-        controller::EPD_2IN9B_V4_Init_Fast();
-    }
+    void Init_Fast() { controller::EPD_2IN9B_V4_Init_Fast(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_2IN9B_V4_Clear();
-    }
+    void Clear() { controller::EPD_2IN9B_V4_Clear(); }
 
     /// @brief Clear the display
-    void Clear_Fast() {
-        controller::EPD_2IN9B_V4_Clear_Fast();
-    }
+    void Clear_Fast() { controller::EPD_2IN9B_V4_Clear_Fast(); }
 
     /// @brief Clear the display
-    void Clear_Red_Fast() {
-        controller::EPD_2IN9B_V4_Clear_Red_Fast();
-    }
+    void Clear_Red_Fast() { controller::EPD_2IN9B_V4_Clear_Red_Fast(); }
 
     /// @brief Clear the display
-    void Clear_Black_Fast() {
-        controller::EPD_2IN9B_V4_Clear_Black_Fast();
-    }
+    void Clear_Black_Fast() { controller::EPD_2IN9B_V4_Clear_Black_Fast(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_2IN9B_V4_Sleep();
-    }
+    void Sleep() { controller::EPD_2IN9B_V4_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_2IN9B_V4_Display(packedBitsBlack, packedBitsRed);
-    }
+    void Display() { controller::EPD_2IN9B_V4_Display(packedBitsBlack, packedBitsRed); }
 
     /// @brief Display pixels in buffers to display
-    void Display_Base() {
-        controller::EPD_2IN9B_V4_Display_Base(packedBitsBlack, packedBitsRed);
-    }
+    void Display_Base() { controller::EPD_2IN9B_V4_Display_Base(packedBitsBlack, packedBitsRed); }
 
     /// @brief Display pixels in buffers to display
-    void Display_Fast() {
-        controller::EPD_2IN9B_V4_Display_Fast(packedBitsBlack, packedBitsRed);
-    }
+    void Display_Fast() { controller::EPD_2IN9B_V4_Display_Fast(packedBitsBlack, packedBitsRed); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -152,22 +133,20 @@ class EPD_2in9b_V4_DrawTarget : public RedBlack1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Base:
-        Display_Base();
-        break;
+            Display_Base();
+            break;
 
         case RefreshMode::Fast:
-        Display_Fast();
-        break;
-
+            Display_Fast();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_2in9b_V4_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
