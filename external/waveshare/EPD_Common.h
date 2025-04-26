@@ -467,9 +467,60 @@ class _7Color4BitEPD : public Color4BitEPD {
     /// @brief In pretty much all the displays, the Buffer will need to be preprocessed in some way before being able to be
     /// sent to the epaper display. For example, on some displays, the pixels may need to be packed so that each byte
     /// contains 8 pixels. This function should be run before any calls to the display functions.
-    void PreprocessBuffers() override { _buffer.Quantize4Bit(packedBits, palette); }
+    void PreprocessBuffers() override { _buffer.ConvertTo7Color(packedBits, GetMemoryWidth(width), palette); }
 
-    void UnpackBuffers(AbstractBuffer& target) override {} // todo: implement
+    void UnpackBuffers(AbstractBuffer& target) override {
+        if (target.type() != BufferType::RGBBuffer) {
+            throw std::runtime_error(
+                "Cannot unpack buffer for " + GetDeviceName() + " as the target buffer is incompatible (expected RGBBuffer)"
+            );
+        }
+
+        auto rchannel = static_cast<RGBBuffer&>(target).redChannel;
+        auto gchannel = static_cast<RGBBuffer&>(target).greenChannel;
+        auto bchannel = static_cast<RGBBuffer&>(target).blueChannel;
+
+        auto memWidth = GetMemoryWidth(GetWidth());
+        for (int y = 0; y < GetHeight(); y++) {
+            for (int x = 0; x < GetWidth(); x++) {
+                int byte_index = (y * memWidth) + (x / 2);
+                int bit_index = (x % 2) * 4;
+                uint8_t pixel = packedBits[byte_index] >> (4 - bit_index) & 0x0F;
+                uint8_t val;
+                uint32_t n = y * GetWidth() + x;
+
+                if (pixel == 0) { // black
+                    rchannel[n] = 0;
+                    gchannel[n] = 0;
+                    bchannel[n] = 0;
+                } else if (pixel == 1) { // white
+                    rchannel[n] = 255;
+                    gchannel[n] = 255;
+                    bchannel[n] = 255;
+                } else if (pixel == 2) { // green
+                    rchannel[n] = 0;
+                    gchannel[n] = 255;
+                    bchannel[n] = 0;
+                } else if (pixel == 3) { // blue
+                    rchannel[n] = 0;
+                    gchannel[n] = 0;
+                    bchannel[n] = 255;
+                } else if (pixel == 4) { // red
+                    rchannel[n] = 255;
+                    gchannel[n] = 0;
+                    bchannel[n] = 0;
+                } else if (pixel == 5) { // yellow
+                    rchannel[n] = 255;
+                    gchannel[n] = 255;
+                    bchannel[n] = 0;
+                } else if (pixel == 6) { // orange
+                    rchannel[n] = 255;
+                    gchannel[n] = 165;
+                    bchannel[n] = 0;
+                }
+            }
+        }
+    }
 };
 
 } // namespace devices
