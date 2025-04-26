@@ -4,7 +4,7 @@
  *
  * Display: 2.13inch e-paper V4
  * Shortname: EPD_2in13_V4
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *

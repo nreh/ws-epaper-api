@@ -4,7 +4,7 @@
  *
  * Display: 5.84inch e-paper
  * Shortname: EPD_5in84
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *

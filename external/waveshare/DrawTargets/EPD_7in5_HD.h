@@ -4,7 +4,7 @@
  *
  * Display: EPD 7.5 inch HD
  * Shortname: EPD_7in5_HD
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *

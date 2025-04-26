@@ -4,7 +4,7 @@
  *
  * Display: 4.37inch e-Paper G V1.0
  * Shortname: EPD_4in37g
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red,yellow
  * Type: Color2BitEPD
  *
@@ -78,13 +78,14 @@ class EPD_4in37g_DrawTarget : public Color2BitEPD {
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
     
-    // The following functions were not created:
-
-    //  ! EPD_4IN37G_Clear(UBYTE color) was skipped because I'm not sure what arguments to pass in!
-
     /// @brief Initialize the display
     void Init() {
         controller::EPD_4IN37G_Init();
+    }
+
+    /// @brief Clear the display
+    void Clear() {
+        controller::EPD_4IN37G_Clear(0x1);
     }
 
     /// @brief Put the display to sleep

@@ -4,7 +4,7 @@
  *
  * Display: 13.3inch e-paper (B) V1.0
  * Shortname: EPD_13in3b
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *

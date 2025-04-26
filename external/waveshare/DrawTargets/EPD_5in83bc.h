@@ -4,7 +4,7 @@
  *
  * Display: 5.83inch e-paper b&c
  * Shortname: EPD_5in83bc
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *

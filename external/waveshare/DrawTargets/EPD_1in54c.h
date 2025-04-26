@@ -4,7 +4,7 @@
  *
  * Display: 1.54inch e-paper c
  * Shortname: EPD_1in54c
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *

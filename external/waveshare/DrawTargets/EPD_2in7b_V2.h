@@ -4,7 +4,7 @@
  *
  * Display: 2.7inch e-paper V2
  * Shortname: EPD_2in7b_V2
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *

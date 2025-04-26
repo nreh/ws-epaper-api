@@ -105,7 +105,7 @@ class Generator():
         first = True
         for i in sorted(self.det.functions['Clear'], key=len):
             self.AddFunctionFromSignature(i, 'Clear', 'Clear',
-                                          'Clear the display', first)
+                                          'Clear the display', first, ['0x1'])
             first = False
 
     def CreateSleepFunctions(self):

@@ -4,7 +4,7 @@
  *
  * Display: 3inch e-paper G
  * Shortname: EPD_3in0g
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -78,13 +78,14 @@ class EPD_3in0g_DrawTarget : public Color2BitEPD {
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
     
-    // The following functions were not created:
-
-    //  ! EPD_3IN0G_Clear(UBYTE color) was skipped because I'm not sure what arguments to pass in!
-
     /// @brief Initialize the display
     void Init() {
         controller::EPD_3IN0G_Init();
+    }
+
+    /// @brief Clear the display
+    void Clear() {
+        controller::EPD_3IN0G_Clear(0x1);
     }
 
     /// @brief Put the display to sleep

@@ -4,7 +4,7 @@
  *
  * Display: 4.37inch e-paper b
  * Shortname: EPD_4in37b
- * Generated On: 26 April 2025 @ 5:06 PM
+ * Generated On: 26 April 2025 @ 5:41 PM
  * Supported Color Channels: black,red
  * Type: RedBlack1BitEPD
  *
