@@ -203,10 +203,10 @@ class SupportedPalette {
             RGB(0, 0, 0),       // Black
             RGB(255, 255, 255), // White
             RGB(0, 255, 0),     // Green
-            RGB(255, 0, 0),     // Blue
-            RGB(0, 0, 255),     // Red
-            RGB(0, 255, 255),   // Yellow
-            RGB(0, 128, 255)    // Orange
+            RGB(0, 0, 255),     // Blue
+            RGB(255, 0, 0),     // Red
+            RGB(255, 255, 0),   // Yellow
+            RGB(255, 128, 0)    // Orange
         });
     }
 
