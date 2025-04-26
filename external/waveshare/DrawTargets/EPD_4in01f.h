@@ -54,7 +54,7 @@
  *   "BitmapFunction": "GUI_ReadBmp_RGB_7Color"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -87,45 +87,32 @@ class EPD_4in01f_DrawTarget : public _7Color4BitEPD {
     std::string GetDeviceName() const override { return "4.01inch e-paper"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_4IN01F_Display_part(const UBYTE *image, UWORD xstart, UWORD ystart, UWORD image_width, UWORD image_heigh) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_4IN01F_Display_part(const UBYTE *image, UWORD xstart, UWORD ystart, UWORD image_width, UWORD image_heigh) was
+    //  skipped because I'm not sure what arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_Init();
-    }
+    // void Init() { controller::EPD_Init(); } //! Not defined in waveshare's code
 
     /// @brief Initialize the display
-    void Init2() {
-        controller::EPD_4IN01F_Init();
-    }
+    void Init() { controller::EPD_4IN01F_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_4IN01F_ReClear();
-    }
+    void Clear() { controller::EPD_4IN01F_ReClear(); }
 
     /// @brief Clear the display
-    void Clear2() {
-        controller::EPD_4IN01F_Clear(0x1);
-    }
+    void Clear2() { controller::EPD_4IN01F_Clear(0x1); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_4IN01F_Sleep();
-    }
+    void Sleep() { controller::EPD_4IN01F_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_4IN01F_Show7Block();
-    }
+    void Display() { controller::EPD_4IN01F_Show7Block(); }
 
     /// @brief Display pixels in buffers to display
-    void Display2() {
-        controller::EPD_4IN01F_Display(packedBits);
-    }
+    void Display2() { controller::EPD_4IN01F_Display(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -138,18 +125,16 @@ class EPD_4in01f_DrawTarget : public _7Color4BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Display2:
-        Display2();
-        break;
-
+            Display2();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_4in01f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
