@@ -20,15 +20,15 @@ enum RefreshMode { Normal = 0, Partial = 1 };
 /// display for testing.
 class AbstractDrawTarget {
   public:
+    /// @brief Contains pixels that are currently being displayed. Useful for partial refreshes where we need the old pixel
+    /// values.
+    AbstractBuffer& buffer;
+
     /// @brief The width of the DrawTarget in pixels
     const uint16_t width;
 
     /// @brief The height of the DrawTarget in pixels
     const uint16_t height;
-
-    /// @brief Contains pixels that are currently being displayed. Useful for partial refreshes where we need the old pixel
-    /// values.
-    AbstractBuffer& buffer;
 
     /// @brief Refresh the display, showing the contents of the buffer.
     virtual void Refresh(int mode) = 0;

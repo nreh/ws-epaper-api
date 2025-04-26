@@ -185,12 +185,13 @@ class RGBBuffer : public AbstractBuffer {
 
     /// @brief Converts this RGB buffer to a 4 color (2 bit color) array with the color palette: black, white, yellow red
     /// @param dest Destination array to write pixel data to
-    void ConvertTo4Color(uint8_t* dest);
+    /// @param memoryWidth Number of bytes that make up one row of pixels
+    void ConvertTo4Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette);
 
     /// @brief Converts this RGB buffer to a 6 color (4 bit color) array with the color palette: black, white, yellow red,
     /// blue, green
     /// @param dest Destination array to write pixel data to
-    void ConvertTo6Color(uint8_t* dest);
+    void ConvertTo6Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette);
 
     /// @brief Does the same thing as ConvertTo6Color() but is possibly better due to thresholding rather than hard coding
     /// colors.
@@ -288,6 +289,11 @@ class RedBlackBuffer : public AbstractBuffer {
     /// @param ypos_2 Y position of the end point of the line
     /// @param style How the color/style the line
     void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) override;
+
+    /// @brief Converts this buffer to a 1 bit black/red array.
+    /// @param dest_black Destination array to write black pixels to
+    /// @param dest_red Destination array to write red pixels to
+    void ConvertTo1Bit(uint8_t* dest_black, uint8_t* dest_red);
 };
 
 /// @brief Single channel buffer with a single array for black color

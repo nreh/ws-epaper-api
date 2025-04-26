@@ -30,21 +30,21 @@ AbstractBuffer::~AbstractBuffer() { delete[] alphaChannel; }
 
 RGBBuffer::RGBBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
-    redChannel = new uint8_t[width * height];   // initialize as all 255
-    greenChannel = new uint8_t[width * height]; // initialize as all 255
-    blueChannel = new uint8_t[width * height];  // initialize as all 255
-    alphaChannel = new float[width * height];   // initialize as all 1s
+    redChannel = new uint8_t[((uint32_t)width) * height];   // initialize as all 255
+    greenChannel = new uint8_t[((uint32_t)width) * height]; // initialize as all 255
+    blueChannel = new uint8_t[((uint32_t)width) * height];  // initialize as all 255
+    alphaChannel = new float[((uint32_t)width) * height];   // initialize as all 1s
 
-    for (int i = 0; i < width * height; i++) {
+    for (uint32_t i = 0; i < width * height; i++) {
         redChannel[i] = 255;
     }
-    for (int i = 0; i < width * height; i++) {
+    for (uint32_t i = 0; i < width * height; i++) {
         greenChannel[i] = 255;
     }
-    for (int i = 0; i < width * height; i++) {
+    for (uint32_t i = 0; i < width * height; i++) {
         blueChannel[i] = 255;
     }
-    for (int i = 0; i < width * height; i++) {
+    for (uint32_t i = 0; i < width * height; i++) {
         alphaChannel[i] = 1;
     }
 }
@@ -120,9 +120,9 @@ void RGBBuffer::CopyBufferFrom(const AbstractBuffer& source) {
         throw MisshapenBufferCopy(source, *this);
     }
     const RGBBuffer* rgb = dynamic_cast<const RGBBuffer*>(&source);
-    std::memcpy(this->redChannel, rgb->redChannel, width * height);
-    std::memcpy(this->greenChannel, rgb->greenChannel, width * height);
-    std::memcpy(this->blueChannel, rgb->blueChannel, width * height);
+    std::memcpy(this->redChannel, rgb->redChannel, ((uint32_t)width) * height);
+    std::memcpy(this->greenChannel, rgb->greenChannel, ((uint32_t)width) * height);
+    std::memcpy(this->blueChannel, rgb->blueChannel, ((uint32_t)width) * height);
 }
 
 void RGBBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) {
@@ -130,10 +130,14 @@ void RGBBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& styl
         return;
     }
 
-    redChannel[ypos * width + xpos] = utils::BlendPixel(style.redChannel, redChannel[ypos * width + xpos], style.alpha);
-    greenChannel[ypos * width + xpos] =
-        utils::BlendPixel(style.greenChannel, greenChannel[ypos * width + xpos], style.alpha);
-    blueChannel[ypos * width + xpos] = utils::BlendPixel(style.blueChannel, blueChannel[ypos * width + xpos], style.alpha);
+    uint32_t ypos_32t = ypos;
+
+    redChannel[ypos_32t * width + xpos] =
+        utils::BlendPixel(style.redChannel, redChannel[ypos_32t * width + xpos], style.alpha);
+    greenChannel[ypos_32t * width + xpos] =
+        utils::BlendPixel(style.greenChannel, greenChannel[ypos_32t * width + xpos], style.alpha);
+    blueChannel[ypos_32t * width + xpos] =
+        utils::BlendPixel(style.blueChannel, blueChannel[ypos_32t * width + xpos], style.alpha);
 }
 
 void RGBBuffer::DrawBitmap(
@@ -198,20 +202,20 @@ void RGBBuffer::DrawBitmap(
 void RGBBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
 ) {
-    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
-        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+    for (uint32_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint32_t i = xpos; i < xpos + width && i < this->width; i++) {
             uint8_t val = redChannel[this->width * j + i];
             redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
         }
     }
-    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
-        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+    for (uint32_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint32_t i = xpos; i < xpos + width && i < this->width; i++) {
             uint8_t val = greenChannel[this->width * j + i];
             greenChannel[this->width * j + i] = utils::BlendPixel(style.greenChannel, val, style.alpha);
         }
     }
-    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
-        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+    for (uint32_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint32_t i = xpos; i < xpos + width && i < this->width; i++) {
             uint8_t val = blueChannel[this->width * j + i];
             blueChannel[this->width * j + i] = utils::BlendPixel(style.blueChannel, val, style.alpha);
         }
@@ -221,15 +225,15 @@ void RGBBuffer::DrawFilledRectangle(
 void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) {
     // deal with the edge case where it's just a vertical line
     if (xpos_1 == xpos_2) {
-        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+        for (uint32_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
             uint8_t val = redChannel[this->width * j + xpos_1];
             redChannel[this->width * j + xpos_1] = utils::BlendPixel(style.redChannel, val, style.alpha);
         }
-        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+        for (uint32_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
             uint8_t val = greenChannel[this->width * j + xpos_1];
             greenChannel[this->width * j + xpos_1] = utils::BlendPixel(style.greenChannel, val, style.alpha);
         }
-        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+        for (uint32_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
             uint8_t val = blueChannel[this->width * j + xpos_1];
             blueChannel[this->width * j + xpos_1] = utils::BlendPixel(style.blueChannel, val, style.alpha);
         }
@@ -239,7 +243,7 @@ void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint
     // calculate slope
     float slope = (ypos_2 - ypos_1) / ((float)(xpos_2 - xpos_1));
 
-    uint16_t j;
+    uint32_t j;
 
     for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
         j = slope * i + ypos_1;
@@ -258,8 +262,8 @@ void RGBBuffer::DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint
     }
 }
 
-void RGBBuffer::ConvertTo4Color(uint8_t* dest) {
-    memset(dest, 0, height * width);
+void RGBBuffer::ConvertTo4Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette) {
+    memset(dest, 0, height * memoryWidth);
 
     // Iterate through the pixels in the RGB buffer
     for (uint16_t y = 0; y < height; ++y) {
@@ -272,77 +276,41 @@ void RGBBuffer::ConvertTo4Color(uint8_t* dest) {
             uint8_t g = greenChannel[pixelIndex];
             uint8_t b = blueChannel[pixelIndex];
 
-            // Determine the 4-color index
-            uint8_t colorIndex;
-            if (r < 128 && g < 128 && b < 128) {
-                colorIndex = 0; // Black
-            } else if (r > 127 && g > 127 && b > 127) {
-                colorIndex = 1; // White
-            } else if (r < 128 && g > 127 && b > 127) {
-                colorIndex = 2; // Yellow
-            } else if (r < 128 && g < 128 && b > 127) {
-                colorIndex = 3; // Red
-            } else {
-                colorIndex = 0; // Default to black for safety
-            }
+            // tells us the index of the nearest color to the current pixel
+            // black = 0
+            // white = 1
+            // yellow = 2
+            // red = 3
+            auto colorIndex = palette.GetNearestColor(r, g, b);
 
             // Pack the color index into the destination buffer
             size_t byteIndex = pixelIndex / 4;             // 4 pixels per byte
             size_t bitOffset = (3 - (pixelIndex % 4)) * 2; // Determine the bit position
 
-            dest[byteIndex] &= ~(0x03 << bitOffset);      // Clear the 2 bits
+            // // dest[byteIndex] &= ~(0x03 << bitOffset);      // Clear the 2 bits
             dest[byteIndex] |= (colorIndex << bitOffset); // Set the 2 bits
         }
     }
 }
 
-void RGBBuffer::ConvertTo6Color(uint8_t* dest) {
-    size_t pixelCount = width * height;
+void RGBBuffer::ConvertTo6Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette) {
+    size_t pixelCount = height * memoryWidth;
     memset(dest, 0, pixelCount);
-    size_t byteIndex = 0;
 
-    for (size_t i = 0; i < pixelCount; i += 2) {
+    for (size_t i = 0; i < width * height; i += 1) {
         // Fetch RGB values for two pixels
-        uint8_t r1 = redChannel[i];
-        uint8_t g1 = greenChannel[i];
-        uint8_t b1 = blueChannel[i];
-
-        uint8_t r2 = (i + 1 < pixelCount) ? redChannel[i + 1] : 0;
-        uint8_t g2 = (i + 1 < pixelCount) ? greenChannel[i + 1] : 0;
-        uint8_t b2 = (i + 1 < pixelCount) ? blueChannel[i + 1] : 0;
+        uint8_t r = redChannel[i];
+        uint8_t g = greenChannel[i];
+        uint8_t b = blueChannel[i];
 
         // Map the first pixel to an indexed color
-        uint8_t index1 = 0;
-        if (r1 == 0 && g1 == 0 && b1 == 0)
-            index1 = 0; // Black
-        else if (r1 == 255 && g1 == 255 && b1 == 255)
-            index1 = 1; // White
-        else if (r1 == 0 && g1 == 255 && b1 == 255)
-            index1 = 2; // Yellow
-        else if (r1 == 0 && g1 == 0 && b1 == 255)
-            index1 = 3; // Red
-        else if (r1 == 255 && g1 == 0 && b1 == 0)
-            index1 = 5; // Blue
-        else if (r1 == 0 && g1 == 255 && b1 == 0)
-            index1 = 6; // Green
+        uint8_t colorIndex = palette.GetNearestColor(r, g, b);
 
-        // Map the second pixel to an indexed color
-        uint8_t index2 = 0;
-        if (r2 == 0 && g2 == 0 && b2 == 0)
-            index2 = 0; // Black
-        else if (r2 == 255 && g2 == 255 && b2 == 255)
-            index2 = 1; // White
-        else if (r2 == 0 && g2 == 255 && b2 == 255)
-            index2 = 2; // Yellow
-        else if (r2 == 0 && g2 == 0 && b2 == 255)
-            index2 = 3; // Red
-        else if (r2 == 255 && g2 == 0 && b2 == 0)
-            index2 = 5; // Blue
-        else if (r2 == 0 && g2 == 255 && b2 == 0)
-            index2 = 6; // Green
+        size_t byteIndex = i / 2;                // 2 pixels per byte
+        size_t bitOffset = (i % 2 == 0) ? 4 : 0; // Determine the bit position
 
-        // Pack the two 4-bit values into one byte
-        dest[byteIndex++] = (index1 << 4) | index2;
+        // // dest[byteIndex] &= ~(0x03 << bitOffset);      // Clear the 2 bits
+        dest[byteIndex] |= (colorIndex << bitOffset); // Set the 4 bits
     }
 }
 
@@ -505,8 +473,8 @@ void RGBBuffer::Quantize4Bit(uint8_t* dest, const utils::SupportedPalette& palet
 
 RedBlackBuffer::RedBlackBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
-    redChannel = new uint8_t[width * height]();
-    blackChannel = new uint8_t[width * height]();
+    redChannel = new uint8_t[((uint32_t)width) * height]();
+    blackChannel = new uint8_t[((uint32_t)width) * height]();
 }
 
 RedBlackBuffer::~RedBlackBuffer() {
@@ -544,8 +512,9 @@ void RedBlackBuffer::FillBuffer(uint8_t value) {
     for (int i = 0; i < width * height; i++) {
         blackChannel[i] = value;
     }
+    // only set black channel
     for (int i = 0; i < width * height; i++) {
-        redChannel[i] = value;
+        redChannel[i] = 0;
     }
 }
 
@@ -568,8 +537,8 @@ void RedBlackBuffer::CopyBufferFrom(const AbstractBuffer& source) {
         throw MisshapenBufferCopy(source, *this);
     }
     const RedBlackBuffer* rgb = dynamic_cast<const RedBlackBuffer*>(&source);
-    std::memcpy(this->redChannel, rgb->redChannel, width * height);
-    std::memcpy(this->blackChannel, rgb->blackChannel, width * height);
+    std::memcpy(this->redChannel, rgb->redChannel, ((uint32_t)width) * height);
+    std::memcpy(this->blackChannel, rgb->blackChannel, ((uint32_t)width) * height);
 }
 
 void RedBlackBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle& style) {
@@ -577,9 +546,12 @@ void RedBlackBuffer::DrawPixel(uint16_t xpos, uint16_t ypos, const ElementStyle&
         return;
     }
 
-    blackChannel[ypos * width + xpos] =
-        utils::BlendPixel(style.blackChannel, blackChannel[ypos * width + xpos], style.alpha);
-    redChannel[ypos * width + xpos] = utils::BlendPixel(style.redChannel, redChannel[ypos * width + xpos], style.alpha);
+    uint32_t ypos_32t = ypos;
+
+    blackChannel[ypos_32t * width + xpos] =
+        utils::BlendPixel(style.blackChannel, blackChannel[ypos_32t * width + xpos], style.alpha);
+    redChannel[ypos_32t * width + xpos] =
+        utils::BlendPixel(style.redChannel, redChannel[ypos_32t * width + xpos], style.alpha);
 }
 
 void RedBlackBuffer::DrawBitmap(
@@ -592,9 +564,9 @@ void RedBlackBuffer::DrawBitmap(
     const uint8_t* bitmap
 ) {
     for (int j = 0; j < height; j++) {
-        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        uint32_t bufferYpos = std::min<uint32_t>(ypos + j, this->height);
         for (int i = 0; i < width; i++) {
-            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            uint32_t bufferXpos = std::min<uint32_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
             uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
@@ -608,9 +580,9 @@ void RedBlackBuffer::DrawBitmap(
         }
     }
     for (int j = 0; j < height; j++) {
-        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        uint32_t bufferYpos = std::min<uint32_t>(ypos + j, this->height);
         for (int i = 0; i < width; i++) {
-            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            uint32_t bufferXpos = std::min<uint32_t>(xpos + i, this->width);
             bool val = getPixel(bitmap, width, i, j);
             uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
@@ -628,14 +600,14 @@ void RedBlackBuffer::DrawBitmap(
 void RedBlackBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
 ) {
-    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
-        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+    for (uint32_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint32_t i = xpos; i < xpos + width && i < this->width; i++) {
             uint8_t val = blackChannel[this->width * j + i];
             blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
         }
     }
-    for (uint16_t j = ypos; j < ypos + height && j < this->height; j++) {
-        for (uint16_t i = xpos; i < xpos + width && i < this->width; i++) {
+    for (uint32_t j = ypos; j < ypos + height && j < this->height; j++) {
+        for (uint32_t i = xpos; i < xpos + width && i < this->width; i++) {
             uint8_t val = redChannel[this->width * j + i];
             redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
         }
@@ -647,11 +619,11 @@ void RedBlackBuffer::DrawLine(
 ) {
     // deal with the edge case where it's just a vertical line
     if (xpos_1 == xpos_2) {
-        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+        for (uint32_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
             uint8_t val = blackChannel[this->width * j + xpos_1];
             blackChannel[this->width * j + xpos_1] = utils::BlendPixel(style.blackChannel, val, style.alpha);
         }
-        for (uint16_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
+        for (uint32_t j = ypos_1; j < ypos_2 && j < this->height; j++) {
             uint8_t val = redChannel[this->width * j + xpos_1];
             redChannel[this->width * j + xpos_1] = utils::BlendPixel(style.redChannel, val, style.alpha);
         }
@@ -661,17 +633,53 @@ void RedBlackBuffer::DrawLine(
     // calculate slope
     float slope = (ypos_2 - ypos_1) / ((float)(xpos_2 - xpos_1));
 
-    uint16_t j;
+    uint32_t j;
 
-    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+    for (uint32_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
         j = slope * i + ypos_1;
         uint8_t val = blackChannel[this->width * j + i];
         blackChannel[this->width * j + i] = utils::BlendPixel(style.blackChannel, val, style.alpha);
     }
-    for (uint16_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
+    for (uint32_t i = xpos_1; i < xpos_2 && i < this->width; i++) {
         j = slope * i + ypos_1;
         uint8_t val = redChannel[this->width * j + i];
         redChannel[this->width * j + i] = utils::BlendPixel(style.redChannel, val, style.alpha);
+    }
+}
+
+void RedBlackBuffer::ConvertTo1Bit(uint8_t* dest_black, uint8_t* dest_red) {
+    uint16_t packedBytesWidth = width % 8 == 0 ? width / 8 : width / 8 + 1;
+    memset(dest_black, 0, height * packedBytesWidth);
+    memset(dest_red, 0, height * packedBytesWidth);
+
+    uint32_t verticalPos = 0;
+
+    for (uint16_t y = 0; y < height; y++) {
+        for (uint16_t x = 0; x < width; x++) {
+            // pack 8 pixels into 1 byte
+            auto val = blackChannel[y * width + x];
+            if (val == 255) {
+                dest_black[verticalPos + (x / 8)] |= (1 << (7 - (x % 8))); // write 1
+            } else {
+                dest_black[verticalPos + (x / 8)] &= ~(1 << (7 - (x % 8))); // write 0
+            }
+        }
+        verticalPos += packedBytesWidth;
+    }
+
+    verticalPos = 0;
+
+    for (uint16_t y = 0; y < height; y++) {
+        for (uint16_t x = 0; x < width; x++) {
+            // pack 8 pixels into 1 byte
+            auto val = redChannel[y * width + x];
+            if (val == 255) {
+                dest_red[verticalPos + (x / 8)] |= (1 << (7 - (x % 8))); // write 1
+            } else {
+                dest_red[verticalPos + (x / 8)] &= ~(1 << (7 - (x % 8))); // write 0
+            }
+        }
+        verticalPos += packedBytesWidth;
     }
 }
 
@@ -804,7 +812,7 @@ void GrayscaleBuffer::ConvertTo1Bit(uint8_t* dest) {
     uint16_t packedBytesWidth = width % 8 == 0 ? width / 8 : width / 8 + 1;
     memset(dest, 0, height * packedBytesWidth);
 
-    uint16_t verticalPos = 0;
+    uint32_t verticalPos = 0;
 
     for (uint16_t y = 0; y < height; y++) {
         for (uint16_t x = 0; x < width; x++) {
@@ -824,7 +832,7 @@ void GrayscaleBuffer::ConvertTo2Bit(uint8_t* dest) {
     uint16_t packedBytesWidth = width % 4 == 0 ? width / 4 : width / 4 + 1;
     memset(dest, 0, height * packedBytesWidth);
 
-    uint16_t verticalPos = 0;
+    uint32_t verticalPos = 0;
 
     for (uint16_t y = 0; y < height; y++) {
         for (uint16_t x = 0; x < width; x++) {

@@ -18,8 +18,8 @@
 SDL_Renderer* sdlrenderer;
 SDL_Window* window;
 
-const int SDL_WINDOW_WIDTH = 700;
-const int SDL_WINDOW_HEIGHT = 350;
+const int SDL_WINDOW_WIDTH = 1000;
+const int SDL_WINDOW_HEIGHT = 980;
 
 SDL_Texture* texture;
 
@@ -88,6 +88,14 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         grayscale
     };
 
+    enum class DrawMode {
+        /// @brief Pixels are drawn as normal to the screen.
+        normal,
+        /// @brief Pixels are first drawn to a virtual EPD device and then unpacked and drawn to screen. Useful for testing
+        /// how rendering will look on a real EPD display with limited colors or grayscale steps.
+        physical
+    };
+
   private:
     SDL_Renderer* renderer;
     ColorMode colormode;
@@ -100,6 +108,13 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
         texture = SDL_CreateTexture(sdlrenderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, width, height);
 
         uint8_t* data = new uint8_t[width * height * 3]; // 3 bytes (RGB) per pixel times total number of pixels
+
+        if (physicalReferenceDevice != nullptr && NoPhysicalDrawMode == false) {
+            // if we have a physical reference device, we perform an extra step where we preprocess the buffer before
+            // unpacking again and rendering to screen.
+            physicalReferenceDevice->PreprocessBuffers();
+            physicalReferenceDevice->UnpackBuffers(buffer);
+        }
 
         switch (buffer.type()) {
         case epaperapi::BufferType::RGBBuffer: {
@@ -118,9 +133,18 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
             const epaperapi::RedBlackBuffer* rblk = dynamic_cast<const epaperapi::RedBlackBuffer*>(&buffer);
 
             for (int i = 0; i < width * height; i++) {
-                data[3 * i] = rblk->redChannel[i];
-                data[3 * i + 1] = rblk->blackChannel[i];
-                data[3 * i + 2] = rblk->blackChannel[i];
+                auto r = rblk->redChannel[i];
+                auto gb = rblk->blackChannel[i];
+
+                if (r == 255) { // prioritize red color
+                    gb = 0;
+                } else if (gb > 0) {
+                    r = gb; // seting black channel to 255 should render white (assuming red channel is set to 0)
+                }
+
+                data[3 * i] = r;      // R
+                data[3 * i + 1] = gb; // G
+                data[3 * i + 2] = gb; // B
             }
 
             break;
@@ -188,10 +212,8 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     }
 
     /// @brief Used by CreateFromDevice()
-    SDLDrawTarget(
-        SDL_Renderer* _renderer, epaperapi::devices::PhysicalEPDDrawTarget* _device, int _width, int _height, ColorMode _mode
-    )
-        : epaperapi::AbstractDrawTarget(*(this->CreateBufferBasedOnColorMode(_width, _height, _mode))),
+    SDLDrawTarget(SDL_Renderer* _renderer, epaperapi::devices::PhysicalEPDDrawTarget* _device, ColorMode _mode)
+        : epaperapi::AbstractDrawTarget(_device->GetBuffer()), // use the physical device's buffer rather than creating new
           physicalReferenceDevice(_device) {
         renderer = _renderer;
         colormode = _mode;
@@ -201,6 +223,10 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     /// @brief If color mode is set to grayscale, this controls the steps between white and black. For example, for rendering
     /// where pixels can only be black (0) or white (255), it is 2.
     uint8_t GrayScaleSteps = 255;
+
+    /// @brief When set to true, the Normal drawmode is used instead of Physical even if a physical device is set. (See
+    /// GetDrawMode() and CreatePhysical() for more information)
+    bool NoPhysicalDrawMode = false;
 
     /**
      * @brief Construct a new SDLDrawTarget with an initialized SDL renderer and configuration
@@ -238,14 +264,15 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
     }
 
     /// @brief Rather than manually creating the SDLDrawTarget by setting width, height, mode, etc... this function
-    /// automatically pulls this information from the given EPD device. In addition, all draw calls are preprocessed using
-    /// this device to get a more accurate simulation of what the rendered image will look on the display. For example, it's
-    /// useful for seeing how colors will be quantized on the physical display - something that isn't possible when creating
-    /// SDLDrawTarget manually.
-    /// @tparam Device And instance of an EPD device, must derive from `PhysicalEPDDrawTarget`
-    /// @param _flipDimensions When true, the width and height are reversed
-    /// @return New instance of SDLDrawTarget
-    template <typename Device> static SDLDrawTarget CreateFromDevice(SDL_Renderer* _renderer, bool _flipDimensions = false) {
+    /// automatically pulls this information from the given EPD device passed as a template parameter. In addition, the draw
+    /// mode will be set to 'physical' meaning that all draw calls are preprocessed using this device to get a more accurate
+    /// simulation of what the rendered image will look on the display. For example, it's useful for seeing how colors will
+    /// be quantized on the physical display - something that isn't possible when creating SDLDrawTarget manually. By setting
+    /// `NoPhysicalDrawMode` to true you can disable this behavior and force Normal drawing logic.
+    /// @tparam Device A class representing an EPD device, must derive from `PhysicalEPDDrawTarget`
+    /// @return New instance of SDLDrawTarget that draws in 'physical' mode rather than 'normal' (Unless `NoPhysicalDrawMode`
+    /// is set to true.)
+    template <typename Device> static SDLDrawTarget CreatePhysical(SDL_Renderer* _renderer) {
         typedef epaperapi::devices::PhysicalEPDDrawTarget PhysicalEPD;
 
         static_assert(
@@ -274,23 +301,22 @@ class SDLDrawTarget : public epaperapi::AbstractDrawTarget {
             break;
         }
 
-        int width, height;
+        return SDLDrawTarget(_renderer, inst, mode);
+    }
 
-        if (_flipDimensions) {
-            width = inst->GetHeight();
-            height = inst->GetWidth();
+    DrawMode GetDrawMode() const {
+        if (physicalReferenceDevice == nullptr) {
+            return DrawMode::normal;
         } else {
-            width = inst->GetWidth();
-            height = inst->GetHeight();
+            return DrawMode::physical;
         }
-
-        return SDLDrawTarget(_renderer, inst, width, height, mode);
     }
 
     ~SDLDrawTarget() {
-        delete &buffer;
         if (physicalReferenceDevice != nullptr) {
             delete physicalReferenceDevice;
+        } else {
+            delete &buffer; // this means SDLDrawTarget owns the buffer and is responsible for deleting it
         }
     }
 };
