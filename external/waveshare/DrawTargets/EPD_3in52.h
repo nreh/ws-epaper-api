@@ -52,7 +52,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -78,53 +78,43 @@ const int DEVICE_WIDTH = 240;
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = 360;
 
-enum RefreshMode { Display = 0, EPD_3IN52_lut_DU = 1, EPD_3IN52_refresh = 2, EPD_3IN52_display_NUM = 3, EPD_3IN52_display = 4 };
+enum RefreshMode {
+    Display = 0,
+    EPD_3IN52_lut_DU = 1,
+    EPD_3IN52_refresh = 2,
+    EPD_3IN52_display_NUM = 3,
+    EPD_3IN52_display = 4
+};
 
 class EPD_3in52_DrawTarget : public Black1BitEPD {
   public:
     std::string GetDeviceName() const override { return "3.52inch e-paper"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_3IN52_Init();
-    }
+    void Init() { controller::EPD_3IN52_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_3IN52_Clear();
-    }
+    void Clear() { controller::EPD_3IN52_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_3IN52_sleep();
-    }
+    void Sleep() { controller::EPD_3IN52_sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_3IN52_lut_GC();
-    }
+    void Display() { controller::EPD_3IN52_lut_GC(); }
 
     /// @brief Display pixels in buffers to display
-    void EPD_3IN52_lut_DU() {
-        controller::EPD_3IN52_lut_DU();
-    }
+    void EPD_3IN52_lut_DU() { controller::EPD_3IN52_lut_DU(); }
 
     /// @brief Display pixels in buffers to display
-    void EPD_3IN52_refresh() {
-        controller::EPD_3IN52_refresh();
-    }
+    void EPD_3IN52_refresh() { controller::EPD_3IN52_refresh(); }
 
     /// @brief Display pixels in buffers to display
-    void EPD_3IN52_display_NUM() {
-        controller::EPD_3IN52_display_NUM(packedBits);
-    }
+    void EPD_3IN52_display_NUM() { controller::EPD_3IN52_display_NUM(0xFF); }
 
     /// @brief Display pixels in buffers to display
-    void EPD_3IN52_display() {
-        controller::EPD_3IN52_display(packedBits);
-    }
+    void EPD_3IN52_display() { controller::EPD_3IN52_display(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -137,30 +127,28 @@ class EPD_3in52_DrawTarget : public Black1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::EPD_3IN52_lut_DU:
-        EPD_3IN52_lut_DU();
-        break;
+            EPD_3IN52_lut_DU();
+            break;
 
         case RefreshMode::EPD_3IN52_refresh:
-        EPD_3IN52_refresh();
-        break;
+            EPD_3IN52_refresh();
+            break;
 
         case RefreshMode::EPD_3IN52_display_NUM:
-        EPD_3IN52_display_NUM();
-        break;
+            EPD_3IN52_display_NUM();
+            break;
 
         case RefreshMode::EPD_3IN52_display:
-        EPD_3IN52_display();
-        break;
-
+            EPD_3IN52_display();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_3in52_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

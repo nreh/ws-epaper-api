@@ -53,7 +53,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -86,55 +86,38 @@ class EPD_13in3k_DrawTarget : public Black2BitEPD {
     std::string GetDeviceName() const override { return "13.3inch e-paper (K)"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_13IN3K_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_13IN3K_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l) was skipped because I'm not sure what
+    //  arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_13IN3K_Init();
-    }
+    void Init() { controller::EPD_13IN3K_Init(); }
 
     /// @brief Initialize the display
-    void Init_Part() {
-        controller::EPD_13IN3K_Init_Part();
-    }
+    void Init_Part() { controller::EPD_13IN3K_Init_Part(); }
 
     /// @brief Initialize the display
-    void Init_4GRAY() {
-        controller::EPD_13IN3K_Init_4GRAY();
-    }
+    void Init_4GRAY() { controller::EPD_13IN3K_Init_4GRAY(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_13IN3K_Clear();
-    }
+    void Clear() { controller::EPD_13IN3K_Clear(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_13IN3K_Sleep();
-    }
+    void Sleep() { controller::EPD_13IN3K_Sleep(); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display() {
-        controller::EPD_13IN3K_Display(packedBits_1bit);
-    }
+    void Display() { controller::EPD_13IN3K_Display(packedBits_1bit); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void EPD_13IN3K_color_Base() {
-        controller::EPD_13IN3K_color_Base(packedBits_1bit);
-    }
+    void EPD_13IN3K_color_Base() { controller::EPD_13IN3K_color_Base(0); }
 
     /// @brief Display pixels in 1 bit buffer to display
-    void Display_Base() {
-        controller::EPD_13IN3K_Display_Base(packedBits_1bit);
-    }
+    void Display_Base() { controller::EPD_13IN3K_Display_Base(packedBits_1bit); }
 
     /// @brief Display pixels in 2 bit buffer to display (4 shades of gray)
-    void EPD_13IN3K_4GrayDisplay() {
-        controller::EPD_13IN3K_4GrayDisplay(packedBits_2bit);
-    }
+    void EPD_13IN3K_4GrayDisplay() { controller::EPD_13IN3K_4GrayDisplay(packedBits_2bit); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -147,26 +130,24 @@ class EPD_13in3k_DrawTarget : public Black2BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::EPD_13IN3K_color_Base:
-        EPD_13IN3K_color_Base();
-        break;
+            EPD_13IN3K_color_Base();
+            break;
 
         case RefreshMode::Base:
-        Display_Base();
-        break;
+            Display_Base();
+            break;
 
         case RefreshMode::EPD_13IN3K_4GrayDisplay:
-        EPD_13IN3K_4GrayDisplay();
-        break;
-
+            EPD_13IN3K_4GrayDisplay();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_13in3k_DrawTarget(bool initializeSPI = true) : Black2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

@@ -44,7 +44,7 @@
  *   "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -77,26 +77,18 @@ class EPD_4in37g_DrawTarget : public Color2BitEPD {
     std::string GetDeviceName() const override { return "4.37inch e-Paper G V1.0"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_4IN37G_Init();
-    }
+    void Init() { controller::EPD_4IN37G_Init(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_4IN37G_Clear(0x1);
-    }
+    void Clear() { controller::EPD_4IN37G_Clear(0x1); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_4IN37G_Sleep();
-    }
+    void Sleep() { controller::EPD_4IN37G_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_4IN37G_Display(packedBits);
-    }
+    void Display() { controller::EPD_4IN37G_Display(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -109,14 +101,12 @@ class EPD_4in37g_DrawTarget : public Color2BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
-
+            Display();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_4in37g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

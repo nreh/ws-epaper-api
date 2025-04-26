@@ -55,7 +55,7 @@
  *   "BitmapFunction": "GUI_ReadBmp"
  * }
  */
- 
+
 #pragma once
 
 #include "../EPD_Common.h"
@@ -88,70 +88,47 @@ class EPD_5in79_DrawTarget : public Black1BitEPD {
     std::string GetDeviceName() const override { return "5.79inch e-paper"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-    
+
     // The following functions were not created:
 
-    //  ! EPD_5in79_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was skipped because I'm not sure what arguments to pass in!
+    //  ! EPD_5in79_Display_Partial(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend) was skipped
+    //  because I'm not sure what arguments to pass in!
 
     /// @brief Initialize the display
-    void Init() {
-        controller::EPD_5in79_Init();
-    }
+    void Init() { controller::EPD_5in79_Init(); }
 
     /// @brief Initialize the display
-    void Init_Fast() {
-        controller::EPD_5in79_Init_Fast();
-    }
+    void Init_Fast() { controller::EPD_5in79_Init_Fast(); }
 
     /// @brief Initialize the display
-    void Init_4Gray() {
-        controller::EPD_5in79_Init_4Gray();
-    }
+    void Init_4Gray() { controller::EPD_5in79_Init_4Gray(); }
 
     /// @brief Initialize the display
-    void Init_Partial() {
-        controller::EPD_5in79_Init_Partial();
-    }
+    void Init_Partial() { controller::EPD_5in79_Init_Partial(); }
 
     /// @brief Clear the display
-    void Clear() {
-        controller::EPD_5in79_Clear();
-    }
+    void Clear() { controller::EPD_5in79_Clear(); }
 
     /// @brief Clear the display
-    void Clear_Black() {
-        controller::EPD_5in79_Clear_Black();
-    }
+    void Clear_Black() { controller::EPD_5in79_Clear_Black(); }
 
     /// @brief Put the display to sleep
-    void Sleep() {
-        controller::EPD_5in79_Sleep();
-    }
+    void Sleep() { controller::EPD_5in79_Sleep(); }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
-        controller::EPD_5in79_4GrayDisplay(packedBits);
-    }
+    void Display() { controller::EPD_5in79_4GrayDisplay(packedBits); }
 
     /// @brief Display pixels in buffers to display
-    void Display2() {
-        controller::EPD_5in79_Display(packedBits);
-    }
+    void Display2() { controller::EPD_5in79_Display(packedBits); }
 
     /// @brief Display pixels in buffers to display
-    void Display_Base_color() {
-        controller::EPD_5in79_Display_Base_color(packedBits);
-    }
+    void Display_Base_color() { controller::EPD_5in79_Display_Base_color(0); }
 
     /// @brief Display pixels in buffers to display
-    void Display_Base() {
-        controller::EPD_5in79_Display_Base(packedBits);
-    }
+    void Display_Base() { controller::EPD_5in79_Display_Base(packedBits); }
 
     /// @brief Display pixels in buffers to display
-    void Display_Fast() {
-        controller::EPD_5in79_Display_Fast(packedBits);
-    }
+    void Display_Fast() { controller::EPD_5in79_Display_Fast(packedBits); }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -164,30 +141,28 @@ class EPD_5in79_DrawTarget : public Black1BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-        Display();
-        break;
+            Display();
+            break;
 
         case RefreshMode::Display2:
-        Display2();
-        break;
+            Display2();
+            break;
 
         case RefreshMode::Base_color:
-        Display_Base_color();
-        break;
+            Display_Base_color();
+            break;
 
         case RefreshMode::Base:
-        Display_Base();
-        break;
+            Display_Base();
+            break;
 
         case RefreshMode::Fast:
-        Display_Fast();
-        break;
-
+            Display_Fast();
+            break;
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
-        
     }
 
     EPD_5in79_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}

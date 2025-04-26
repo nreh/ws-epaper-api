@@ -28,6 +28,12 @@ if(NOT DEFINED WSEPAPERAPI_SDL_TEST_MODE)
     )
 endif()
 
+option(ENABLE_TESTS "Build the tests" ON)
+
+if(ENABLE_TESTS)
+    add_subdirectory(tests)
+endif()
+
 set(
     EPAPER_LIB_FILES
     lib/wsepaperapi.cpp
