@@ -193,26 +193,9 @@ class RGBBuffer : public AbstractBuffer {
     /// @param dest Destination array to write pixel data to
     void ConvertTo6Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette);
 
-    /// @brief Does the same thing as ConvertTo6Color() but is possibly better due to thresholding rather than hard coding
-    /// colors.
-    /// @param dest Destination array to write pixel data to
-    void ConvertTo6Color_Variant2(uint8_t* dest);
-
     /// @brief Converts this RGB buffer to a 7 color (4 bit color) array
     /// @param dest Destination array to write pixel data to
-    void ConvertTo7Color(uint8_t* dest);
-
-    /// @brief Writes the RGB buffer to a destination array in 2 bit color format with a predefined palette of supported
-    /// colors
-    /// @param dest Destination array to write pixel data to
-    /// @param palette Supported colors that can be drawn on the display
-    void Quantize2Bit(uint8_t* dest, const utils::SupportedPalette& palette);
-
-    /// @brief Writes the RGB buffer to a destination array in 4 bit color format with a predefined palette of supported
-    /// colors
-    /// @param dest Destination array to write pixel data to
-    /// @param palette Supported colors that can be drawn on the display
-    void Quantize4Bit(uint8_t* dest, const utils::SupportedPalette& palette);
+    void ConvertTo7Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette);
 };
 
 /// @brief 2 channel buffer with arrays for black and red color
