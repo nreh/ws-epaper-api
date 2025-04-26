@@ -4,7 +4,7 @@
  *
  * Display: 2.9inch DES e-paper
  * Shortname: EPD_2in9_DES
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *

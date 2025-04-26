@@ -4,7 +4,7 @@
  *
  * Display: 1.02inch e-paper
  * Shortname: EPD_1in02d
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *
@@ -90,7 +90,7 @@ class EPD_1in02d_DrawTarget : public Black1BitEPD {
     }
 
     /// @brief Initialize the display
-    void Init() {
+    void Init2() {
         controller::EPD_1IN02_Part_Init();
     }
 

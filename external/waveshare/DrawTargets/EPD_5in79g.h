@@ -4,7 +4,7 @@
  *
  * Display: EPD 5.79 inch g
  * Shortname: EPD_5in79g
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -73,7 +73,7 @@ const int DEVICE_WIDTH = 792;
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = 272;
 
-enum RefreshMode { Display = 0, Display = 1 };
+enum RefreshMode { Display = 0, Display2 = 1 };
 
 class EPD_5in79g_DrawTarget : public Color2BitEPD {
   public:
@@ -101,7 +101,7 @@ class EPD_5in79g_DrawTarget : public Color2BitEPD {
     }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
+    void Display2() {
         controller::EPD_5in79g_Display(packedBits);
     }
 
@@ -119,8 +119,8 @@ class EPD_5in79g_DrawTarget : public Color2BitEPD {
         Display();
         break;
 
-        case RefreshMode::Display:
-        Display();
+        case RefreshMode::Display2:
+        Display2();
         break;
 
 

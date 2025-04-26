@@ -4,7 +4,7 @@
  *
  * Display: 4.2inch e-paper b&c
  * Shortname: EPD_4in2bc
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: red,black
  * Type: RedBlack1BitEPD
  *

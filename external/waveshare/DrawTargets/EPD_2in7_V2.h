@@ -4,7 +4,7 @@
  *
  * Display: 2.7inch V2 e-paper
  * Shortname: EPD_2in7_V2
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black1BitEPD
  *
@@ -81,7 +81,7 @@ const int DEVICE_WIDTH = 176;
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = 264;
 
-enum RefreshMode { Display = 0, Display = 1, Base = 2, Fast = 3, Base_color = 4 };
+enum RefreshMode { Display = 0, Base = 1, Fast = 2, Display2 = 3, Base_color = 4 };
 
 class EPD_2in7_V2_DrawTarget : public Black1BitEPD {
   public:
@@ -134,7 +134,7 @@ class EPD_2in7_V2_DrawTarget : public Black1BitEPD {
     }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
+    void Display2() {
         controller::EPD_2IN7_V2_4GrayDisplay(packedBits);
     }
 
@@ -165,8 +165,8 @@ class EPD_2in7_V2_DrawTarget : public Black1BitEPD {
         Display_Fast();
         break;
 
-        case RefreshMode::Display:
-        Display();
+        case RefreshMode::Display2:
+        Display2();
         break;
 
         case RefreshMode::Base_color:

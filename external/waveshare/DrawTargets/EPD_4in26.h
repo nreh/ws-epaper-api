@@ -4,7 +4,7 @@
  *
  * Display: 4.26inch e-paper
  * Shortname: EPD_4in26
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black2BitEPD
  *

@@ -4,7 +4,7 @@
  *
  * Display: 2.9inch e-paper V2
  * Shortname: EPD_2in9_V2
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black2BitEPD
  *
@@ -98,7 +98,7 @@ class EPD_2in9_V2_DrawTarget : public Black2BitEPD {
     }
 
     /// @brief Initialize the display
-    void Init() {
+    void Init2() {
         controller::EPD_2IN9_V2_Gray4_Init();
     }
 

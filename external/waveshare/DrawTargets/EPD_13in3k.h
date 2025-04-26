@@ -4,7 +4,7 @@
  *
  * Display: 13.3inch e-paper (K)
  * Shortname: EPD_13in3k
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black2BitEPD
  *

@@ -4,7 +4,7 @@
  *
  * Display: 2inch15 e-paper (G)
  * Shortname: EPD_2in15g
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *

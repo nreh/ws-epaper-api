@@ -74,6 +74,9 @@ class DrawTargetClassBuilder:
         self.functions: 'list[Function]' = []
         self.ignoredFunctions: list[str] = []
 
+    def GetAllFunctions(self) -> 'list[Function]':
+        return self.DisplayFunctions + self.functions
+
     def ConstructRefreshFunction(self) -> Function:
         conditions = []
         idx = 0

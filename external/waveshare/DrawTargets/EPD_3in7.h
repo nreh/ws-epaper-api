@@ -4,7 +4,7 @@
  *
  * Display: 3.7inch e-paper
  * Shortname: EPD_3in7
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black
  * Type: Black2BitEPD
  *
@@ -96,7 +96,7 @@ class EPD_3in7_DrawTarget : public Black2BitEPD {
     }
 
     /// @brief Initialize the display
-    void Init() {
+    void Init2() {
         controller::EPD_3IN7_1Gray_Init();
     }
 
@@ -106,7 +106,7 @@ class EPD_3in7_DrawTarget : public Black2BitEPD {
     }
 
     /// @brief Clear the display
-    void Clear() {
+    void Clear2() {
         controller::EPD_3IN7_1Gray_Clear();
     }
 

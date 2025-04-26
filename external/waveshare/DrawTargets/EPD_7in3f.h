@@ -4,7 +4,7 @@
  *
  * Display: 7.3inch e-Paper (F) Driver
  * Shortname: EPD_7in3f
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black,red,green,blue,yellow,orange
  * Type: _7Color4BitEPD
  *
@@ -76,7 +76,7 @@ const int DEVICE_WIDTH = 800;
 /// @brief Height of device in pixels
 const int DEVICE_HEIGHT = 480;
 
-enum RefreshMode { Display = 0, Display = 1 };
+enum RefreshMode { Display = 0, Display2 = 1 };
 
 class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
   public:
@@ -104,7 +104,7 @@ class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
     }
 
     /// @brief Display pixels in buffers to display
-    void Display() {
+    void Display2() {
         controller::EPD_7IN3F_Display(packedBits);
     }
 
@@ -122,8 +122,8 @@ class EPD_7in3f_DrawTarget : public _7Color4BitEPD {
         Display();
         break;
 
-        case RefreshMode::Display:
-        Display();
+        case RefreshMode::Display2:
+        Display2();
         break;
 
 

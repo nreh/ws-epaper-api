@@ -53,9 +53,24 @@ class Generator():
         else:
             content = f'controller::{function_ident}({", ".join(passedParameters[0:num_args])});'
 
+            final_function_name = functionName if first else extract_function_suffix(
+                function_ident, functionName)
+
+            # if the current list of functions contains the final_function_name already, add a suffix to prevent
+            # duplicates
+            for f in self.builder.GetAllFunctions():
+                if f.name == final_function_name:
+                    final_function_name += '2'
+            while True:
+                for f in self.builder.GetAllFunctions():
+                    if f.name == final_function_name:
+                        final_function_name += str(
+                            int(final_function_name[:-1]) + 1)  # increment number at the end
+                        continue
+                break
+
             return cb.Function(
-                functionName if first else extract_function_suffix(
-                    function_ident, functionName),
+                final_function_name,
                 content,
                 docstring
             )

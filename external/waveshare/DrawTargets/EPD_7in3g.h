@@ -4,7 +4,7 @@
  *
  * Display: 7.3inchg e-paper G
  * Shortname: EPD_7in3g
- * Generated On: 27 January 2025 @ 5:09 AM
+ * Generated On: 26 April 2025 @ 5:06 PM
  * Supported Color Channels: black,yellow,red
  * Type: Color2BitEPD
  *
@@ -44,7 +44,7 @@
  *   "BitmapFunction": "GUI_ReadBmp_RGB_4Color"
  * }
  */
-
+ 
 #pragma once
 
 #include "../EPD_Common.h"
@@ -77,25 +77,25 @@ class EPD_7in3g_DrawTarget : public Color2BitEPD {
     std::string GetDeviceName() const override { return "7.3inchg e-paper G"; }
     int GetWidth() const override { return DEVICE_WIDTH; }
     int GetHeight() const override { return DEVICE_HEIGHT; }
-
+    
     // The following functions were not created:
 
     //  ! EPD_7IN3G_Clear(UBYTE color) was skipped because I'm not sure what arguments to pass in!
 
-    /// @brief Clear the display to white
-    void Clear() override {
-        // clear to white
-        controller::EPD_7IN3G_Clear(1);
+    /// @brief Initialize the display
+    void Init() {
+        controller::EPD_7IN3G_Init();
     }
 
-    /// @brief Initialize the display
-    void Init() { controller::EPD_7IN3G_Init(); }
-
     /// @brief Put the display to sleep
-    void Sleep() { controller::EPD_7IN3G_Sleep(); }
+    void Sleep() {
+        controller::EPD_7IN3G_Sleep();
+    }
 
     /// @brief Display pixels in buffers to display
-    void Display() { controller::EPD_7IN3G_Display(packedBits); }
+    void Display() {
+        controller::EPD_7IN3G_Display(packedBits);
+    }
 
     /// @brief Refresh the display with current buffer
     /// @param mode How to refresh the display
@@ -108,12 +108,14 @@ class EPD_7in3g_DrawTarget : public Color2BitEPD {
 
         switch (static_cast<RefreshMode>(mode)) {
         case RefreshMode::Display:
-            Display();
-            break;
+        Display();
+        break;
+
 
         default:
             throw UnsupportedRefreshMode(mode, GetDeviceName());
         }
+        
     }
 
     EPD_7in3g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
