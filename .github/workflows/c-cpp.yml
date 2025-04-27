@@ -1,0 +1,28 @@
+name: CMake C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ libsdl2-dev
+
+    - name: Configure CMake
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_TESTS=ON
+
+    - name: Build
+      run: cmake --build build --config Debug
+
+    - name: Run tests
+      working-directory: build
+      run: ctest --output-on-failure
