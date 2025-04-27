@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ libsdl2-dev
+      run: sudo apt-get update && sudo apt-get install -y cmake g++
 
     - name: Configure CMake
       run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_TESTS=ON
