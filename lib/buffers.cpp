@@ -295,7 +295,7 @@ void RGBBuffer::ConvertTo4Color(uint8_t* dest, int memoryWidth, utils::Supported
 
 void RGBBuffer::ConvertTo6Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette) {
     size_t pixelCount = height * memoryWidth;
-    // // memset(dest, 0, pixelCount);
+    memset(dest, 0, pixelCount);
 
     for (size_t i = 0; i < width * height; i += 1) {
         // Fetch RGB values for two pixels
@@ -316,7 +316,7 @@ void RGBBuffer::ConvertTo6Color(uint8_t* dest, int memoryWidth, utils::Supported
 
 void RGBBuffer::ConvertTo7Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette) {
     size_t pixelCount = height * memoryWidth;
-    // // memset(dest, 0, pixelCount);
+    memset(dest, 0, pixelCount);
 
     for (size_t i = 0; i < width * height; i += 1) {
         // Fetch RGB values for two pixels
