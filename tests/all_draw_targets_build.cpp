@@ -69,4 +69,7 @@
 
 using namespace std;
 
-int main() { cout << "The fact that this runs correctly confirms that all draw targets were built correctly." << endl; }
+int main() {
+    cout << "The fact that this runs correctly confirms that all draw targets were built correctly." << endl;
+    return 0;
+}

@@ -31,6 +31,7 @@ endif()
 option(ENABLE_TESTS "Build the tests" ON)
 
 if(ENABLE_TESTS)
+    enable_testing()
     add_subdirectory(tests)
 endif()
 
