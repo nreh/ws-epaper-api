@@ -22,13 +22,21 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     )
 endif()
 
-if(NOT DEFINED WSEPAPERAPI_SDL_TEST_MODE)
+option(ENABLE_EMULATION "Build with emulation support using SDL" OFF)
+option(BUILD_EXAMPLES "Build examples" OFF)
+option(ENABLE_TESTS "Build the tests" ON)
+
+if(NOT ENABLE_EMULATION)
     message(
-        "TIP! Set WSEPAPERAPI_SDL_TEST_MODE to TRUE to build files in sdl_testing/"
+        "TIP! Set ENABLE_EMULATION to ON to enable SDL emulation support"
     )
 endif()
 
-option(ENABLE_TESTS "Build the tests" ON)
+if(NOT BUILD_EXAMPLES)
+    message(
+        "TIP! Set BUILD_EXAMPLES to ON to build files in examples/ directory"
+    )
+endif()
 
 if(ENABLE_TESTS)
     enable_testing()
@@ -51,6 +59,7 @@ else()
 endif()
 
 target_include_directories(ws-epaper-api PUBLIC include)
+include_directories(emulate)
 
 if(WIN32)
     # Certain headerfiles and libraries exist on linux but not windows, without them we can't include the bcm2835 which means
@@ -58,8 +67,8 @@ if(WIN32)
     set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT FALSE)
     message(WARNING
         "Because you're building on Windows, bcm2835 cannot be included. As a result, there will be no crosscompilation support."
-        "\nYou should probably build with WSEPAPERAPI_SDL_TEST_MODE = true or there's really no point to building this library. "
-        "Run cmake with -DWSEPAPERAPI_SDL_TEST_MODE=TRUE"
+        "\nYou should probably build with ENABLE_EMULATION = ON or there's really no point to building this library. "
+        "Run cmake with -DENABLE_EMULATION=ON"
     )
     add_compile_definitions(WSEPAPERAPI_NO_CROSSCOMPILATION_SUPPORT TRUE)
 else()
@@ -76,8 +85,8 @@ target_compile_features(
     ws-epaper-api PRIVATE cxx_std_17
 )
 
-if(WSEPAPERAPI_SDL_TEST_MODE)
-    message("WSEPAPERAPI_SDL_TEST_MODE = \"${WSEPAPERAPI_SDL_TEST_MODE}\", Building SDL test files")
+if(ENABLE_EMULATION)
+    message("ENABLE_EMULATION = \"${ENABLE_EMULATION}\", Looking for SDL library...")
 
     find_package(SDL2)
 
@@ -85,15 +94,15 @@ if(WSEPAPERAPI_SDL_TEST_MODE)
         message("Found SDL library")
     else()
         message(FATAL_ERROR "SDL2 library not found! Please install SDL2 to build in SDL test mode."
-            "\nOtherwise set WSEPAPERAPI_SDL_TEST_MODE to false."
+            "\nOtherwise set ENABLE_EMULATION to OFF."
         )
     endif()
 
-    add_executable(
-        sdl_test
-        sdl_testing/main.cpp
-    )
-
+    # add_executable(
+    # sdl_test
+    # sdl_testing/main.cpp
+    # )
+    # TODO: REMOVE THIS
     if(WIN32)
         add_custom_command(TARGET sdl_test POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:sdl_test> $<TARGET_FILE_DIR:sdl_test>
@@ -101,11 +110,22 @@ if(WSEPAPERAPI_SDL_TEST_MODE)
         )
     endif()
 
-    target_link_libraries(sdl_test PRIVATE ws-epaper-api)
+    # target_link_libraries(sdl_test PRIVATE ws-epaper-api)
+    # if(TARGET SDL2::SDL2)
+    # target_link_libraries(sdl_test PRIVATE SDL2::SDL2)
+    # else()
+    # target_link_libraries(sdl_test PRIVATE SDL2)
+    # endif()
+endif()
 
-    if(TARGET SDL2::SDL2)
-        target_link_libraries(sdl_test PRIVATE SDL2::SDL2)
-    else()
-        target_link_libraries(sdl_test PRIVATE SDL2)
+if(BUILD_EXAMPLES)
+    message("BUILD_EXAMPLES = \"${BUILD_EXAMPLES}\", Adding ./examples directory to build...")
+
+    if(NOT ENABLE_EMULATION)
+        message(FATAL_ERROR
+            "Building the examples requires emulation support! Set ENABLE_EMULATION to ON as well!"
+        )
     endif()
+
+    add_subdirectory(./examples)
 endif()
