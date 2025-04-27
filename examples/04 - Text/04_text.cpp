@@ -34,7 +34,6 @@ int main() {
      * Step 1: Create EpaperEmulator with a physical display as reference
      */
 
-    // a bit verbose but you can use namespaces to clean it up in your own code...
     typedef devices::EPD_2in13b_V4::EPD_2in13b_V4_DrawTarget device;
     EpaperEmulator emulatorTarget = EpaperEmulator::CreatePhysical<device>();
 
@@ -43,6 +42,9 @@ int main() {
     /**
      * Step 2: Create lines of text using TextElement
      */
+
+    // The TextElement is used to render text. It takes a font that derives from AbstractFont as a template.
+    // See the scripts/fontmaking folder for more information on creating and using your own fonts
 
     elements::TextElement<fonts::DinaBold_10pt> helloWorld("Hello World!");
     renderer.AddElement(&helloWorld);
@@ -54,8 +56,6 @@ int main() {
     elements::TextElement<fonts::Unifont_14pt> text3("Others are good");
     text3.ypos = 60;
     renderer.AddElement(&text3);
-
-    // See the scripts/fontmaking folder for more information on creating your own fonts
 
     /**
      * Step 3: Refresh the renderer.
