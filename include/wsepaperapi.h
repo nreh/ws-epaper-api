@@ -81,6 +81,9 @@ class Renderer {
     /// @param _transformation
     void SetTransformation(BufferTransform _transformation);
 
+    /// @brief Add a new element
+    void AddElement(AbstractElement* element) { elements.push_back(element); }
+
     ~Renderer();
 };
 

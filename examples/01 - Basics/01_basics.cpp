@@ -4,8 +4,6 @@
  * This example file demonstrates the basics of rendering to an SDL window.
  */
 
-#include <iostream> // for printing to console
-
 /**
  * Import the library headerfile, wsepaperapi.h
  */
@@ -51,7 +49,7 @@ int main() {
     /**
      * Step 4: Add elements to renderer
      */
-    renderer.elements.push_back(&rectangle);
+    renderer.AddElement(&rectangle);
 
     /**
      * Step 5: Refresh the renderer. This wil automatically trigger a refresh of whatever display was passed in.
