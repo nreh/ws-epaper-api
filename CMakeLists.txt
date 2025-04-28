@@ -98,11 +98,6 @@ if(ENABLE_EMULATION)
         )
     endif()
 
-    # add_executable(
-    # sdl_test
-    # sdl_testing/main.cpp
-    # )
-    # TODO: REMOVE THIS
     if(WIN32)
         add_custom_command(TARGET sdl_test POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:sdl_test> $<TARGET_FILE_DIR:sdl_test>
@@ -110,12 +105,11 @@ if(ENABLE_EMULATION)
         )
     endif()
 
-    # target_link_libraries(sdl_test PRIVATE ws-epaper-api)
-    # if(TARGET SDL2::SDL2)
-    # target_link_libraries(sdl_test PRIVATE SDL2::SDL2)
-    # else()
-    # target_link_libraries(sdl_test PRIVATE SDL2)
-    # endif()
+    if(TARGET SDL2::SDL2)
+        target_link_libraries(ws-epaper-api PUBLIC SDL2::SDL2)
+    else()
+        target_link_libraries(ws-epaper-api PUBLIC SDL2)
+    endif()
 endif()
 
 if(BUILD_EXAMPLES)
