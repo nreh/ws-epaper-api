@@ -59,7 +59,7 @@ else()
 endif()
 
 target_include_directories(ws-epaper-api PUBLIC include)
-include_directories(emulate)
+target_include_directories(ws-epaper-api PUBLIC emulate)
 
 if(WIN32)
     # Certain headerfiles and libraries exist on linux but not windows, without them we can't include the bcm2835 which means
