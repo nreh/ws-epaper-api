@@ -3,7 +3,7 @@
 > [!IMPORTANT]  
 > This is an experimental, work-in-progress library that I originally created for my own use. I've made it public, along with
 > some documentation, in case it’s helpful to others. However, please note that most displays have not been tested with this
-> code and as a result, it could be buggy or not run at all.
+> code and as a result, many display types could be buggy or not run at all.
 >
 > Please consult
 > [Waveshare's own example code](https://github.com/waveshareteam/e-Paper/tree/master/RaspberryPi_JetsonNano/c/examples) for
@@ -14,7 +14,11 @@ emulator for cross-platform testing without requiring physical hardware. Support
 
 ![Demonstration](docs/screenshot_1.png)
 
-Code for emulation window on the left:
+<details>
+
+<summary>🔍 Click to see the code for the above image</summary>
+
+## Code for emulation window on the left:
 
 ```cpp
 #include "emulate.h"
@@ -74,7 +78,7 @@ int main() {
 }
 ```
 
-Code for physical display on the right:
+## Code for physical display on the right:
 
 ```cpp
 #include "EPD_2in13_V4.h"
@@ -148,75 +152,39 @@ int main() {
 }
 ```
 
-See **[Examples Directory](examples)** for detailed examples on using the library.
+</details>
 
-## Features
+&nbsp;
+
+> [!NOTE]  
+> See **[Examples Directory](examples)** for detailed examples on using the library.
+
+&nbsp;
+
+## ⭐ Features
 
 - UI elements for creating complex interfaces
-- Display emulation to test without physical e-paper display
-- Pixel perfects fonts for displaying text
+- Display emulation to test without a physical e-paper display
+- Pixel perfects fonts for displaying text and scripts for creating your own
 - Easily extensible for custom displays as well as your own UI elements
 
-## Quick Links:
+## 🔗 Quick Links:
 
-1. [I want to just build the library](#build-the-library)
-2. [I want to use this library in my C++ project](#use-in-your-c-project)
+1. [I want to use this library in my C++ project](#use-in-your-c-project)
+2. [I want to build the examples](#build-the-examples)
+3. [I want to build as a library](#build-the-library)
 
-## Build the Library
+&nbsp;
 
-### Shared Library
+&nbsp;
 
-This will build the project as a **shared** library
+## ⚡ Use in your C++ Project
 
-```
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
-
-The build directory will look something like this:
+In your CMakeLists.txt simply add the directory containing all the source code here and link it with your executable.
 
 ```
-.
-├── CMakeCache.txt
-├── CMakeFiles
-│   └── . . .
-├── Makefile
-├── cmake_install.cmake
-└── libepaperapi.so
+git clone https://github.com/nreh/ws-epaper-api
 ```
-
-With the `libepaperapi.so` file being the compiled library.
-
-### Static Library
-
-Set `WSEPAPERAPI_STATIC` to TRUE to build as a **static** library.
-
-```
-mkdir build
-cd build
-cmake .. -DWSEPAPERAPI_STATIC=TRUE
-cmake --build .
-```
-
-The build directory will look something like this:
-
-```
-.
-├── CMakeCache.txt
-├── CMakeFiles
-│   └── . . .
-├── Makefile
-├── cmake_install.cmake
-└── libepaperapi.a
-```
-
-With the `libepaperapi.a` file being the compiled library.
-
-## Use in your C++ Project
-
-In your CMakeLists.txt simply add the directory containing this library and link it with your executable.
 
 ```cmake
 add_subdirectory(ws-epaper-api)
@@ -239,8 +207,96 @@ add_subdirectory(extern/ws-epaper-api)
 target_link_libraries(my_test_program PRIVATE ws-epaper-api)
 ```
 
-Now you can import the required header file to draw to your display:
+Then import the required header file:
 
 ```cpp
 #include "wsepaperapi.h"
 ```
+
+And finally the headerfile corresponding to your display. A complete list of header files that you can import can be found in
+[`external/waveshare/DrawTargets`](external/waveshare/DrawTargets).
+[For example, if you have this display](https://www.waveshare.com/2.13inch-e-paper-hat.htm), you'd import:
+
+```cpp
+#include "EPD_2in13_V4.h"
+```
+
+> [!IMPORTANT]  
+> To use the emulation feature, the `ENABLE_EMULATION` option must be set to TRUE or ON. In addition, you must have the SDL
+> library installed on your machine where CMake can find it.
+>
+> Once enabled, you can get the required functions/classes for emulation by important `emulate.h`:
+>
+> ```cpp
+> #include "wsepaperapi.h"
+> #include "emulate.h"
+> ```
+>
+> See the examples for more information.
+
+&nbsp;
+
+## 🔨 Build the Examples
+
+```
+mkdir build
+cd build
+cmake -DBUILD_EXAMPLES=TRUE -DENABLE_EMULATION=TRUE ..
+cmake --build .
+```
+
+The resulting executable binaries will be located in the `build/examples/` directory.
+
+&nbsp;
+
+## 🔨 Build the Library
+
+### Shared Library
+
+This will build the project as a **shared** library
+
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+The build directory will look something like this:
+
+```
+.
+├── CMakeCache.txt
+├── CMakeFiles
+│   └── . . .
+├── Makefile
+├── cmake_install.cmake
+└── libws-epaper-api.so
+```
+
+With the `libws-epaper-api.so` file being the compiled library.
+
+### Static Library
+
+Set `WSEPAPERAPI_STATIC` to TRUE to build as a **static** library.
+
+```
+mkdir build
+cd build
+cmake .. -DWSEPAPERAPI_STATIC=TRUE
+cmake --build .
+```
+
+The build directory will look something like this:
+
+```
+.
+├── CMakeCache.txt
+├── CMakeFiles
+│   └── . . .
+├── Makefile
+├── cmake_install.cmake
+└── libws-epaper-api.a
+```
+
+With the `libws-epaper-api.a` file being the compiled library.
