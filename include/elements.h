@@ -95,7 +95,7 @@ class AbstractElement {
  * Import elements here as a convenience so that they're all imported along with elements.h
  */
 
-#include "elements/BitmapElement.h"
+#include "elements/Bitmap1BitElement.h"
 #include "elements/FilledRectangleElement.h"
 #include "elements/LineElement.h"
 #include "elements/ProgressBarElement.h"

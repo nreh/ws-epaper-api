@@ -1,7 +1,7 @@
 # 🪄 Bitmap Conversion
 
 This folder contains a script for converting bitmaps to C++ headerfiles that can be used to render images using
-[`BitmapElement`](../../include/elements/BitmapElement.h)
+[`Bitmap1BitElement`](../../include/elements/Bitmap1BitElement.h)
 
 ## 🖼️ Step 1: Create Bitmap
 
@@ -49,12 +49,12 @@ class TestBitmap : public AbstractBitmap {
 
 You need to rename the file to something describing the image and the same for the classname (currently `TestBitmap`)
 
-Now you can move the generated header file into your include directory and use it in `BitmapElement`!
+Now you can move the generated header file into your include directory and use it in `Bitmap1BitElement`!
 
 ```cpp
 // Example using 'Wifi' bitmap
 auto wifiLogo = epaperapi::bitmaps::Wifi();
-BitmapElement bmpElem(0, 0, wifiLogo);
+Bitmap1BitElement bmpElem(0, 0, wifiLogo);
 ```
 
 ## 💡 Tips
