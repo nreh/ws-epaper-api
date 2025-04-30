@@ -24,7 +24,7 @@ endif()
 
 option(ENABLE_EMULATION "Build with emulation support using SDL" OFF)
 option(BUILD_EXAMPLES "Build examples" OFF)
-option(ENABLE_TESTS "Build the tests" ON)
+option(ENABLE_TESTS "Build the tests" OFF)
 
 if(NOT ENABLE_EMULATION)
     message(
