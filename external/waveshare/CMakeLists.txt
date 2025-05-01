@@ -146,17 +146,6 @@ set(
     DrawTargets/EPD_7in5b_HD.cpp
 )
 
-# if(NOT DEFINED EPD_MODEL)
-# message(
-# FATAL_ERROR
-# "You must define an EPD_MODEL that matches the E-Paper display you're using"
-# "\nSee the README for details on each model to help you understand which one to choose."
-# )
-# endif()
-
-# set(SOURCE_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.c")
-# set(HEADER_FILE "${CMAKE_SOURCE_DIR}/external/waveshare/epaper/e-Paper/${EPD_MODEL}.h")
-# if(EXISTS ${SOURCE_FILE} AND EXISTS ${HEADER_FILE})
 add_library(
     epaper STATIC
 
@@ -176,19 +165,8 @@ add_library(
     epaper/Fonts/font24CN.c
     epaper/Fonts/font8.c
     epaper/Fonts/fonts.h
-
-    epaper/GUI/GUI_BMPfile.c
-
-    # epaper/GUI/GUI_BMPfile.h
-    epaper/GUI/GUI_Paint.c
-
-    # epaper/GUI/GUI_Paint.h
+)
+target_compile_features(
+    epaper PRIVATE cxx_std_17
 )
 target_include_directories(epaper PUBLIC ./epaper/Config ./epaper ./epaper/Fonts ./epaper/GUI ../bcm2835/src ./DrawTargets/)
-
-# else()
-# message(FATAL_ERROR
-# "The specified files for the EPD_MODEL '${EPD_MODEL}' do not exist: ${SOURCE_FILE}, ${HEADER_FILE}\n"
-# "This probably means you mispelled or are using an incorrect value for EPD_MODEL. See the README for valid values."
-# )
-# endif()
