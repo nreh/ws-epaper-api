@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "../include/bitmaps/Wifi.h"
 #include "../include/wsepaperapi.h"
 
 namespace epaperapi {
