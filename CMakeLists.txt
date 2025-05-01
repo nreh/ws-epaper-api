@@ -105,10 +105,12 @@ if(WIN32)
     endif()
 
     # This copies over compiled DLL files into the same folder as ws-epaper-lib.dll
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
-        COMMAND_EXPAND_LISTS
-    )
+    if(NOT WSEPAPERAPI_STATIC)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+            COMMAND_EXPAND_LISTS
+        )
+    endif()
 else()
     add_subdirectory(external/bcm2835)
 
@@ -138,13 +140,6 @@ if(ENABLE_EMULATION)
     else()
         message(FATAL_ERROR "SDL2 library not found! Please install SDL2 to build in SDL test mode."
             "\nOtherwise set ENABLE_EMULATION to OFF."
-        )
-    endif()
-
-    if(${WIN32})
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
-            COMMAND_EXPAND_LISTS
         )
     endif()
 
