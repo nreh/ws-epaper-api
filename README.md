@@ -170,9 +170,9 @@ int main() {
 
 ## 🔗 Quick Links:
 
-1. [I want to use this library in my C++ project](#use-in-your-c-project)
-2. [I want to build the examples](#build-the-examples)
-3. [I want to build as a library](#build-the-library)
+1. [I want to use this library in my C++ project](#-use-in-your-c-project)
+2. [I want to build the examples](#-build-the-examples)
+3. [I want to build as a library](#-build-the-library)
 
 &nbsp;
 
