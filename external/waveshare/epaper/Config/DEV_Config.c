@@ -481,12 +481,14 @@ void DEV_Module_Exit(void) {
 #elif JETSON
     #ifdef USE_DEV_LIB
     SYSFS_GPIO_Unexport(EPD_CS_PIN);
-    SYSFS_GPIO_Unexport(EPD_PWR_PIN;
-	SYSFS_GPIO_Unexport(EPD_DC_PIN);
-	SYSFS_GPIO_Unexport(EPD_RST_PIN);
-	SYSFS_GPIO_Unexport(EPD_BUSY_PIN);
+    SYSFS_GPIO_Unexport(EPD_PWR_PIN);
+    SYSFS_GPIO_Unexport(EPD_DC_PIN);
+    SYSFS_GPIO_Unexport(EPD_RST_PIN);
+    SYSFS_GPIO_Unexport(EPD_BUSY_PIN);
     #elif USE_HARDWARE_LIB
     Debug("not support");
     #endif
+#else
+    return;
 #endif
 }
