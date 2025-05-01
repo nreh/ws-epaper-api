@@ -176,13 +176,9 @@ add_library(
     epaper/Fonts/font24CN.c
     epaper/Fonts/font8.c
     epaper/Fonts/fonts.h
-
-    epaper/GUI/GUI_BMPfile.c
-
-    # epaper/GUI/GUI_BMPfile.h
-    epaper/GUI/GUI_Paint.c
-
-    # epaper/GUI/GUI_Paint.h
+)
+target_compile_features(
+    epaper PRIVATE cxx_std_17
 )
 target_include_directories(epaper PUBLIC ./epaper/Config ./epaper ./epaper/Fonts ./epaper/GUI ../bcm2835/src ./DrawTargets/)
 
