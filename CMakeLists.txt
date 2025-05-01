@@ -62,6 +62,8 @@ target_include_directories(ws-epaper-api PUBLIC include)
 target_include_directories(ws-epaper-api PUBLIC emulate)
 
 if(WIN32)
+    add_subdirectory(external/waveshare)
+
     # Certain headerfiles and libraries exist on linux but not windows, without them we can't include the bcm2835 which means
     # that cross-compilation isn't possible.
     set(WSEPAPERAPI_CROSSCOMPILATION_SUPPORT FALSE)
@@ -71,6 +73,7 @@ if(WIN32)
         "Run cmake with -DENABLE_EMULATION=ON"
     )
     add_compile_definitions(WSEPAPERAPI_NO_CROSSCOMPILATION_SUPPORT TRUE)
+    target_link_libraries(ws-epaper-api PUBLIC epaper)
 else()
     add_subdirectory(external/bcm2835)
     add_subdirectory(external/waveshare)
@@ -82,7 +85,7 @@ else()
 endif()
 
 target_compile_features(
-    ws-epaper-api PRIVATE cxx_std_17
+    ws-epaper-api PUBLIC cxx_std_17
 )
 
 if(ENABLE_EMULATION)
@@ -98,9 +101,9 @@ if(ENABLE_EMULATION)
         )
     endif()
 
-    if(WIN32)
-        add_custom_command(TARGET sdl_test POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:sdl_test> $<TARGET_FILE_DIR:sdl_test>
+    if(${WIN32})
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
             COMMAND_EXPAND_LISTS
         )
     endif()
