@@ -234,6 +234,16 @@ And finally the headerfile corresponding to your display. A complete list of hea
 >
 > See the examples for more information.
 
+On Windows, the compiled executable will not be runnable without `SDL2.dll` and `ws-epaper-api.dll` in the same directory.
+You can automatically copy them over to the executable's directory with the following addition to your CMakeLists.txt:
+
+```cmake
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+    COMMAND_EXPAND_LISTS
+)
+```
+
 &nbsp;
 
 ## 🔨 Build the Examples
