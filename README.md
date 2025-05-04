@@ -272,20 +272,6 @@ cmake ..
 cmake --build .
 ```
 
-The build directory will look something like this:
-
-```
-.
-├── CMakeCache.txt
-├── CMakeFiles
-│   └── . . .
-├── Makefile
-├── cmake_install.cmake
-└── libws-epaper-api.so
-```
-
-With the `libws-epaper-api.so` file being the compiled library.
-
 ### Static Library
 
 Set `WSEPAPERAPI_STATIC` to TRUE to build as a **static** library.
@@ -296,17 +282,3 @@ cd build
 cmake .. -DWSEPAPERAPI_STATIC=TRUE
 cmake --build .
 ```
-
-The build directory will look something like this:
-
-```
-.
-├── CMakeCache.txt
-├── CMakeFiles
-│   └── . . .
-├── Makefile
-├── cmake_install.cmake
-└── libws-epaper-api.a
-```
-
-With the `libws-epaper-api.a` file being the compiled library.
