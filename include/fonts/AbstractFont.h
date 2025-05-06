@@ -65,6 +65,8 @@ class AbstractFont {
 
         return GetBitmapData() + offset;
     }
+
+    virtual ~AbstractFont() {}
 };
 
 } // namespace fonts

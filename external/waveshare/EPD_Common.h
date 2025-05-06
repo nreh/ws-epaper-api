@@ -351,7 +351,6 @@ class Color2BitEPD : private RGBBufferHolder, public PhysicalEPDDrawTarget {
                 int byte_index = (y * memWidth) + (x / 4);
                 int bit_index = (x % 4) * 2;
                 uint8_t pixel = packedBits[byte_index] >> (6 - bit_index) & 0b11;
-                uint8_t val;
                 uint32_t n = y * GetWidth() + x;
 
                 if (pixel == 0) { // black
@@ -424,7 +423,6 @@ class _6Color4BitEPD : public Color4BitEPD {
                 int byte_index = (y * memWidth) + (x / 2);
                 int bit_index = (x % 2) * 4;
                 uint8_t pixel = packedBits[byte_index] >> (4 - bit_index) & 0x0F;
-                uint8_t val;
                 uint32_t n = y * GetWidth() + x;
 
                 if (pixel == 0) { // black
@@ -485,7 +483,6 @@ class _7Color4BitEPD : public Color4BitEPD {
                 int byte_index = (y * memWidth) + (x / 2);
                 int bit_index = (x % 2) * 4;
                 uint8_t pixel = packedBits[byte_index] >> (4 - bit_index) & 0x0F;
-                uint8_t val;
                 uint32_t n = y * GetWidth() + x;
 
                 if (pixel == 0) { // black

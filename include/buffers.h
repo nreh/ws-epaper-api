@@ -33,7 +33,7 @@ class AbstractBuffer {
     float* alphaChannel;
 
     AbstractBuffer(uint16_t _width, uint16_t _height);
-    ~AbstractBuffer();
+    virtual ~AbstractBuffer();
     virtual void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) = 0;
     virtual BufferType type() const { return BufferType::AbstractBuffer; }
 
