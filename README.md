@@ -56,18 +56,18 @@ int main() {
     text1.xpos = (250 / 2) - (text1.GetWidth() / 2);
     text1.ypos = 70;
     text1.characterSpacing = 0;
-    renderer.elements.push_back(&text1);
+    renderer.AddElement(&text1);
 
     elements::TextElement<font2> text2("github.com/nreh/ws-epaper-api");
     text2.foregroundStyle.SetBlackChannel(0);
     text2.xpos = (250 / 2) - (text2.GetWidth() / 2);
     text2.ypos = text1.GetHeight() + text1.ypos;
     text2.characterSpacing = 0;
-    renderer.elements.push_back(&text2);
+    renderer.AddElement(&text2);
 
     auto t = bitmaps::Moon();
     elements::Bitmap1BitElement img((250 / 2) - (t.GetWidth() / 2), 15, t);
-    renderer.elements.push_back(&img);
+    renderer.AddElement(&img);
 
     //
     // Render!
@@ -121,18 +121,18 @@ int main() {
     text1.xpos = (250 / 2) - (text1.GetWidth() / 2);
     text1.ypos = 70;
     text1.characterSpacing = 0;
-    renderer.elements.push_back(&text1);
+    renderer.AddElement(&text1);
 
     elements::TextElement<font2> text2("github.com/nreh/ws-epaper-api");
     text2.foregroundStyle.SetBlackChannel(0);
     text2.xpos = (250 / 2) - (text2.GetWidth() / 2);
     text2.ypos = text1.GetHeight() + text1.ypos;
     text2.characterSpacing = 0;
-    renderer.elements.push_back(&text2);
+    renderer.AddElement(&text2);
 
     auto t = bitmaps::Moon();
     elements::Bitmap1BitElement img((250 / 2) - (t.GetWidth() / 2), 15, t);
-    renderer.elements.push_back(&img);
+    renderer.AddElement(&img);
 
     //
     // Render!
