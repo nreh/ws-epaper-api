@@ -95,7 +95,7 @@ int main() {
     // Initialize device and renderer
     //
 
-    devices::EPD_2in13_V4::EPD_2in13_V4_DrawTarget dev(false);
+    devices::EPD_2in13_V4::EPD_2in13_V4_DrawTarget dev;
     Renderer renderer(dev, BufferTransform::Rotate90Clockwise);
 
     //
