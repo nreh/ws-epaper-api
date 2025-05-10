@@ -126,7 +126,10 @@ class EPD_5in65f_DrawTarget : public _7Color4BitEPD {
         }
     }
 
-    EPD_5in65f_DrawTarget(bool initializeSPI = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_5in65f_DrawTarget(bool initialize = true) : _7Color4BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_5in65f_DrawTarget() {}
 };
 

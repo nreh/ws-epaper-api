@@ -159,7 +159,10 @@ class EPD_2in7_V2_DrawTarget : public Black1BitEPD {
         }
     }
 
-    EPD_2in7_V2_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_2in7_V2_DrawTarget(bool initialize = true) : Black1BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_2in7_V2_DrawTarget() {}
 };
 

@@ -133,7 +133,10 @@ class EPD_7in3e_DrawTarget : public _6Color4BitEPD {
         }
     }
 
-    EPD_7in3e_DrawTarget(bool initializeSPI = true) : _6Color4BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_7in3e_DrawTarget(bool initialize = true) : _6Color4BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_7in3e_DrawTarget() {}
 };
 

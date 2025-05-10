@@ -119,7 +119,10 @@ class EPD_5in79g_DrawTarget : public Color2BitEPD {
         }
     }
 
-    EPD_5in79g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_5in79g_DrawTarget(bool initialize = true) : Color2BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_5in79g_DrawTarget() {}
 };
 

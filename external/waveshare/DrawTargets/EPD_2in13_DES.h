@@ -106,7 +106,10 @@ class EPD_2in13_DES_DrawTarget : public Black1BitEPD {
         }
     }
 
-    EPD_2in13_DES_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_2in13_DES_DrawTarget(bool initialize = true) : Black1BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_2in13_DES_DrawTarget() {}
 };
 

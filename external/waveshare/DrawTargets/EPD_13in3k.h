@@ -150,7 +150,10 @@ class EPD_13in3k_DrawTarget : public Black2BitEPD {
         }
     }
 
-    EPD_13in3k_DrawTarget(bool initializeSPI = true) : Black2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_13in3k_DrawTarget(bool initialize = true) : Black2BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_13in3k_DrawTarget() {}
 };
 

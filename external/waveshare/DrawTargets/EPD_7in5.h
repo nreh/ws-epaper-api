@@ -107,7 +107,10 @@ class EPD_7in5_DrawTarget : public Black1BitEPD {
         }
     }
 
-    EPD_7in5_DrawTarget(bool initializeSPI = true) : Black1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_7in5_DrawTarget(bool initialize = true) : Black1BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_7in5_DrawTarget() {}
 };
 

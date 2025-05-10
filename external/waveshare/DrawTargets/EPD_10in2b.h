@@ -107,7 +107,10 @@ class EPD_10in2b_DrawTarget : public RedBlack1BitEPD {
         }
     }
 
-    EPD_10in2b_DrawTarget(bool initializeSPI = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_10in2b_DrawTarget(bool initialize = true) : RedBlack1BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_10in2b_DrawTarget() {}
 };
 

@@ -109,7 +109,10 @@ class EPD_4in37g_DrawTarget : public Color2BitEPD {
         }
     }
 
-    EPD_4in37g_DrawTarget(bool initializeSPI = true) : Color2BitEPD(GetWidth(), GetHeight(), initializeSPI) {}
+    EPD_4in37g_DrawTarget(bool initialize = true) : Color2BitEPD(GetWidth(), GetHeight(), initialize) {
+        if (initialize)
+            Init();
+    }
     ~EPD_4in37g_DrawTarget() {}
 };
 
