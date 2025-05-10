@@ -1,1 +1,0 @@
-create_example_target(example_03_physical_displays 03_physical_displays.cpp)

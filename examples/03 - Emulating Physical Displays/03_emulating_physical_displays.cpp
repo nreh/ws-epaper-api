@@ -1,5 +1,5 @@
 /**
- * 03 | Physical Displays
+ * 03 | Emulating Physical Displays
  *
  * This example demonstrates emulation of physical displays
  */

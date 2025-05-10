@@ -1,0 +1,2 @@
+add_executable(example_07_real_world_example 07_real_world_example.cpp)
+target_link_libraries(example_07_real_world_example PRIVATE ws-epaper-api)
