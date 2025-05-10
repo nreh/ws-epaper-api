@@ -102,7 +102,6 @@ int main() {
     // Initialize the display registers and clear to white
     //
 
-    dev.Init();
     dev.Clear();
 
     //
