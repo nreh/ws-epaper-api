@@ -31,7 +31,7 @@ int main() {
     Renderer renderer(device);
 
     /**
-     * Step 3: Create a simple box
+     * Step 2: Create a simple box
      */
 
     elements::FilledRectangleElement box(25, 25, 25, 25);
@@ -39,12 +39,12 @@ int main() {
     renderer.AddElement(&box);
 
     /**
-     * Step 4: Refresh the renderer.
+     * Step 3: Refresh the renderer.
      */
     renderer.Refresh();
 
     /**
-     * Step 5: We want to put the display to sleep and close the SPI connection after drawing.
+     * Step 4: We want to put the display to sleep and close the SPI connection after drawing.
      *
      * According to the example code given by Waveshare that can be found here:
      * https://github.com/waveshareteam/e-Paper/blob/master/RaspberryPi_JetsonNano/c/examples/EPD_2in13_V4_test.c

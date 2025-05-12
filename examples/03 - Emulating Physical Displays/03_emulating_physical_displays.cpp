@@ -34,7 +34,7 @@ int main() {
      * use "2.13inch e-paper B V4" (https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT_(B)_Manual).
      *
      * As an added benefit, the emulator will display the pixels exactly as they would appear on the physical display,
-     * simulation the limited color palette and any grayscale steps.
+     * simulating the limited color palette and any grayscale steps.
      */
 
     // a bit verbose but you can use namespaces to clean it up in your own code...
