@@ -162,6 +162,8 @@ int main() {
 
 ## ⭐ Features
 
+![Elements](docs/elements.png)
+
 - UI elements for creating complex interfaces
 - Display emulation to test without a physical e-paper display
 - Pixel perfects fonts for displaying text and scripts for creating your own
