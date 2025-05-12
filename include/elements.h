@@ -49,6 +49,13 @@ struct ElementStyle {
         blueChannel = b;
         return *this;
     }
+    ElementStyle& SetRGBAChannels(uint8_t r, uint8_t g, uint8_t b, float a = 1.0f) {
+        redChannel = r;
+        greenChannel = g;
+        blueChannel = b;
+        alpha = a;
+        return *this;
+    }
     ElementStyle& SetBlackChannel(uint8_t black) {
         blackChannel = black;
         return *this;
