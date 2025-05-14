@@ -43,8 +43,8 @@ int main() {
      * Now we can actually create and manipulate elements that will be drawn to the screen. For this simple example, we'll
      * just draw a red rectangle in the middle of the screen.
      */
-    epaperapi::elements::FilledRectangleElement rectangle(50, 50, 500 / 2 - 25, 250 / 2 - 25); // (width,height,xpos,ypos)
-    rectangle.style.SetRGBChannels(255, 0, 0); // .style is how color is set for most elements
+    epaperapi::elements::RectangleElement rectangle(50, 50, 500 / 2 - 25, 250 / 2 - 25); // (width,height,xpos,ypos)
+    rectangle.fillStyle.SetRGBChannels(255, 0, 0); // style is how color is set for most elements
 
     /**
      * Step 4: Add elements to renderer

@@ -199,6 +199,14 @@ void RGBBuffer::DrawBitmap(
     }
 }
 
+void RGBBuffer::DrawRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) {
+    // draw top parts of the rectangle
+    DrawLine(xpos, ypos, xpos + width, ypos, style);                                  // top edge
+    DrawLine(xpos, ypos + height - 1, xpos + width, ypos + height - 1, style);        // bottom edge
+    DrawLine(xpos, ypos + 1, xpos, ypos + height - 1, style);                         // left edge
+    DrawLine(xpos + width - 1, ypos + 1, xpos + width - 1, ypos + height - 1, style); // right edge
+}
+
 void RGBBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
 ) {
@@ -461,6 +469,16 @@ void RedBlackBuffer::DrawBitmap(
     }
 }
 
+void RedBlackBuffer::DrawRectangle(
+    uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
+) {
+    // draw top parts of the rectangle
+    DrawLine(xpos, ypos, xpos + width, ypos, style);                                  // top edge
+    DrawLine(xpos, ypos + height - 1, xpos + width, ypos + height - 1, style);        // bottom edge
+    DrawLine(xpos, ypos + 1, xpos, ypos + height - 1, style);                         // left edge
+    DrawLine(xpos + width - 1, ypos + 1, xpos + width - 1, ypos + height - 1, style); // right edge
+}
+
 void RedBlackBuffer::DrawFilledRectangle(
     uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
 ) {
@@ -634,6 +652,16 @@ void GrayscaleBuffer::DrawBitmap(
             }
         }
     }
+}
+
+void GrayscaleBuffer::DrawRectangle(
+    uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style
+) {
+    // draw top parts of the rectangle
+    DrawLine(xpos, ypos, xpos + width, ypos, style);                                  // top edge
+    DrawLine(xpos, ypos + height - 1, xpos + width, ypos + height - 1, style);        // bottom edge
+    DrawLine(xpos, ypos + 1, xpos, ypos + height - 1, style);                         // left edge
+    DrawLine(xpos + width - 1, ypos + 1, xpos + width - 1, ypos + height - 1, style); // right edge
 }
 
 void GrayscaleBuffer::DrawFilledRectangle(

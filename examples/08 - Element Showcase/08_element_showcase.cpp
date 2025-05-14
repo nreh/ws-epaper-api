@@ -31,24 +31,26 @@ int main() {
 
     typedef fonts::Dina_6pt font;
 
-    elements::FilledRectangleElement box1(25, 25, 70, 25);
+    elements::RectangleElement box1(25, 25, 70, 25);
+    box1.borderStyle.SetRGBAChannels(0, 0, 0, 1);
+    box1.fillStyle.SetRGBAChannels(0, 0, 0, 0.25f);
     renderer.AddElement(&box1);
 
-    elements::TextElement<font> description1("FilledRectangleElement");
+    elements::TextElement<font> description1("RectangleElement");
     description1.xpos = box1.xpos + 12 - (description1.GetWidth() / 2);
     description1.ypos = 70;
     renderer.AddElement(&description1);
 
-    elements::LineElement line(175, 20, 230, 25);
+    elements::LineElement line(160, 20, 215, 25);
     renderer.AddElement(&line);
 
     elements::TextElement<font> description2("LineElement");
-    description2.xpos = 170;
+    description2.xpos = 160;
     description2.ypos = 70;
     renderer.AddElement(&description2);
 
     elements::ProgressBarElement progress;
-    progress.xpos = 285;
+    progress.xpos = 275;
     progress.ypos = 40;
     progress.width = 70;
     progress.progress = 0.75f;
@@ -57,7 +59,7 @@ int main() {
     renderer.AddElement(&progress);
 
     elements::TextElement<font> description3("ProgressBarElement");
-    description3.xpos = 265;
+    description3.xpos = 255;
     description3.ypos = 70;
     renderer.AddElement(&description3);
 

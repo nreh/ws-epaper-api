@@ -103,7 +103,7 @@ class AbstractElement {
  */
 
 #include "elements/Bitmap1BitElement.h"
-#include "elements/FilledRectangleElement.h"
 #include "elements/LineElement.h"
 #include "elements/ProgressBarElement.h"
+#include "elements/RectangleElement.h"
 #include "elements/TextElement.h"

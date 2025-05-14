@@ -28,23 +28,23 @@ int main() {
     /**
      * Step 2: Create elements
      */
-    epaperapi::elements::FilledRectangleElement rectangle(100, 100, 10, 10);
+    epaperapi::elements::RectangleElement rectangle(100, 100, 10, 10);
     renderer.AddElement(&rectangle);
 
-    // Most elements have a 'style' property that is used to set color. In this case, we'll make the rectangle green.
-    rectangle.style.SetRGBChannels(0, 255, 0);
+    // Most elements have some 'style' property that is used to set color. In this case, we'll make the rectangle green.
+    rectangle.fillStyle.SetRGBChannels(0, 255, 0);
 
     // another red rectangle is placed above it but this time, it's slightly transparent
-    epaperapi::elements::FilledRectangleElement rectangle2(100, 100, 50, 50);
+    epaperapi::elements::RectangleElement rectangle2(100, 100, 50, 50);
     renderer.AddElement(&rectangle2);
 
-    rectangle2.style.SetRGBChannels(255, 0, 0);
-    rectangle2.style.SetAlpha(0.75f); // the alpha channel is used to define transparency
+    rectangle2.fillStyle.SetRGBChannels(255, 0, 0);
+    rectangle2.fillStyle.SetAlpha(0.75f); // the alpha channel is used to define transparency
 
     // finally, a black rectangle
-    epaperapi::elements::FilledRectangleElement rectangle3(100, 100, 85, 85);
+    epaperapi::elements::RectangleElement rectangle3(100, 100, 85, 85);
     renderer.AddElement(&rectangle3);
-    rectangle3.style.SetRGBChannels(0, 0, 0);
+    rectangle3.fillStyle.SetRGBChannels(0, 0, 0);
 
     /**
      * Step 3: Refresh the renderer.

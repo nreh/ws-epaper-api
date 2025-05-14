@@ -89,6 +89,14 @@ class AbstractBuffer {
         const uint8_t* bitmap
     ) = 0;
 
+    /// @brief Draw a rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle's border
+    virtual void DrawRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) = 0;
+
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
     /// @param ypos Y position in pixels of the upper left corner of the rectangle
@@ -165,6 +173,14 @@ class RGBBuffer : public AbstractBuffer {
         const ElementStyle& foregroundStyle,
         const uint8_t* bitmap
     ) override;
+
+    /// @brief Draw a rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle's border
+    void DrawRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
 
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
@@ -256,6 +272,14 @@ class RedBlackBuffer : public AbstractBuffer {
         const uint8_t* bitmap
     ) override;
 
+    /// @brief Draw a rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle's border
+    void DrawRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
+
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle
     /// @param ypos Y position in pixels of the upper left corner of the rectangle
@@ -335,6 +359,14 @@ class GrayscaleBuffer : public AbstractBuffer {
         const ElementStyle& foregroundStyle,
         const uint8_t* bitmap
     ) override;
+
+    /// @brief Draw a rectangle on the buffer
+    /// @param xpos X position in pixels of the upper left corner of the rectangle
+    /// @param ypos Y position in pixels of the upper left corner of the rectangle
+    /// @param width Width of the rectangle in pixels
+    /// @param height Height of the rectangle in pixels
+    /// @param style How to color/style the rectangle's border
+    void DrawRectangle(uint16_t xpos, uint16_t ypos, uint16_t width, uint16_t height, const ElementStyle& style) override;
 
     /// @brief Draw a filled rectangle on the buffer
     /// @param xpos X position in pixels of the upper left corner of the rectangle

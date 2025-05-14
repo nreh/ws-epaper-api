@@ -34,8 +34,8 @@ int main() {
      * Step 2: Create a simple box
      */
 
-    elements::FilledRectangleElement box(25, 25, 25, 25);
-    box.style.SetBlackChannel(0); // black rectangle
+    elements::RectangleElement box(25, 25, 25, 25);
+    box.fillStyle.SetBlackChannel(0); // black rectangle
     renderer.AddElement(&box);
 
     /**

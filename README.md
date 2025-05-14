@@ -162,7 +162,7 @@ int main() {
 
 ## ⭐ Features
 
-![Elements](docs/elements.png)
+![Elements](docs/Elements.png)
 
 - UI elements for creating complex interfaces
 - Display emulation to test without a physical e-paper display

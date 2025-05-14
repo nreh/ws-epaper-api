@@ -51,19 +51,19 @@ int main() {
      */
 
     // black rectangle
-    epaperapi::elements::FilledRectangleElement rectangle(50, 50, 10, 10);
+    epaperapi::elements::RectangleElement rectangle(50, 50, 10, 10);
     renderer.AddElement(&rectangle);
-    rectangle.style.SetRedBlackChannels(0, 0);
+    rectangle.fillStyle.SetRedBlackChannels(0, 0);
 
     // red rectangle
-    epaperapi::elements::FilledRectangleElement rectangle2(50, 50, 25, 25);
+    epaperapi::elements::RectangleElement rectangle2(50, 50, 25, 25);
     renderer.AddElement(&rectangle2);
-    rectangle2.style.SetRedBlackChannels(255, 0);
+    rectangle2.fillStyle.SetRedBlackChannels(255, 0);
 
     // black rectangle
-    epaperapi::elements::FilledRectangleElement rectangle3(50, 50, 40, 40);
+    epaperapi::elements::RectangleElement rectangle3(50, 50, 40, 40);
     renderer.AddElement(&rectangle3);
-    rectangle3.style.SetRedBlackChannels(0, 0);
+    rectangle3.fillStyle.SetRedBlackChannels(0, 0);
 
     /**
      * Step 3: Refresh the renderer.
