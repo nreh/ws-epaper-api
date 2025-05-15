@@ -26,7 +26,7 @@ int main() {
     Renderer renderer(emulator);
 
     /**
-     * Step 3: Create UI elements
+     * Step 2: Create UI elements
      */
 
     typedef fonts::Dina_6pt font;
@@ -83,7 +83,7 @@ int main() {
     renderer.AddElement(&description5);
 
     /**
-     * Step 4: Refresh the renderer and keep window open
+     * Step 3: Refresh the renderer and keep window open
      */
     renderer.Refresh();
     KeepWindowOpen();
