@@ -4,6 +4,7 @@ import os
 import pathlib
 import shutil
 import traceback
+import csv
 
 from helpers import logging
 from helpers.EPaperDetails import EPaperDetails
@@ -21,9 +22,13 @@ group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument(
     '--categorize', help='Given a directory containing parsed capabilities, copy them to a categorized directory by display type.')
 
+group.add_argument(
+    '--table', help='Given a directory containing parsed capabilities, generate a table describing it.')
+
 args = parser.parse_args()
 
 categorize = args.categorize
+table = args.table
 
 if categorize is not None:
     print("Running 'categorize' utility...")
@@ -74,6 +79,75 @@ if categorize is not None:
             shutil.copy(file_path, cdir)
 
             log.info(f'Categorized as {mode}')
+
+            processed.append(file_path.name)
+        except:
+            log.error(f'Error while processing {file_path}...')
+            log.error('------ see traceback below -----\n')
+            log.error(traceback.format_exc())
+            log.error('')
+            print()
+
+            failed.append(file_path.name)
+
+    print(
+        f'\n\nDONE! Processed {totalCount} files of which {len(failed)} failed')
+
+    if len(failed) > 0:
+        print('\nThe following files failed to process:\n')
+        for i in failed:
+            print(f' * {i}')
+            print()
+
+elif table is not None:
+    print("Running 'table' utility...")
+
+    table = pathlib.Path(table)
+
+    if not table.exists():
+        print('Passed path does not exist')
+        exit(1)
+
+    if not table.is_dir():
+        print('Passed path must a directory containing .json files')
+        exit(1)
+
+        # first create a directory where the categorized .json will be moved to
+    OUTPUT_DIRECTORY_NAME = './ignore_Utils_table/'
+    os.mkdir(OUTPUT_DIRECTORY_NAME)
+    outputdir = pathlib.Path(OUTPUT_DIRECTORY_NAME)
+
+    displays = open(outputdir/'supportedDisplays.csv', 'w')
+    displaysCSV = csv.writer(displays)
+
+    displaysCSV.writerow(['Display Name', 'Headerfile', 'Width', 'Height',
+                         'Type', 'Supported Colors', 'Supported?'])
+
+    # now go through each .json file
+
+    totalCount = 0
+    existingCount = 0
+    processed: list[str] = []
+    failed: list[str] = []
+    for file_path in table.rglob('*.json'):
+        totalCount += 1
+        log = logging.Logger(True, pathlib.Path(file_path).name)
+
+        log.info(f'Parsing file {file_path}...')
+
+        try:
+            f = open(file_path)
+            data = json.load(f)
+            f.close()
+
+            det = EPaperDetails(file_path.name)
+            det.parseFromJson(data)
+
+            mode = det.DetermineMode()
+
+            supported = 'Yes' if mode != 'Unknown' else 'No'
+            displaysCSV.writerow(
+                [det.fullName, f'{det.name}.h', det.screenWidth, det.screenHeight, mode, det.supportColorChannels, supported])
 
             processed.append(file_path.name)
         except:
