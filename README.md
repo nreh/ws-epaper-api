@@ -302,11 +302,7 @@ of these may be incorrectly categorized.
 | 10.2inch b e-paper         | EPD_10in2b.h       |   960 |    640 | RedBlack1BitEPD | ['black', 'red']                                      | Yes        |
 | 5.65inch e-paper           | EPD_5in65f.h       |   600 |    448 | 7Color4BitEPD   | ['black', 'green', 'blue', 'red', 'yellow', 'orange'] | Yes        |
 | 4.01inch e-paper           | EPD_4in01f.h       |   640 |    400 | 7Color4BitEPD   | ['black', 'red', 'green', 'blue', 'yellow', 'orange'] | Yes        |
-| 7.5inch e-paper V2         | EPD_7in5b_V2_old.h |   800 |    480 | NoExampleFile   | ['black', 'red']                                      | Yes        |
 | 2.36inch e-Paper (G)       | EPD_2in36g.h       |   168 |    296 | Color2BitEPD    | ['black', 'yellow', 'red']                            | Yes        |
-| 4.2inch e-paper b&c        | EPD_4in2b_V2_old.h |   400 |    300 | NoExampleFile   | ['black', 'red']                                      | Yes        |
-| 7.5inch e-paper V2         | EPD_7in5_V2_old.h  |   800 |    480 | NoExampleFile   | ['black']                                             | Yes        |
-| 4inch e-Paper E            | EPD_4in0e.h        |   400 |    600 | NoExampleFile   | ['black', 'yellow', 'red', 'blue', 'green']           | Yes        |
 | 7.3inch e-Paper (F)        | EPD_7in3e.h        |   800 |    480 | 6Color4BitEPD   | ['black', 'red', 'yellow', 'blue', 'green']           | Yes        |
 | 5.83inch e-paper V2        | EPD_5in83_V2.h     |   648 |    480 | Black1BitEPD    | ['black']                                             | Yes        |
 | 2.7inch V2 e-paper         | EPD_2in7_V2.h      |   176 |    264 | Black1BitEPD    | ['black']                                             | Yes        |
@@ -363,10 +359,12 @@ of these may be incorrectly categorized.
 | 2.13inch DES e-paper       | EPD_2in13_DES.h    |   104 |    212 | Black1BitEPD    | ['black']                                             | Yes        |
 | 2.9inch DES e-paper        | EPD_2in9_DES.h     |   128 |    296 | Black1BitEPD    | ['black']                                             | Yes        |
 | 5.83inch e-paper V2        | EPD_5in83b_V2.h    |   648 |    480 | RedBlack1BitEPD | ['red', 'black']                                      | Yes        |
+| 4.2inch e-paper b&c        | EPD_4in2b_V2_old.h |   400 |    300 | NoExampleFile   | ['black', 'red']                                      | No         |
+| 7.5inch e-paper V2         | EPD_7in5_V2_old.h  |   800 |    480 | NoExampleFile   | ['black']                                             | No         |
+| 4inch e-Paper E            | EPD_4in0e.h        |   400 |    600 | NoExampleFile   | ['black', 'yellow', 'red', 'blue', 'green']           | No         |
+| 7.5inch e-paper V2         | EPD_7in5b_V2_old.h |   800 |    480 | NoExampleFile   | ['black', 'red']                                      | No         |
 | 7.5inch e-paper b&c        | ~~EPD_7in5bc.h~~   |   640 |    384 | Unknown         | ['black', 'red', 'yellow']                            | No         |
 | 7.5inch e-paper B V2       | ~~EPD_7in5b_V2.h~~ |   800 |    480 | Unknown         | ['black', 'red', 'yellow']                            | No         |
 
-&nbsp;
-
-Displays marked as Unknown are generally not supported because of a missing example file in Waveshare's code making it
-impossible for the automated script to accurately categorize.
+Displays marked as 'NoExampleFile' are generally not supported because of a missing example file in Waveshare's code making
+it difficult for the automated script to accurately categorize.
