@@ -66,7 +66,7 @@ int main() {
     renderer.AddElement(&text2);
 
     auto t = bitmaps::Moon();
-    elements::Bitmap1BitElement img((250 / 2) - (t.GetWidth() / 2), 15, t);
+    elements::Bitmap1BitElement img((250 / 2) - (t.GetWidth() / 2), 15, &t);
     renderer.AddElement(&img);
 
     //
