@@ -102,6 +102,18 @@ void RGBBuffer::FillBuffer(uint8_t value) {
     }
 }
 
+void RGBBuffer::FillBuffer(const ElementStyle& style) {
+    for (int i = 0; i < width * height; i++) {
+        redChannel[i] = style.redChannel;
+    }
+    for (int i = 0; i < width * height; i++) {
+        greenChannel[i] = style.greenChannel;
+    }
+    for (int i = 0; i < width * height; i++) {
+        blueChannel[i] = style.blueChannel;
+    }
+}
+
 void RGBBuffer::Transform(
     void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
 ) {
@@ -343,6 +355,59 @@ void RGBBuffer::ConvertTo7Color(uint8_t* dest, int memoryWidth, utils::Supported
     }
 }
 
+void RGBBuffer::DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) {
+    auto& b = static_cast<const RGBBuffer&>(buffer);
+
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.redChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    redChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->redChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
+    }
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.greenChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    greenChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->greenChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
+    }
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.blueChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    blueChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->blueChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
+    }
+}
+
 RedBlackBuffer::RedBlackBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     // initialize channels with all zeros
     redChannel = new uint8_t[((uint32_t)width) * height]();
@@ -387,6 +452,15 @@ void RedBlackBuffer::FillBuffer(uint8_t value) {
     // only set black channel
     for (int i = 0; i < width * height; i++) {
         redChannel[i] = 0;
+    }
+}
+
+void RedBlackBuffer::FillBuffer(const ElementStyle& style) {
+    for (int i = 0; i < width * height; i++) {
+        redChannel[i] = style.redChannel;
+    }
+    for (int i = 0; i < width * height; i++) {
+        blackChannel[i] = style.blackChannel;
     }
 }
 
@@ -565,6 +639,43 @@ void RedBlackBuffer::ConvertTo1Bit(uint8_t* dest_black, uint8_t* dest_red) {
     }
 }
 
+void RedBlackBuffer::DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) {
+    auto& b = static_cast<const RedBlackBuffer&>(buffer);
+
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.redChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    redChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->redChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
+    }
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.blackChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    blackChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->blackChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
+    }
+}
+
 GrayscaleBuffer::GrayscaleBuffer(uint16_t _width, uint16_t _height) : AbstractBuffer(_width, _height) {
     blackChannel = new uint8_t[width * height];
     for (int i = 0; i < width * height; i++) {
@@ -594,6 +705,12 @@ void GrayscaleBuffer::Write(const AbstractBuffer& newValues, uint16_t xpos, uint
 void GrayscaleBuffer::FillBuffer(uint8_t value) {
     for (int i = 0; i < width * height; i++) {
         blackChannel[i] = value;
+    }
+}
+
+void GrayscaleBuffer::FillBuffer(const ElementStyle& style) {
+    for (int i = 0; i < width * height; i++) {
+        blackChannel[i] = style.blackChannel;
     }
 }
 
@@ -741,6 +858,27 @@ void GrayscaleBuffer::ConvertTo2Bit(uint8_t* dest) {
             }
         }
         verticalPos += packedBytesWidth;
+    }
+}
+
+void GrayscaleBuffer::DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) {
+    auto& b = static_cast<const GrayscaleBuffer&>(buffer);
+
+    for (uint32_t j = 0; j < b.height; j++) {
+        if (ypos + j > this->height) {
+            break;
+        } else {
+            for (uint32_t i = 0; i < b.width; i++) {
+                if (xpos + i > this->width) {
+                    break;
+                } else {
+                    uint8_t val = b.blackChannel[b.width * j + i];
+                    uint8_t alpha = b.alphaChannel[b.width * j + i];
+                    blackChannel[this->width * (ypos + j) + (xpos + i)] =
+                        utils::BlendPixel(val, this->blackChannel[this->width * (ypos + j) + (xpos + i)], alpha);
+                }
+            }
+        }
     }
 }
 

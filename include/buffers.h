@@ -46,6 +46,10 @@ class AbstractBuffer {
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     virtual void FillBuffer(uint8_t value) = 0;
 
+    /// @brief Fill entire buffer with a style
+    /// @param style Style to apply to all pixels in buffer
+    virtual void FillBuffer(const ElementStyle& style) = 0;
+
     /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
     /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
     /// @param destination Destination buffer where transformed bytes will be written to
@@ -113,6 +117,12 @@ class AbstractBuffer {
     /// @param ypos_2 Y position of the end point of the line
     /// @param style How the color/style the line
     virtual void DrawLine(uint16_t xpos_1, uint16_t ypos_1, uint16_t xpos_2, uint16_t ypos_2, const ElementStyle& style) = 0;
+
+    /// @brief Draw another smaller buffer on top of this one at a certain location
+    /// @param xpos X position of where to draw the buffer
+    /// @param ypos Y position of where to draw the buffer
+    /// @param buffer Buffer that will be drawn onto this one
+    virtual void DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) = 0;
 };
 
 /// @brief 3 channel buffer with arrays for red green and blue color
@@ -134,6 +144,10 @@ class RGBBuffer : public AbstractBuffer {
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
+
+    /// @brief Fill entire buffer with a style
+    /// @param style Style to apply to all pixels in buffer
+    void FillBuffer(const ElementStyle& style) override;
 
     /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
     /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
@@ -212,6 +226,12 @@ class RGBBuffer : public AbstractBuffer {
     /// @brief Converts this RGB buffer to a 7 color (4 bit color) array
     /// @param dest Destination array to write pixel data to
     void ConvertTo7Color(uint8_t* dest, int memoryWidth, utils::SupportedPalette palette);
+
+    /// @brief Draw another smaller buffer on top of this one at a certain location
+    /// @param xpos X position of where to draw the buffer
+    /// @param ypos Y position of where to draw the buffer
+    /// @param buffer Buffer that will be drawn onto this one
+    void DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) override;
 };
 
 /// @brief 2 channel buffer with arrays for black and red color
@@ -232,6 +252,10 @@ class RedBlackBuffer : public AbstractBuffer {
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
+
+    /// @brief Fill entire buffer with a style
+    /// @param style Style to apply to all pixels in buffer
+    void FillBuffer(const ElementStyle& style) override;
 
     /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
     /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
@@ -301,6 +325,12 @@ class RedBlackBuffer : public AbstractBuffer {
     /// @param dest_black Destination array to write black pixels to
     /// @param dest_red Destination array to write red pixels to
     void ConvertTo1Bit(uint8_t* dest_black, uint8_t* dest_red);
+
+    /// @brief Draw another smaller buffer on top of this one at a certain location
+    /// @param xpos X position of where to draw the buffer
+    /// @param ypos Y position of where to draw the buffer
+    /// @param buffer Buffer that will be drawn onto this one
+    void DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) override;
 };
 
 /// @brief Single channel buffer with a single array for black color
@@ -320,6 +350,10 @@ class GrayscaleBuffer : public AbstractBuffer {
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
+
+    /// @brief Fill entire buffer with a style
+    /// @param style Style to apply to all pixels in buffer
+    void FillBuffer(const ElementStyle& style) override;
 
     /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
     /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
@@ -392,6 +426,12 @@ class GrayscaleBuffer : public AbstractBuffer {
     /// @brief Converts this buffer to a 2 bit, 4 shades of grayscale, array.
     /// @param dest Destination array to write pixel data to
     void ConvertTo2Bit(uint8_t* dest);
+
+    /// @brief Draw another smaller buffer on top of this one at a certain location
+    /// @param xpos X position of where to draw the buffer
+    /// @param ypos Y position of where to draw the buffer
+    /// @param buffer Buffer that will be drawn onto this one
+    void DrawBuffer(uint16_t xpos, uint16_t ypos, const AbstractBuffer& buffer) override;
 };
 
 /// @brief Raised when Write(...) is called with an incompatible buffer type
