@@ -53,6 +53,50 @@ class CanvasElement : public AbstractElement {
         }
     }
 
+    CanvasElement(
+        BufferType bufferType,
+        uint16_t xpos,
+        uint16_t ypos,
+        uint16_t width,
+        uint16_t height,
+        BufferTransform transformation = BufferTransform::None
+    )
+        : AbstractElement(xpos, ypos), width(width), height(height), transformation(transformation) {
+
+        if (transformation == BufferTransform::None) {
+            if (bufferType == BufferType::RGBBuffer) {
+                internalBuffer = new RGBBuffer(width, height);
+            } else if (bufferType == BufferType::RedBlackBuffer) {
+                internalBuffer = new RedBlackBuffer(width, height);
+            } else if (bufferType == BufferType::GrayscaleBuffer) {
+                internalBuffer = new GrayscaleBuffer(width, height);
+            }
+        } else if (transformation == BufferTransform::Rotate90Clockwise ||
+                   transformation == BufferTransform::Rotate90CounterClockwise) {
+            if (bufferType == BufferType::RGBBuffer) {
+                internalBuffer = new RGBBuffer(height, width);
+            } else if (bufferType == BufferType::RedBlackBuffer) {
+                internalBuffer = new RedBlackBuffer(height, width);
+            } else if (bufferType == BufferType::GrayscaleBuffer) {
+                internalBuffer = new GrayscaleBuffer(height, width);
+            }
+            intermediateBuffer = internalBuffer->CreateBufferOfSameType(width, height);
+        } else if (transformation == BufferTransform::Rotate180) {
+            if (bufferType == BufferType::RGBBuffer) {
+                internalBuffer = new RGBBuffer(width, height);
+            } else if (bufferType == BufferType::RedBlackBuffer) {
+                internalBuffer = new RedBlackBuffer(width, height);
+            } else if (bufferType == BufferType::GrayscaleBuffer) {
+                internalBuffer = new GrayscaleBuffer(width, height);
+            }
+            intermediateBuffer = internalBuffer->CreateBufferOfSameType(width, height);
+        }
+
+        if (bufferType == BufferType::RedBlackBuffer) {
+            backgroundStyle = ElementStyle(0, 255);
+        }
+    }
+
     ~CanvasElement() {
         if (internalBuffer != nullptr) {
             delete internalBuffer;
