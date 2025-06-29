@@ -40,7 +40,7 @@ int main() {
     );
 
     bitmaps::Lightning lightningBmp;
-    elements::Bitmap1BitElement lightningImg(15, 0, lightningBmp);
+    elements::Bitmap1BitElement lightningImg(15, 0, &lightningBmp);
 
     elements::TextElement<fonts::Dina_10pt> text1("Canvas 1");
     text1.ypos = 25;

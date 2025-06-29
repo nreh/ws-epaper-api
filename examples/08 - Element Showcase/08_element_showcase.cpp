@@ -64,7 +64,7 @@ int main() {
     renderer.AddElement(&description3);
 
     bitmaps::Bluetooth bt;
-    elements::Bitmap1BitElement image(440, 35, bt);
+    elements::Bitmap1BitElement image(440, 35, &bt);
     renderer.AddElement(&image);
 
     elements::TextElement<font> description4("Bitmap1BitElement");

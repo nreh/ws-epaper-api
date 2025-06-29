@@ -45,10 +45,10 @@ int main() {
 
     bitmaps::Wifi wifiLogo;
 
-    elements::Bitmap1BitElement bitmapRenderer(10, 10, wifiLogo);
+    elements::Bitmap1BitElement bitmapRenderer(10, 10, &wifiLogo);
     renderer.AddElement(&bitmapRenderer);
 
-    elements::Bitmap1BitElement redBitmapRenderer(10, 60, wifiLogo);
+    elements::Bitmap1BitElement redBitmapRenderer(10, 60, &wifiLogo);
     redBitmapRenderer.foregroundStyle.SetRedBlackChannels(255, 0); // we can also make it red!
     renderer.AddElement(&redBitmapRenderer);
 
