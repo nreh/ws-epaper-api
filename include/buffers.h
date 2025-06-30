@@ -34,7 +34,6 @@ class AbstractBuffer {
 
     AbstractBuffer(uint16_t _width, uint16_t _height);
     virtual ~AbstractBuffer();
-    virtual void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) = 0;
     virtual BufferType type() const { return BufferType::AbstractBuffer; }
 
     /// @brief Get Buffer type as a string
@@ -146,12 +145,6 @@ class RGBBuffer : public AbstractBuffer {
     ~RGBBuffer();
     BufferType type() const override { return BufferType::RGBBuffer; }
 
-    /// @brief Write a buffer overtop this one
-    /// @param newValues
-    /// @param xpos
-    /// @param ypos
-    void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
-
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
 
@@ -254,12 +247,6 @@ class RedBlackBuffer : public AbstractBuffer {
     ~RedBlackBuffer();
     BufferType type() const override { return BufferType::RedBlackBuffer; }
 
-    /// @brief Write a buffer overtop this one
-    /// @param newValues
-    /// @param xpos
-    /// @param ypos
-    void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
-
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
 
@@ -351,12 +338,6 @@ class GrayscaleBuffer : public AbstractBuffer {
     GrayscaleBuffer(uint16_t _width, uint16_t _height);
     ~GrayscaleBuffer();
     BufferType type() const override { return BufferType::GrayscaleBuffer; }
-
-    /// @brief Write a buffer overtop this one
-    /// @param newValues
-    /// @param xpos
-    /// @param ypos
-    void Write(const AbstractBuffer& newValues, uint16_t xpos, uint16_t ypos) override;
 
     /// @brief Fill entire buffer with value, useful for clearing the buffer.
     void FillBuffer(uint8_t value) override;
