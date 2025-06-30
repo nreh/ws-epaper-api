@@ -112,6 +112,9 @@ void RGBBuffer::FillBuffer(const ElementStyle& style) {
     for (int i = 0; i < width * height; i++) {
         blueChannel[i] = style.blueChannel;
     }
+    for (int i = 0; i < width * height; i++) {
+        alphaChannel[i] = style.alpha;
+    }
 }
 
 void RGBBuffer::Transform(
@@ -161,6 +164,19 @@ void RGBBuffer::DrawBitmap(
     const ElementStyle& foregroundStyle,
     const uint8_t* bitmap
 ) {
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                alphaChannel[bufferpos] = utils::BlendAlpha(foregroundStyle.alpha, alphaChannel[bufferpos]);
+            } else {
+                alphaChannel[bufferpos] = utils::BlendAlpha(backgroundStyle.alpha, alphaChannel[bufferpos]);
+            }
+        }
+    }
     for (int j = 0; j < height; j++) {
         uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
         for (int i = 0; i < width; i++) {
@@ -462,6 +478,9 @@ void RedBlackBuffer::FillBuffer(const ElementStyle& style) {
     for (int i = 0; i < width * height; i++) {
         blackChannel[i] = style.blackChannel;
     }
+    for (int i = 0; i < width * height; i++) {
+        alphaChannel[i] = style.alpha;
+    }
 }
 
 void RedBlackBuffer::Transform(
@@ -509,6 +528,19 @@ void RedBlackBuffer::DrawBitmap(
     const ElementStyle& foregroundStyle,
     const uint8_t* bitmap
 ) {
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
+                alphaChannel[bufferpos] = utils::BlendAlpha(foregroundStyle.alpha, alphaChannel[bufferpos]);
+            } else {
+                alphaChannel[bufferpos] = utils::BlendAlpha(backgroundStyle.alpha, alphaChannel[bufferpos]);
+            }
+        }
+    }
     for (int j = 0; j < height; j++) {
         uint32_t bufferYpos = std::min<uint32_t>(ypos + j, this->height);
         for (int i = 0; i < width; i++) {
@@ -712,6 +744,9 @@ void GrayscaleBuffer::FillBuffer(const ElementStyle& style) {
     for (int i = 0; i < width * height; i++) {
         blackChannel[i] = style.blackChannel;
     }
+    for (int i = 0; i < width * height; i++) {
+        alphaChannel[i] = style.alpha;
+    }
 }
 
 void GrayscaleBuffer::Transform(
@@ -760,12 +795,24 @@ void GrayscaleBuffer::DrawBitmap(
             bool val = getPixel(bitmap, width, i, j);
             uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
             if (val) {
+                alphaChannel[bufferpos] = utils::BlendAlpha(foregroundStyle.alpha, alphaChannel[bufferpos]);
+            } else {
+                alphaChannel[bufferpos] = utils::BlendAlpha(backgroundStyle.alpha, alphaChannel[bufferpos]);
+            }
+        }
+    }
+    for (int j = 0; j < height; j++) {
+        uint16_t bufferYpos = std::min<uint16_t>(ypos + j, this->height);
+        for (int i = 0; i < width; i++) {
+            uint16_t bufferXpos = std::min<uint16_t>(xpos + i, this->width);
+            bool val = getPixel(bitmap, width, i, j);
+            uint32_t bufferpos = bufferYpos * this->width + bufferXpos;
+            if (val) {
                 blackChannel[bufferpos] =
                     utils::BlendPixel(foregroundStyle.blackChannel, blackChannel[bufferpos], foregroundStyle.alpha);
             } else {
                 blackChannel[bufferpos] =
                     utils::BlendPixel(backgroundStyle.blackChannel, blackChannel[bufferpos], backgroundStyle.alpha);
-                ;
             }
         }
     }
