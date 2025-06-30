@@ -78,7 +78,7 @@ inline void Pack1Bit(uint8_t* pixelsArray, uint8_t* packedPixelsArray, uint16_t 
     }
 }
 
-inline void RotateMatrix90Clockwise(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) {
+template <typename T> inline void RotateMatrix90Clockwise(T* source, T* destination, uint16_t width, uint16_t height) {
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
@@ -90,7 +90,8 @@ inline void RotateMatrix90Clockwise(uint8_t* source, uint8_t* destination, uint1
     }
 }
 
-inline void RotateMatrix90CounterClockwise(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) {
+template <typename T>
+inline void RotateMatrix90CounterClockwise(T* source, T* destination, uint16_t width, uint16_t height) {
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
@@ -102,7 +103,7 @@ inline void RotateMatrix90CounterClockwise(uint8_t* source, uint8_t* destination
     }
 }
 
-inline void RotateMatrix180(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) {
+template <typename T> inline void RotateMatrix180(T* source, T* destination, uint16_t width, uint16_t height) {
     uint16_t dest_j, dest_i;
 
     for (int j = 0; j < height; j++) {
@@ -126,6 +127,8 @@ inline void TransformBuffer(AbstractBuffer& source, AbstractBuffer& destination,
 
     void (*func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height) =
         nullptr; // transformation function
+    void (*funcAlpha)(float* source, float* destination, uint16_t width, uint16_t height) =
+        nullptr; // transformation function but for the alpha channel
 
     if (transformation == BufferTransform::None) {
         return;
@@ -135,21 +138,24 @@ inline void TransformBuffer(AbstractBuffer& source, AbstractBuffer& destination,
                 source, destination, "Incompatible destination shape for 90 degree rotation"
             );
         }
-        func = &RotateMatrix90Clockwise;
+        func = &RotateMatrix90Clockwise<uint8_t>;
+        funcAlpha = &RotateMatrix90Clockwise<float>;
     } else if (transformation == BufferTransform::Rotate90CounterClockwise) {
         if (destination.width != source.height && destination.height != source.width) {
             throw IncompatibleBufferTransformDestination(
                 source, destination, "Incompatible destination shape for 90 degree rotation"
             );
         }
-        func = &RotateMatrix90CounterClockwise;
+        func = &RotateMatrix90CounterClockwise<uint8_t>;
+        funcAlpha = &RotateMatrix90CounterClockwise<float>;
     } else if (transformation == BufferTransform::Rotate180) {
         if (destination.height != source.height && destination.width != source.width) {
             throw IncompatibleBufferTransformDestination(
                 source, destination, "Incompatible destination shape for 180 degree rotation"
             );
         }
-        func = &RotateMatrix180;
+        func = &RotateMatrix180<uint8_t>;
+        funcAlpha = &RotateMatrix180<float>;
     }
 
     if (func == nullptr) {
@@ -157,6 +163,9 @@ inline void TransformBuffer(AbstractBuffer& source, AbstractBuffer& destination,
     }
 
     source.Transform(*func, destination);
+
+    // the Transform() function doesn't work on the alpha channel, we must do it here manually.
+    source.TransformAlpha(*funcAlpha, destination);
 }
 struct RGB {
     uint8_t r, g, b;

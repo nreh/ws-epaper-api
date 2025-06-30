@@ -50,12 +50,22 @@ class AbstractBuffer {
     /// @param style Style to apply to all pixels in buffer
     virtual void FillBuffer(const ElementStyle& style) = 0;
 
-    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer
+    /// @brief Apply a transformation function on the buffer and ouput result to a destination buffer. Note: This does NOT
+    /// apply the transformation on the alpha channel, use TransformAlpha() for that.
     /// @param func Function with the signature void(uint8_t*, uint8_t, uint16_t, uint16_t) that is the transform function
     /// @param destination Destination buffer where transformed bytes will be written to
     virtual void Transform(
         void (&func)(uint8_t* source, uint8_t* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
     ) = 0;
+
+    /// @brief Apply a transformation function on the alpha channel of the buffer and ouput result to a destination buffer.
+    /// @param funcFunction with the signature void(float*, float, uint16_t, uint16_t) that is the transform function
+    /// @param destination Destination buffer where transformed bytes will be written to
+    void TransformAlpha(
+        void (&func)(float* source, float* destination, uint16_t width, uint16_t height), AbstractBuffer& destination
+    ) {
+        func(alphaChannel, destination.alphaChannel, width, height);
+    }
 
     /// @brief Create a new buffer of the same type. Useful for creating intermediate buffers when applying transformations.
     /// @param width Width of new buffer pixels
